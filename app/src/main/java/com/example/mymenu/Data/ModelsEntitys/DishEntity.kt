@@ -20,13 +20,13 @@ data class DishEntity(
     @ColumnInfo(name = "price")
     var price_dish: Double,
 
-    @ColumnInfo(name = "countPrice")
-    var countPrice: Double,
+    @ColumnInfo(name = "description")
+    var description: String,
 
     @ColumnInfo(name = "weight")
-    var weight_dish: String,
+    var weight_dish: Double,
 
     @ColumnInfo(name = "quantity")
-    val quantity: Int
+    val quantity: Int?
 
 )
