@@ -1,6 +1,7 @@
 package com.example.mymenu.Domain.Models
 
 data class DishItem(
+
     val id: Int,
     val url_dish: String,
     val name_dish: String,

@@ -1,15 +1,32 @@
 package com.example.mymenu.Data.Repository
 
-import com.example.mymenu.Domain.Category1.CategoryListRepository
+import android.util.Log
+import com.example.mymenu.Data.ApiService.CatDataSource
+import com.example.mymenu.Data.ModelsEntitys.CategoryEntity
+import com.example.mymenu.Domain.Category1.CategoryRepository
 import com.example.mymenu.Domain.Models.CategoryItem
 import com.example.mymenu.Domain.Models.DishItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class CategoryRepositoryImpl:CategoryListRepository {
-    override suspend fun getCategoryList(): List<CategoryItem> {
-        TODO("Not yet implemented")
+class CategoryRepositoryImpl(private val catDataSource: CatDataSource):CategoryRepository {
+    private val TAG = "CategoryRepositoryImpl"
+
+    override suspend fun getCategoryList(): List<CategoryItem> = withContext(Dispatchers.IO) {
+        try {
+            catDataSource.getLocalDishes().map { categoryEntity ->
+                categoryEntity.toDomainCategory()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error fetching category list: ${e.message}", e)
+            emptyList() // Возвращаем пустой список в случае ошибки
+        }
     }
 
-    override suspend fun OpenGetMenuItems(): List<DishItem> {
-        TODO("Not yet implemented")
-    }
+    private fun CategoryEntity.toDomainCategory(): CategoryItem =
+        CategoryItem(
+            id = id,
+            url_cat = url_cat,
+            name_cat= name_cat
+        )
 }
