@@ -4,7 +4,7 @@ import com.example.mymenu.Domain.Models.CategoryItem
 
 class GetCategoryUseCase(private val categoryRepository: CategoryRepository ) {
 
-    suspend fun getCategoryList(): List<CategoryItem>{
+    suspend operator fun invoke(): List<CategoryItem>{
         return categoryRepository.getCategoryList()
     }
 }

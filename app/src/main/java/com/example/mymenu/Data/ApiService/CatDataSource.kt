@@ -1,11 +1,10 @@
 package com.example.mymenu.Data.ApiService
 
 import com.example.mymenu.Data.ModelsEntitys.CategoryEntity
-import com.example.mymenu.Data.ModelsEntitys.DishEntity
 
 class CatDataSource {
 
-    fun getLocalDishes(): List<CategoryEntity> {
+    fun getLocalCategory(): List<CategoryEntity> {
         return listOf(
             CategoryEntity(
                 1,
