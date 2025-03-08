@@ -45,4 +45,10 @@
     <string name="basket">Basket</string>
     <string name="account">Account</string>
     <string name="Ошибка_загрузки_категорий">Ошибка загрузки категорий</string>
+    <string name="плюс">плюс</string>
+    <string name="кол_во">кол-во</string>
+    <string name="минус">минус</string>
+    <string name="count_price">count_price</string>
+    <string name="cat1">cat1</string>
+    <string name="название_категории">название категории</string>
 </resources>

@@ -64,7 +64,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Info"
-        tools:ignore="FragmentTagUsage" />
+        tools:ignore="FragmentTagUsage"
+        app:navGraph="@navigation/bottom_navigation"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bNav"

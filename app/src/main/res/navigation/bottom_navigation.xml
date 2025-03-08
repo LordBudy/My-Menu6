@@ -3,24 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_navigation"
-    app:startDestination="@id/home2">
+    app:startDestination="@id/home">
 
     <fragment
-        android:id="@+id/home2"
+        android:id="@+id/home"
         android:name="com.example.mymenu.Presentation.Fragments.Home"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_home2_to_menu"
+            android:id="@+id/action_home_to_menu"
             app:destination="@id/menu" />
         <action
-            android:id="@+id/action_home2_to_basket"
+            android:id="@+id/action_home_to_basket"
             app:destination="@id/basket" />
         <action
-            android:id="@+id/action_home2_to_fastSearch"
+            android:id="@+id/action_home_to_fastSearch"
             app:destination="@id/fastSearch" />
         <action
-            android:id="@+id/action_home2_to_account"
+            android:id="@+id/action_home_to_account"
             app:destination="@id/account" />
     </fragment>
     <fragment
@@ -32,7 +32,7 @@
         android:id="@+id/menu"
         android:name="com.example.mymenu.Presentation.Fragments.Menu"
         android:label="fragment_menu"
-        tools:layout="@layout/fragment_menu" >
+        tools:layout="@layout/fragment_menu">
         <action
             android:id="@+id/action_menu_to_menuMini"
             app:destination="@id/menuMini" />
@@ -44,7 +44,7 @@
         android:id="@+id/menuMini"
         android:name="com.example.mymenu.Presentation.Fragments.MenuMini"
         android:label="fragment_menu_mini"
-        tools:layout="@layout/fragment_menu_mini" >
+        tools:layout="@layout/fragment_menu_mini">
         <action
             android:id="@+id/action_menuMini_to_basket"
             app:destination="@id/basket" />
@@ -53,7 +53,7 @@
         android:id="@+id/fastSearch"
         android:name="com.example.mymenu.Presentation.Fragments.FastSearch"
         android:label="fragment_fast_search"
-        tools:layout="@layout/fragment_fast_search" >
+        tools:layout="@layout/fragment_fast_search">
         <action
             android:id="@+id/action_fastSearch_to_menuMini"
             app:destination="@id/menuMini" />

@@ -1,5 +1,7 @@
 package com.example.mymenu.Presentation.Fragments
 
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,12 +9,11 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.mymenu.Data.ApiService.CatDataSource
 import com.example.mymenu.Data.Repository.CategoryRepositoryImpl
 import com.example.mymenu.Domain.Category1.GetCategoryUseCase
@@ -75,17 +76,17 @@ class Home : Fragment() {
         viewModel.categories.observe(viewLifecycleOwner, Observer { categoryList ->
             if (categoryList != null) {
                 // Обновляем адаптер с новым списком категорий
-                categoryAdapter.updateData(categoryList)
+                categoryAdapter.updateData(categoryList) // Вызываем метод экземпляра adapter
             } else {
                 // Обрабатываем ошибку (например, отображаем сообщение)
-                Toast.makeText(requireContext(), "Failed to load categories", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Не удалось загрузить категории", Toast.LENGTH_SHORT).show()
             }
         })
 
         // Подписываемся на LiveData isLoading
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-            recyclerView.visibility = if (!isLoading) View.VISIBLE else View.GONE
+            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE //  Используем progressBar
+            recyclerView.visibility = if (!isLoading) View.VISIBLE else View.GONE // Используем recyclerView
         })
 
         // Подписываемся на LiveData errorMessage

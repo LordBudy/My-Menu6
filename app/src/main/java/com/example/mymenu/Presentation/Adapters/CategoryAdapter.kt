@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymenu.Domain.Models.CategoryItem
 import com.squareup.picasso.Picasso
-import com.example.mymenu.R // Убедитесь, что импортирован правильный R
+import com.example.mymenu.R
 
 class CategoryAdapter(
     private var categories: List<CategoryItem>,
@@ -23,8 +23,8 @@ class CategoryAdapter(
 
     //ViewHolder
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val categoryImageView: ImageView = itemView.findViewById(R.id.categoryImageView)
-        val categoryTextView: TextView = itemView.findViewById(R.id.categoryTextView)
+        val categoryImageView: ImageView = itemView.findViewById(R.id.imageCategory)
+        val categoryTextView: TextView = itemView.findViewById(R.id.textCategory)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
