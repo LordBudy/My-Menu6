@@ -23,8 +23,9 @@
         android:includeFontPadding="true"
         android:padding="10dp"
         android:text="@string/название_категории"
-        android:textColor="@android:color/white"
+        android:textColor="@color/black"
         android:textSize="20sp"
+        android:textStyle="bold|italic"
         tools:ignore="RtlHardcoded" />
 
 </FrameLayout>

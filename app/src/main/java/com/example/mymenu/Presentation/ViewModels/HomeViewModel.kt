@@ -10,7 +10,8 @@ import com.example.mymenu.Domain.Models.CategoryItem
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val getCategoryUseCase: GetCategoryUseCase // Внедряем UseCase через конструктор
+    // Внедряем UseCase через конструктор
+    private val getCategoryUseCase: GetCategoryUseCase
 ) : ViewModel() {
 
     private val _categories = MutableLiveData<List<CategoryItem>?>()
@@ -32,7 +33,8 @@ class HomeViewModel(
 
         viewModelScope.launch {
             try {
-                val categoryList = getCategoryUseCase() // Правильно вызываем UseCase
+                //  вызываем UseCase
+                val categoryList = getCategoryUseCase()
                 _categories.value = categoryList
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to load categories: ${e.message}"

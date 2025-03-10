@@ -22,6 +22,7 @@ import com.example.mymenu.Presentation.Adapters.CategoryAdapter
 import com.example.mymenu.Presentation.ViewModels.HomeViewModel
 import com.example.mymenu.R
 
+@Suppress("UNCHECKED_CAST")
 class Home : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
@@ -53,10 +54,8 @@ class Home : Fragment() {
                 .commit()
         }
         recyclerView.adapter = categoryAdapter
-
         return view
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -85,8 +84,10 @@ class Home : Fragment() {
 
         // Подписываемся на LiveData isLoading
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE //  Используем progressBar
-            recyclerView.visibility = if (!isLoading) View.VISIBLE else View.GONE // Используем recyclerView
+            //  Используем progressBar
+            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            // Используем recyclerView
+            recyclerView.visibility = if (!isLoading) View.VISIBLE else View.GONE
         })
 
         // Подписываемся на LiveData errorMessage
