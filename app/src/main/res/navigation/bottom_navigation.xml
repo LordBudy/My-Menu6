@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_home_to_account"
             app:destination="@id/account" />
+        <action
+            android:id="@+id/action_home_to_menu2"
+            app:destination="@id/menu" />
     </fragment>
     <fragment
         android:id="@+id/basket"

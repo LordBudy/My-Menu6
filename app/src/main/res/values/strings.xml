@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">My Menu</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btn_home">btn_home</string>
     <string name="btn_search">btn_search</string>
@@ -51,4 +50,7 @@
     <string name="count_price">count_price</string>
     <string name="cat1">cat1</string>
     <string name="название_категории">название категории</string>
+    <string name="dish_image">dish_image</string>
+    <string name="цена">Цена</string>
+    <string name="вес">Вес</string>
 </resources>

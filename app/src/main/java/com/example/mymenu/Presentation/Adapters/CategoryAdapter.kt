@@ -3,6 +3,8 @@ package com.example.mymenu.Presentation.Adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +25,7 @@ class CategoryAdapter(
 
     //ViewHolder
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val categoryImageView: ImageView = itemView.findViewById(R.id.imageCategory)
+        val categoryImageButton: ImageButton = itemView.findViewById(R.id.imageCategory)
         val categoryTextView: TextView = itemView.findViewById(R.id.textCategory)
     }
 
@@ -41,7 +43,7 @@ class CategoryAdapter(
             .load(category.url_cat)
             .placeholder(R.drawable.placeholder_image) // Заглушка на время загрузки
             .error(R.drawable.error_image) // Картинка в случае ошибки загрузки
-            .into(holder.categoryImageView)
+            .into(holder.categoryImageButton)
 
         holder.itemView.setOnClickListener {
             onClick(category)

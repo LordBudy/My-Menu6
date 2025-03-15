@@ -3,13 +3,13 @@ package com.example.mymenu.Presentation.Fragments
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -40,22 +40,15 @@ class Home : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         progressBar = view.findViewById(R.id.progressBarHome)
         errorMessageTextView = view.findViewById(R.id.textViewErrorMessage)
-
+// Инициализируем адаптер с обработчиком нажатий
         categoryAdapter = CategoryAdapter(emptyList()) { category ->
             // Открываем MenuFragment при нажатии на категорию
-            val menuFragment = Menu().apply {
-                arguments = Bundle().apply {
-                    putInt("categoryId", category.id) // Передаем ID категории в MenuFragment
-                }
-            }
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.Container_frag, menuFragment) // Замените R.id.fragment_container на ваш контейнер
-                .addToBackStack(null)
-                .commit()
+            openMenuFragment(category.id)
         }
         recyclerView.adapter = categoryAdapter
         return view
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -78,7 +71,11 @@ class Home : Fragment() {
                 categoryAdapter.updateData(categoryList) // Вызываем метод экземпляра adapter
             } else {
                 // Обрабатываем ошибку (например, отображаем сообщение)
-                Toast.makeText(requireContext(), "Не удалось загрузить категории", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Не удалось загрузить категории",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
 
@@ -100,5 +97,18 @@ class Home : Fragment() {
                 errorMessageTextView.visibility = View.GONE
             }
         })
+    }
+
+    // Функция для открытия MenuFragment
+    private fun openMenuFragment(categoryId: Int) {
+        val menuFragment = Menu().apply {
+            arguments = Bundle().apply {
+                putInt("categoryId", categoryId)
+            }
+        }
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.Container_frag, menuFragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
