@@ -1,60 +1,110 @@
 package com.example.mymenu.Presentation.Fragments
 
-import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mymenu.Data.ApiService.CatDataSource
+import com.example.mymenu.Data.Repository.CategoryRepositoryImpl
+import com.example.mymenu.Domain.Category1.GetCategoryUseCase
+import com.example.mymenu.Domain.Models.CategoryItem
+import com.example.mymenu.Presentation.Adapters.CategoryAdapter
+import com.example.mymenu.Presentation.ViewModels.HomeViewModel
 import com.example.mymenu.R
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Home.newInstance] factory method to
- * create an instance of this fragment.
- */
+@Suppress("UNCHECKED_CAST")
 class Home : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var viewModel: HomeViewModel
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var progressBar: ProgressBar
+    private lateinit var errorMessageTextView: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+        recyclerView = view.findViewById(R.id.recyclerViewCategories)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        progressBar = view.findViewById(R.id.progressBarHome)
+        errorMessageTextView = view.findViewById(R.id.textViewErrorMessage)
+// Инициализируем адаптер с обработчиком нажатий
+        categoryAdapter = CategoryAdapter(emptyList()) { category ->
+            // Открываем MenuFragment при нажатии на категорию
+            openMenuFragment(category.id)
+        }
+        recyclerView.adapter = categoryAdapter
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Home.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Home().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Создаем зависимости
+        val catDataSource = CatDataSource()
+        val categoryRepository = CategoryRepositoryImpl(catDataSource)
+        val getCategoryUseCase = GetCategoryUseCase(categoryRepository)
+
+        // Создаем ViewModel с использованием фабрики
+        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return HomeViewModel(getCategoryUseCase) as T
             }
+        })[HomeViewModel::class.java] // Получаем экземпляр ViewModel
+
+        // Подписываемся на LiveData
+        viewModel.categories.observe(viewLifecycleOwner, Observer { categoryList ->
+            if (categoryList != null) {
+                // Обновляем адаптер с новым списком категорий
+                categoryAdapter.updateData(categoryList) // Вызываем метод экземпляра adapter
+            } else {
+                // Обрабатываем ошибку (например, отображаем сообщение)
+                Toast.makeText(
+                    requireContext(),
+                    "Не удалось загрузить категории",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+
+        // Подписываемся на LiveData isLoading
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+            //  Используем progressBar
+            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            // Используем recyclerView
+            recyclerView.visibility = if (!isLoading) View.VISIBLE else View.GONE
+        })
+
+        // Подписываемся на LiveData errorMessage
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
+            if (errorMessage != null) {
+                errorMessageTextView.text = errorMessage
+                errorMessageTextView.visibility = View.VISIBLE
+                recyclerView.visibility = View.GONE
+            } else {
+                errorMessageTextView.visibility = View.GONE
+            }
+        })
+    }
+
+    // Функция для открытия MenuFragment
+    private fun openMenuFragment(categoryId: Int) {
+        val bundle = Bundle()
+        bundle.putInt("categoryId", categoryId)
+        findNavController().navigate(R.id.action_home_to_menu, bundle)
+
     }
 }

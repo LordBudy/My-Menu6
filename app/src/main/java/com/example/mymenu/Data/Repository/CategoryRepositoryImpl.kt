@@ -1,15 +1,23 @@
 package com.example.mymenu.Data.Repository
 
-import com.example.mymenu.Domain.Category1.CategoryListRepository
+import com.example.mymenu.Data.ApiService.CatDataSource
+import com.example.mymenu.Data.ModelsEntitys.CategoryEntity
+import com.example.mymenu.Domain.Category1.CategoryRepository
 import com.example.mymenu.Domain.Models.CategoryItem
-import com.example.mymenu.Domain.Models.DishItem
 
-class CategoryRepositoryImpl:CategoryListRepository {
-    override suspend fun getCategoryList(): List<CategoryItem> {
-        TODO("Not yet implemented")
-    }
 
-    override suspend fun OpenGetMenuItems(): List<DishItem> {
-        TODO("Not yet implemented")
+class CategoryRepositoryImpl(private val catDataSource: CatDataSource) : CategoryRepository {
+
+    override suspend fun getDishesByCategoryId(): List<CategoryItem> {
+        //гарантирует, что каждый список CategoryEntity в списке будет преобразован
+        // в CategoryItem перед тем, как будет возвращен список
+        return catDataSource.getLocalCategory().map {  categoryEntity ->
+            categoryEntity.toDomainCategory() }
     }
+    private fun CategoryEntity.toDomainCategory(): CategoryItem =
+        CategoryItem(
+            id = id,
+            url_cat = url_cat,
+            name_cat = name_cat
+        )
 }

@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 interface BasketDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertBasket(dishes: DishEntity)//добавит в бд
+    suspend fun insertBasket(dishs: DishEntity)//добавит в бд
 
     @Query("SELECT * FROM dishs")
     fun getAllBasket(): Flow<List<DishEntity>>//выведет весь список в бд
@@ -26,7 +26,7 @@ interface BasketDao {
     suspend fun updateBasket(dishs: DishEntity)//обновит бд
 
     @Delete
-    suspend fun deleteBasketItem(dishes: DishEntity) // Удаляем DishEntity
+    suspend fun deleteBasketItem(dishs: DishEntity) // Удаляем DishEntity
 //    @Query("DELETE FROM dishes WHERE id_dish = :dishId")//удалить один обьект из бд
 //    suspend fun deleteBasketItem(dishId: Int)
 

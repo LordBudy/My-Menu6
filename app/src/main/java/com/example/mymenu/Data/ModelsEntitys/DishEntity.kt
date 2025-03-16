@@ -9,24 +9,24 @@ data class DishEntity(
 
     @PrimaryKey
     @ColumnInfo(name = "id_dish")
-    var id: Int,
+    val id: Int,
 
     @ColumnInfo(name = "url")
-    var url_dish: String,
+    val url: String,
 
     @ColumnInfo(name = "name")
-    var name_dish: String,
+    val name: String,
 
     @ColumnInfo(name = "price")
-    var price_dish: Double,
+    val price: Double,
 
-    @ColumnInfo(name = "countPrice")
-    var countPrice: Double,
+    @ColumnInfo(name = "description")
+    val description: String,
 
     @ColumnInfo(name = "weight")
-    var weight_dish: String,
+    val weight: Double,
 
-    @ColumnInfo(name = "quantity")
-    val quantity: Int
+    @ColumnInfo(name = "categoryId")
+    val categoryId: Int? = null
 
 )
