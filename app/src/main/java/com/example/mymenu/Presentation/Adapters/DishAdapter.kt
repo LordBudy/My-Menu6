@@ -36,8 +36,8 @@ class DishAdapter(private var dishes: List<DishItem>) : RecyclerView.Adapter<Dis
         holder.PriceTextView.text = dish.price.toString()
         holder.WeightTextView.text = dish.weight.toString()
         Picasso.get()
-            .load(dish.url) // Замените на ваше поле с URL
-            .placeholder(R.drawable.placeholder_image) // Замените на ваши drawables
+            .load(dish.url)
+            .placeholder(R.drawable.placeholder_image)
             .error(R.drawable.error_image)
             .into(holder.dishImageView)
     }

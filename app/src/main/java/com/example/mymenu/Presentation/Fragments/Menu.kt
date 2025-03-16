@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymenu.Data.ApiService.DishDataSource
@@ -47,7 +48,8 @@ class Menu : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_menu, container, false)
         recyclerView = view.findViewById(R.id.recyclerViewMenu)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = GridLayoutManager(requireContext(),3)
+
         errorMessageTextView = view.findViewById(R.id.textViewMenuErrorMessage)
         dishAdapter = DishAdapter(emptyList()) // Инициализируем адаптер
 

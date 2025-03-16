@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymenu.Data.ApiService.CatDataSource
 import com.example.mymenu.Data.Repository.CategoryRepositoryImpl
@@ -101,14 +102,9 @@ class Home : Fragment() {
 
     // Функция для открытия MenuFragment
     private fun openMenuFragment(categoryId: Int) {
-        val menuFragment = Menu().apply {
-            arguments = Bundle().apply {
-                putInt("categoryId", categoryId)
-            }
-        }
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.Container_frag, menuFragment)
-            .addToBackStack(null)
-            .commit()
+        val bundle = Bundle()
+        bundle.putInt("categoryId", categoryId)
+        findNavController().navigate(R.id.action_home_to_menu, bundle)
+
     }
 }

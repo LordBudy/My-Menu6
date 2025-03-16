@@ -53,4 +53,5 @@
     <string name="dish_image">dish_image</string>
     <string name="цена">Цена</string>
     <string name="вес">Вес</string>
+    <string name="назад">назад</string>
 </resources>

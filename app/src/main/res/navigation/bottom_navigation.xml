@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_menu_to_fastSearch"
             app:destination="@id/fastSearch" />
+        <action
+            android:id="@+id/action_menu_to_home"
+            app:destination="@id/home" />
     </fragment>
     <fragment
         android:id="@+id/menuMini"
@@ -51,6 +54,9 @@
         <action
             android:id="@+id/action_menuMini_to_basket"
             app:destination="@id/basket" />
+        <action
+            android:id="@+id/action_menuMini_to_menu"
+            app:destination="@id/menu" />
     </fragment>
     <fragment
         android:id="@+id/fastSearch"

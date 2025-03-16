@@ -76,7 +76,7 @@ class DishDataSource {
             ),
             DishEntity(
                 6,
-                "http://100foto.club/uploads/posts/2023-01/1672836368_11-100foto-club-p-trubochki-iz-vetchini-s-nachinkoi-18.jpg",
+                "http://img.freepik.com/premium-photo/ham-roll-with-cheese-white-plate-mortadella-ricotta-rolls-isolated-white-background_229797-827.jpg?w=900",
                 "Рулеты из ветчины",
                 400.0,
                 "Рулетики из ветчины — это изысканное и вкусное блюдо, которое завоевывает любовь гурманов по всему миру." +
@@ -98,7 +98,7 @@ class DishDataSource {
             ),
             DishEntity(
                 8,
-                "http://www.espri-restauration.fr/wp-content/uploads/2014/07/product_thumbnail_41699.jpg",
+                "http://img.freepik.com/premium-photo/baked-pork-meat-with-vegetables_738298-2579.jpg?w=996",
                 "Паэлья из утки",
                 550.0,
                 "Паэ́лья — национальное испанское и валенсийское блюдо из риса, подкрашенного шафраном," +
@@ -108,7 +108,7 @@ class DishDataSource {
             ),
             DishEntity(
                 9,
-                "http://recettessimples.fr/images/Ratatouille_Assiette_1.jpg",
+                "http://img.freepik.com/premium-photo/ratatouille-traditional-provencal-vegetable-dish-french-food-vegetarian-food-healthy-eating_97840-5811.jpg?w=740",
                 "Рататуй",
                 175.0,
                 "Рататуй - традиционное овощное блюдо прованской кухни из перцев, баклажанов" +
