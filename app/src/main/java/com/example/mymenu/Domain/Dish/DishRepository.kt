@@ -2,7 +2,8 @@ package com.example.mymenu.Domain.Dish
 
 import com.example.mymenu.Domain.Models.DishItem
 
-// Интерфейс DishRepository (Определяет методы для работы с данными о блюдах)
 interface DishRepository {
+    //выводит список блюд выбранной категории
     suspend fun getDishs(id: Int): List<DishItem>
+
 }

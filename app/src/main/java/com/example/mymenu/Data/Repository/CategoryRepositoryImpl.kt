@@ -8,12 +8,14 @@ import com.example.mymenu.Domain.Models.CategoryItem
 
 class CategoryRepositoryImpl(private val catDataSource: CatDataSource) : CategoryRepository {
 
-    override suspend fun getDishesByCategoryId(): List<CategoryItem> {
+    override suspend fun getDishsByCategoryId(): List<CategoryItem> {
         //гарантирует, что каждый список CategoryEntity в списке будет преобразован
         // в CategoryItem перед тем, как будет возвращен список
         return catDataSource.getLocalCategory().map {  categoryEntity ->
             categoryEntity.toDomainCategory() }
     }
+
+
     private fun CategoryEntity.toDomainCategory(): CategoryItem =
         CategoryItem(
             id = id,

@@ -11,19 +11,5 @@
         android:layout_height="match_parent"
         android:visibility="visible" />
 
-    <ProgressBar
-        android:id="@+id/progressBarHome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="visible" />
-
-    <TextView
-        android:id="@+id/textViewErrorMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/Ошибка_загрузки_категорий"
-        android:visibility="visible" />
 
 </FrameLayout>

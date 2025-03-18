@@ -13,13 +13,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymenu.Data.ApiService.DishDataSource
 
 import com.example.mymenu.Data.Repository.DishRepositoryImpl  // Замените на путь к вашему DishRepositoryImpl
-import com.example.mymenu.Domain.Dish.GetDishesUseCase  // Замените на путь к вашему GetDishesUseCase
-import com.example.mymenu.Domain.Models.DishItem // Замените на путь к вашим DishItem
+import com.example.mymenu.Domain.Dish.GetDishsUseCase  // Замените на путь к вашему GetDishesUseCase
 import com.example.mymenu.Presentation.Adapters.DishAdapter
 import com.example.mymenu.Presentation.ViewModels.MenuViewModel  // Замените на путь к вашей MenuViewModel
 import com.example.mymenu.R
@@ -49,10 +47,8 @@ class Menu : Fragment() {
         val view = inflater.inflate(R.layout.fragment_menu, container, false)
         recyclerView = view.findViewById(R.id.recyclerViewMenu)
         recyclerView.layoutManager = GridLayoutManager(requireContext(),3)
-
         errorMessageTextView = view.findViewById(R.id.textViewMenuErrorMessage)
         dishAdapter = DishAdapter(emptyList()) // Инициализируем адаптер
-
         recyclerView.adapter = dishAdapter
         return view
     }
@@ -70,12 +66,12 @@ class Menu : Fragment() {
         // Создаем зависимости
         val dishDataSource = DishDataSource()
         val dishRepository = DishRepositoryImpl(dishDataSource)
-        val getDishesUseCase = GetDishesUseCase(dishRepository)
+        val getDishsUseCase = GetDishsUseCase(dishRepository)
 
         // Создаем ViewModel
         viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return MenuViewModel(getDishesUseCase, categoryId) as T // Передаем categoryId в ViewModel
+                return MenuViewModel(getDishsUseCase, categoryId) as T // Передаем categoryId в ViewModel
             }
         })[MenuViewModel::class.java]
 

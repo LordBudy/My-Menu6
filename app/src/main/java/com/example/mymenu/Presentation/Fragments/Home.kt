@@ -23,87 +23,74 @@ import com.example.mymenu.Presentation.Adapters.CategoryAdapter
 import com.example.mymenu.Presentation.ViewModels.HomeViewModel
 import com.example.mymenu.R
 
+// Отключаем предупреждение о небезопасном приведении типов
 @Suppress("UNCHECKED_CAST")
 class Home : Fragment() {
-
+    // viewModel - ViewModel для этого фрагмента
     private lateinit var viewModel: HomeViewModel
+
+    // recyclerView - RecyclerView для отображения списка категорий
     private lateinit var recyclerView: RecyclerView
+
+    // categoryAdapter - Adapter для RecyclerView
     private lateinit var categoryAdapter: CategoryAdapter
-    private lateinit var progressBar: ProgressBar
-    private lateinit var errorMessageTextView: TextView
+
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,// inflater - LayoutInflater для создания View из XML
+        container: ViewGroup?,// container - ViewGroup, в который будет добавлен View фрагмента
+        savedInstanceState: Bundle?// savedInstanceState - Bundle, содержащий сохраненное состояние фрагмента
     ): View? {
+        // Создаем View из XML-файла fragment_home.xml
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+        // Находим RecyclerView в View
         recyclerView = view.findViewById(R.id.recyclerViewCategories)
+        // Устанавливаем LayoutManager для RecyclerView (в данном случае LinearLayoutManager для вертикального списка)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        progressBar = view.findViewById(R.id.progressBarHome)
-        errorMessageTextView = view.findViewById(R.id.textViewErrorMessage)
-// Инициализируем адаптер с обработчиком нажатий
+
+        // Инициализируем адаптер с обработчиком нажатий
         categoryAdapter = CategoryAdapter(emptyList()) { category ->
             // Открываем MenuFragment при нажатии на категорию
             openMenuFragment(category.id)
         }
+        // Устанавливаем adapter для RecyclerView
         recyclerView.adapter = categoryAdapter
+        // Возвращаем созданный View
         return view
     }
-
+    // onViewCreated - вызывается после создания View фрагмента
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Создаем зависимости
+        // Создаем зависимости (CatDataSource, CategoryRepositoryImpl, GetCategoryUseCase)
         val catDataSource = CatDataSource()
         val categoryRepository = CategoryRepositoryImpl(catDataSource)
         val getCategoryUseCase = GetCategoryUseCase(categoryRepository)
 
         // Создаем ViewModel с использованием фабрики
         viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            // Метод create - вызывается для создания ViewModel
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                // Создаем HomeViewModel с внедренным GetCategoryUseCase
                 return HomeViewModel(getCategoryUseCase) as T
             }
         })[HomeViewModel::class.java] // Получаем экземпляр ViewModel
 
         // Подписываемся на LiveData
         viewModel.categories.observe(viewLifecycleOwner, Observer { categoryList ->
-            if (categoryList != null) {
-                // Обновляем адаптер с новым списком категорий
-                categoryAdapter.updateData(categoryList) // Вызываем метод экземпляра adapter
-            } else {
-                // Обрабатываем ошибку (например, отображаем сообщение)
-                Toast.makeText(
-                    requireContext(),
-                    "Не удалось загрузить категории",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        })
+            // Если categoryList не null, обновляем данные в адаптере
+            categoryAdapter.updateData(categoryList!!) // Вызываем метод экземпляра adapter
 
-        // Подписываемся на LiveData isLoading
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            //  Используем progressBar
-            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-            // Используем recyclerView
-            recyclerView.visibility = if (!isLoading) View.VISIBLE else View.GONE
-        })
-
-        // Подписываемся на LiveData errorMessage
-        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
-            if (errorMessage != null) {
-                errorMessageTextView.text = errorMessage
-                errorMessageTextView.visibility = View.VISIBLE
-                recyclerView.visibility = View.GONE
-            } else {
-                errorMessageTextView.visibility = View.GONE
-            }
         })
     }
 
-    // Функция для открытия MenuFragment
+    // Функция для открытия Menu по нажатию на категорию
     private fun openMenuFragment(categoryId: Int) {
+        // 1. Создание Bundle
         val bundle = Bundle()
+        // 2. Добавление данных в Bundle
         bundle.putInt("categoryId", categoryId)
+        // 3. Навигация с использованием NavController
         findNavController().navigate(R.id.action_home_to_menu, bundle)
 
     }

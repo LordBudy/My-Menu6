@@ -11,36 +11,29 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     // Внедряем UseCase через конструктор
+    // getCategoryUseCase - UseCase для получения списка категорий
     private val getCategoryUseCase: GetCategoryUseCase
 ) : ViewModel() {
 
+    // _categories - MutableLiveData для хранения списка категорий (внутренняя переменная)
     private val _categories = MutableLiveData<List<CategoryItem>?>()
+    // categories - LiveData для предоставления списка категорий UI (публичная переменная)
+    // UI может только наблюдать за изменениями, но не изменять список напрямую
     val categories: LiveData<List<CategoryItem>?> = _categories
-
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
-
-    private val _errorMessage = MutableLiveData<String?>()
-    val errorMessage: LiveData<String?> = _errorMessage
+    // Инициализатор - вызывается при создании экземпляра HomeViewModel
 
     init {
+        // Загружаем категории при создании ViewModel
         loadCategories()
     }
-
+    // loadCategories - метод для загрузки списка категорий
     private fun loadCategories() {
-        _isLoading.value = true
-        _errorMessage.value = null
-
+        // viewModelScope - корутин скоуп, связанный с жизненным циклом ViewModel
         viewModelScope.launch {
-            try {
-                //  вызываем UseCase
-                val categoryList = getCategoryUseCase()
-                _categories.value = categoryList
-            } catch (e: Exception) {
-                _errorMessage.value = "Failed to load categories: ${e.message}"
-            } finally {
-                _isLoading.value = false
-            }
+            //  вызываем UseCase для получения списка категорий
+            val categoryList = getCategoryUseCase()
+            // Присваиваем полученный список категорий переменной _categories
+            _categories.value = categoryList
         }
     }
 }

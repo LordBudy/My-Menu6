@@ -4,12 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mymenu.Domain.Dish.GetDishesUseCase
+import com.example.mymenu.Domain.Dish.GetDishsUseCase
 import com.example.mymenu.Domain.Models.DishItem
 import kotlinx.coroutines.launch
 
 class MenuViewModel(
-    private val getDishesUseCase: GetDishesUseCase,
+    private val getDishsUseCase: GetDishsUseCase,
     private val categoryId: Int  // Получаем ID категории из конструктора
 ) : ViewModel() {
 
@@ -31,7 +31,7 @@ class MenuViewModel(
             _isLoading.value = true
             _errorMessage.value = null
             try {
-                val dishes = getDishesUseCase.execute(categoryId) // Используем execute с categoryId
+                val dishes = getDishsUseCase.execute(categoryId) // Используем execute с categoryId
                 _dishes.value = dishes
             } catch (e: Exception) {
                 _errorMessage.value = "Ошибка загрузки: ${e.message}"
