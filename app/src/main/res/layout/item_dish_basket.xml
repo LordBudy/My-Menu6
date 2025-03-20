@@ -29,7 +29,7 @@
         android:textStyle="bold|italic" />
 
     <TextView
-        android:id="@+id/price_dish"
+        android:id="@+id/Price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name_dish"
@@ -42,13 +42,13 @@
 
 
     <TextView
-        android:id="@+id/weight"
+        android:id="@+id/Price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name_dish"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
-        android:layout_toEndOf="@+id/price_dish"
+        android:layout_toEndOf="@+id/Price"
         android:text="@string/weight"
         android:textSize="16sp" />
 
@@ -59,7 +59,7 @@
         android:layout_marginStart="70dp"
         android:layout_marginTop="45dp"
         android:layout_marginBottom="15dp"
-        android:layout_toEndOf="@id/price_dish"
+        android:layout_toEndOf="@id/Price"
         android:text="@string/плюс"
         app:icon="@drawable/baseline_exposure_neg_1_24"
         app:rippleColor="#FF5722" />
@@ -89,7 +89,7 @@
         android:id="@+id/Count_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/price_dish"
+        android:layout_below="@+id/Price"
         android:layout_marginStart="16dp"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/dish"

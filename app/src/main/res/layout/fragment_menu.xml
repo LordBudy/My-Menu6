@@ -81,16 +81,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_scrol" />
 
-    <TextView
-        android:id="@+id/textViewMenuErrorMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/Ошибка_загрузки_категорий"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/recyclerViewMenu"
-        app:layout_constraintStart_toStartOf="@+id/recyclerViewMenu"
-        app:layout_constraintTop_toTopOf="@+id/recyclerViewMenu"
-        app:layout_constraintVertical_bias="0.484" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

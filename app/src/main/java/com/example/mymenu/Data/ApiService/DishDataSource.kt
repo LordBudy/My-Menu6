@@ -1,5 +1,6 @@
 package com.example.mymenu.Data.ApiService
 
+import android.util.Log
 import com.example.mymenu.Data.ModelsEntitys.DishEntity
 import com.example.mymenu.Domain.Models.DishItem
 
@@ -14,6 +15,13 @@ class DishDataSource {
             else -> emptyList() // Если категория не найдена, возвращаем пустой список
         }
     }
+    fun getDishById(dishId: Int): DishEntity? {
+        Log.d("DishDataSource", "getDishById: dishId = $dishId")
+        val dish = getDishesForCategory1().find { it.id == dishId }
+        Log.d("DishDataSource", "getDishById: dish = $dish")
+        return dish
+    }
+
     // Блюда для категории 1
     fun getDishesForCategory1(): List<DishEntity> {
         return listOf(

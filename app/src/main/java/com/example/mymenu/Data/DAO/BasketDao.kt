@@ -16,10 +16,10 @@ interface BasketDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBasket(dishs: DishEntity)//добавит в бд
 
-    @Query("SELECT * FROM dishs")
+    @Query("SELECT * FROM dish")
     fun getAllBasket(): Flow<List<DishEntity>>//выведет весь список в бд
 
-    @Query("SELECT * FROM dishs WHERE id_dish = :dishId")//выведет одно блюдо по id
+    @Query("SELECT * FROM dish WHERE id_dish = :dishId")//выведет одно блюдо по id
     fun getBasketItem(dishId: Int) : Flow<DishEntity?>
 
     @Update
@@ -27,7 +27,7 @@ interface BasketDao {
 
     @Delete
     suspend fun deleteBasketItem(dishs: DishEntity) // Удаляем DishEntity
-//    @Query("DELETE FROM dishes WHERE id_dish = :dishId")//удалить один обьект из бд
+//    @Query("DELETE FROM dish WHERE id_dish = :dishId")//удалить один обьект из бд
 //    suspend fun deleteBasketItem(dishId: Int)
 
 }

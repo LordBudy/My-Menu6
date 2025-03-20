@@ -23,7 +23,7 @@ import com.example.mymenu.Presentation.Adapters.CategoryAdapter
 import com.example.mymenu.Presentation.ViewModels.HomeViewModel
 import com.example.mymenu.R
 
-// Отключаем предупреждение о небезопасном приведении типов
+// Отключил предупреждение о небезопасном приведении типов
 @Suppress("UNCHECKED_CAST")
 class Home : Fragment() {
     // viewModel - ViewModel для этого фрагмента

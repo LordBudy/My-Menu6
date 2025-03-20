@@ -3,25 +3,28 @@ package com.example.mymenu.Presentation.Adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymenu.Domain.Models.DishItem
 import com.example.mymenu.R
 import com.squareup.picasso.Picasso
 
-class DishAdapter(private var dishes: List<DishItem>) : RecyclerView.Adapter<DishAdapter.DishViewHolder>() {
+class DishAdapter(
+    private var dishs: List<DishItem>,
+    private val onClick: (DishItem) -> Unit //  Лямбда-функция, вызываемая при нажатии на блюдо
+     ) : RecyclerView.Adapter<DishAdapter.DishViewHolder>() {
 
     fun updateData(newDishes: List<DishItem>) {
-        dishes = newDishes
+        dishs = newDishes
         notifyDataSetChanged()
     }
 
     class DishViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val dishImageView: ImageView = itemView.findViewById(R.id.dish)
+        val dishImageView: ImageButton = itemView.findViewById(R.id.dish)
         val dishNameTextView: TextView = itemView.findViewById(R.id.name_dish)
-        val PriceTextView: TextView = itemView.findViewById(R.id.price)
-        val WeightTextView: TextView = itemView.findViewById(R.id.weight)
+        val PriceTextView: TextView = itemView.findViewById(R.id.Price)
+        val WeightTextView: TextView = itemView.findViewById(R.id.Price)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishViewHolder {
@@ -30,7 +33,7 @@ class DishAdapter(private var dishes: List<DishItem>) : RecyclerView.Adapter<Dis
     }
 
     override fun onBindViewHolder(holder: DishViewHolder, position: Int) {
-        val dish = dishes[position]
+        val dish = dishs[position]
 
         holder.dishNameTextView.text = dish.name
         holder.PriceTextView.text = dish.price.toString()
@@ -40,9 +43,14 @@ class DishAdapter(private var dishes: List<DishItem>) : RecyclerView.Adapter<Dis
             .placeholder(R.drawable.placeholder_image)
             .error(R.drawable.error_image)
             .into(holder.dishImageView)
+
+        //  Обработчик нажатия на элемент списка
+        holder.itemView.setOnClickListener {
+            onClick(dish) //  Вызываем лямбда-функцию, передавая DishItem
+        }
     }
 
     override fun getItemCount(): Int {
-        return dishes.size
+        return dishs.size
     }
 }
