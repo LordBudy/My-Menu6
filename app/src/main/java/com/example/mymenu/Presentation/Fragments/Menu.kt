@@ -48,9 +48,15 @@ class Menu : Fragment() {
         return view
     }
     private fun openMenuMiniFragment(dishItem: DishItem) {
+        val menuMiniFragment = MenuMini()
         val bundle = Bundle()
         bundle.putInt("dishId", dishItem.id)
-        findNavController().navigate(R.id.action_menu_to_menuMini, bundle)
+        menuMiniFragment.arguments = bundle
+
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.add(R.id.Container_frag, menuMiniFragment, "MenuMiniFragmentTag") // Добавили тег
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)

@@ -4,33 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#80B3A9A9"
+    android:layout_gravity="center"
+    android:background="#00000000"
+    android:clickable="true"
+    android:focusable="true"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
-    android:clickable="true"
-    tools:ignore="ExtraText"
-    tools:context=".Presentation.Fragments.MenuMini">
-    <!-- #80 определяет уровень прозрачности (значение от 00 до FF) -->
-    <!-- Добавленный атрибут clickable позволяет поглощать нажатия сквозь прозрачный фон -->
+    tools:context=".Presentation.Fragments.MenuMini"
+    tools:ignore="ExtraText">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
-        android:background="#F3EFEF"
+        android:layout_gravity="center"
+        android:background="@color/grey"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="UseCompoundDrawables,UselessParent">
 
-        <ImageButton
-            android:id="@+id/closeBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:background="@android:color/transparent"
-            android:padding="2dp"
-            android:src="@drawable/back"
+        <Button
+            android:id="@+id/close"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="right|top"
+            android:layout_margin="10dp"
+            android:forceHasOverlappingRendering="false"
+            android:foreground="@drawable/close"
+            android:gravity="center"
+            android:textColor="#151514"
             tools:ignore="SpeakableTextPresentCheck" />
 
         <ImageView
@@ -63,17 +67,6 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textPrice"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:gravity="start"
-                android:text="@string/цена"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
                 android:id="@+id/price"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
@@ -84,22 +77,10 @@
                 android:textStyle="italic" />
 
             <TextView
-                android:id="@+id/textWeight"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="5dp"
-                android:gravity="center|start"
-                android:text="@string/вес"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
                 android:id="@+id/weight"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="10dp"
                 android:text="@string/weight"
                 android:textColor="#151414"
                 android:textSize="14sp"
@@ -123,13 +104,14 @@
                 android:gravity="center|left"
                 android:text="@string/краткое_описание"
                 android:textColor="@color/black"
-                android:textStyle="italic" />
+                android:textStyle="normal" />
 
             <Button
                 android:id="@+id/at_Bascket"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/black"
+                android:clickable="true"
                 android:text="@string/Добавить_в_корзину"
                 android:textAllCaps="false"
                 android:textSize="16sp"

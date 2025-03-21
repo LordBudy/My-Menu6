@@ -5,8 +5,10 @@ import android.view.View
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.example.mymenu.Presentation.Fragments.MenuMini
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 @Suppress("DEPRECATION")
@@ -21,10 +23,11 @@ class MainActivity : AppCompatActivity() {
         val backButton: ImageButton = findViewById(R.id.backButton)
 
         // 1. Определяем фрагменты верхнего уровня (те, на которых кнопка "Назад" не нужна)
-       val appBarConfiguration = AppBarConfiguration(
+        val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.home,
-                R.id.account
+                R.id.account,
+                R.id.menuMini
             )
         )
         bottomNavigationView.setupWithNavController(navController)
@@ -39,13 +42,47 @@ class MainActivity : AppCompatActivity() {
                 backButton.visibility = View.VISIBLE
             }
         }
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            // Поиск MenuMiniFragment по тегу
+            val menuMiniFragment =
+                supportFragmentManager.findFragmentByTag("MenuMiniFragmentTag") as? MenuMini
 
-        // 4. Обработчик нажатия на кнопку "Назад"
-        backButton.setOnClickListener {
-            onBackPressed() // самый простой способ
-            //navController.navigateUp(appBarConfiguration) // Альтернативный способ с AppBarConfiguration
+            // Если MenuMiniFragment отображен, то закрываем его
+            if (menuMiniFragment != null) {
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.remove(menuMiniFragment)
+                transaction.commit()
+                supportFragmentManager.executePendingTransactions()// Добавляем для немедленного выполнения транзакции
+            }
+
+            // В зависимости от выбранного пункта меню, переключаемся на нужный фрагмент
+            when (item.itemId) {
+                R.id.home -> {
+                    navController.navigate(R.id.home)
+                    return@setOnNavigationItemSelectedListener true
+                }
+
+                R.id.fastSearch -> {
+                    navController.navigate(R.id.fastSearch)
+                    return@setOnNavigationItemSelectedListener true
+                }
+
+                R.id.basket -> {
+                    navController.navigate(R.id.basket)
+                    return@setOnNavigationItemSelectedListener true
+                }
+
+                R.id.account -> {
+                    navController.navigate(R.id.account)
+                    return@setOnNavigationItemSelectedListener true
+                }
+
+                else -> false
+            }
         }
 
+        backButton.setOnClickListener {
+            onBackPressed()
+        }
     }
-
 }

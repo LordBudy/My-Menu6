@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -19,7 +21,7 @@ import com.example.mymenu.Presentation.ViewModels.MenuMiniViewModel
 import com.example.mymenu.R
 import com.squareup.picasso.Picasso
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "DEPRECATION")
 class MenuMini : Fragment() {
 
     // viewModel - ViewModel для этого фрагмента
@@ -38,6 +40,7 @@ class MenuMini : Fragment() {
             Log.d("MenuMiniFragment", "onCreate: dishID = $dishID")
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,// inflater - LayoutInflater для создания View из XML
         container: ViewGroup?,// container - ViewGroup, в который будет добавлен View фрагмента
@@ -58,7 +61,16 @@ class MenuMini : Fragment() {
     // onViewCreated - вызывается после создания View фрагмента
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Находим кнопку закрытия
+        val closeButton: Button = view.findViewById(R.id.close)
+        // Устанавливаем обработчик нажатия на кнопку
+        closeButton.setOnClickListener {
+            // Закрываем фрагмент
+            val transaction = requireFragmentManager().beginTransaction() // Используем requireFragmentManager()
+            transaction.remove(this)
+            transaction.commit()
 
+        }
         // Создаем зависимости (DishDataSource, MenuMiniRepositoryImpl, GetCategoryUseCase)
         val dishDataSource = DishDataSource()
         val menuMiniRepository = MenuMiniRepositoryImpl(dishDataSource)
@@ -67,7 +79,7 @@ class MenuMini : Fragment() {
         viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 if (modelClass.isAssignableFrom(MenuMiniViewModel::class.java)) {
-                    return MenuMiniViewModel(getDishsUseCase,dishID) as T
+                    return MenuMiniViewModel(getDishsUseCase, dishID) as T
                 }
                 throw IllegalArgumentException("Unknown ViewModel class")
             }
@@ -77,9 +89,13 @@ class MenuMini : Fragment() {
             Log.d("MenuMiniFragment", "dish.observe: dish = $dish")
             if (dish != null) {
                 dishNameTextView.text = dish.name
+                dishPriceTextView.text = "Цена: \n${dish.price}р."
+                dishWeightTextView.text = "Вес:\n${dish.weight}гр."
                 dishDescriptionTextView.text = dish.description
-                dishPriceTextView.text = "Цена: ${dish.price}"
-                Picasso.get().load(dish.url).into(dishImageView)
+
+                Picasso.get()
+                    .load(dish.url)
+                    .into(dishImageView)
 
             } else {
 
@@ -87,6 +103,11 @@ class MenuMini : Fragment() {
             }
         })
         Log.d("MenuMini", "onViewCreated finished")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("MenuMini", "onDestroyView called")
     }
 
     private fun openMenuMiniFragment(dishId: Int) {
@@ -98,4 +119,5 @@ class MenuMini : Fragment() {
         findNavController().navigate(R.id.action_menu_to_menuMini, bundle)
 
     }
+
 }
