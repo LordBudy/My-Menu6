@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface BasketRepository {
 
     fun getAllDishes(): Flow<List<DishItem>>      // Получаем все блюда
-    suspend fun addDishToBasket(dish: DishItem)  // Добавляем блюдо в корзину
+    suspend fun addDishToBasket(dishId: Int): DishItem // Добавляем блюдо в корзину
     suspend fun getDishesFromBasket(): Flow<List<DishItem>>
     suspend fun deleteDishFromBasket(dish: DishItem) //удалит одно блюдо
     suspend fun minusDish(id: Int): DishItem

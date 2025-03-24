@@ -22,6 +22,7 @@ class MenuMiniRepositoryImpl(private val dishDataSource: DishDataSource): MenuMi
             price = price,
             weight = weight,
             description = description,
-            categoryId = categoryId
+            categoryId = categoryId,
+            count = 1
         )
 }

@@ -27,6 +27,9 @@ data class DishEntity(
     val weight: Double,
 
     @ColumnInfo(name = "categoryId")
-    val categoryId: Int? = null
+    val categoryId: Int? = null,
+
+    @ColumnInfo(name = "count")
+    val count: Int
 
 )

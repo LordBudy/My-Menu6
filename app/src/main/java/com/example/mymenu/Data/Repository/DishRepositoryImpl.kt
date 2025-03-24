@@ -23,7 +23,8 @@ class DishRepositoryImpl(private val dishDataSource: DishDataSource) : DishRepos
             price = price,
             weight = weight,
             description = description,
-            categoryId = categoryId
+            categoryId = categoryId,
+            count = 1
         )
 
 }

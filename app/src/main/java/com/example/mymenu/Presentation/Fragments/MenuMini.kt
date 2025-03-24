@@ -9,17 +9,26 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.mymenu.Data.ApiService.DishDataSource
+import com.example.mymenu.Data.DAO.BasketDao
+import com.example.mymenu.Data.DB.AppDataBase
+import com.example.mymenu.Data.ModelsEntitys.CategoryEntity
+import com.example.mymenu.Data.ModelsEntitys.DishEntity
+import com.example.mymenu.Data.Repository.BasketRepositoryImpl
 import com.example.mymenu.Data.Repository.MenuMiniRepositoryImpl
+import com.example.mymenu.Domain.Basket.AddDishToBasketUseCase
 import com.example.mymenu.Domain.MenuMini.GetDishMiniUseCase
+import com.example.mymenu.Domain.Models.CategoryItem
+import com.example.mymenu.Domain.Models.DishItem
 import com.example.mymenu.Presentation.ViewModels.MenuMiniViewModel
 import com.example.mymenu.R
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.launch
 
 @Suppress("UNCHECKED_CAST", "DEPRECATION")
 class MenuMini : Fragment() {
@@ -32,12 +41,14 @@ class MenuMini : Fragment() {
     private lateinit var dishPriceTextView: TextView
     private lateinit var dishWeightTextView: TextView
     private lateinit var dishDescriptionTextView: TextView
+    private lateinit var database: AppDataBase
+    private lateinit var basketDao: BasketDao
+    private lateinit var addDishToBasketUseCase: AddDishToBasketUseCase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Получаем dishID из аргументов
         arguments?.let {
             dishID = it.getInt("dishId", -1)  // -1 значение по умолчанию, если аргумент не передан
-            Log.d("MenuMiniFragment", "onCreate: dishID = $dishID")
         }
     }
 
@@ -53,15 +64,36 @@ class MenuMini : Fragment() {
         dishPriceTextView = view.findViewById(R.id.price)
         dishWeightTextView = view.findViewById(R.id.weight)
         dishDescriptionTextView = view.findViewById(R.id.description)
-        Log.d("MenuMiniFragment", "onCreateView: view inflated")
         // Возвращаем созданный View
         return view
     }
-
     // onViewCreated - вызывается после создания View фрагмента
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Находим кнопку закрытия
+        //кнопка добавить в корзину
+        // Инициализация базы данных и DAO
+        database = AppDataBase.getDatabase(requireContext())
+        basketDao = database.basketDao()
+
+        // Создаем UseCase
+        val dishDataSource = DishDataSource()
+        val basketRepository = BasketRepositoryImpl(dishDataSource, basketDao) // Передаем basketDao
+        addDishToBasketUseCase = AddDishToBasketUseCase(basketRepository)
+
+
+        val addToBasket: Button = view.findViewById(R.id.add_Bascket)
+        addToBasket.setOnClickListener {
+            val name = dishNameTextView.text.toString()
+            val priceText = dishPriceTextView.text.toString().replace("[^\\d.,]".toRegex(), "") // Удаляем все символы, кроме цифр, точки и запятой
+            val price = priceText.toDoubleOrNull() ?: 0.0 // Преобразуем в Double, если не удается, устанавливаем 0.0
+            val dishId = dishID
+            val weightText = dishWeightTextView.text.toString().replace("[^\\d.,]".toRegex(), "") // Удаляем все символы, кроме цифр, точки и запятой
+            val weight = weightText.toDoubleOrNull() ?: 0.0
+
+
+        }
+
+        // кнопку закрытия
         val closeButton: Button = view.findViewById(R.id.close)
         // Устанавливаем обработчик нажатия на кнопку
         closeButton.setOnClickListener {
@@ -72,7 +104,6 @@ class MenuMini : Fragment() {
 
         }
         // Создаем зависимости (DishDataSource, MenuMiniRepositoryImpl, GetCategoryUseCase)
-        val dishDataSource = DishDataSource()
         val menuMiniRepository = MenuMiniRepositoryImpl(dishDataSource)
         val getDishsUseCase = GetDishMiniUseCase(menuMiniRepository)
 
@@ -92,22 +123,14 @@ class MenuMini : Fragment() {
                 dishPriceTextView.text = "Цена: \n${dish.price}р."
                 dishWeightTextView.text = "Вес:\n${dish.weight}гр."
                 dishDescriptionTextView.text = dish.description
-
                 Picasso.get()
                     .load(dish.url)
                     .into(dishImageView)
-
             } else {
-
                 dishNameTextView.text = "Блюдо не найдено"
             }
         })
         Log.d("MenuMini", "onViewCreated finished")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d("MenuMini", "onDestroyView called")
     }
 
     private fun openMenuMiniFragment(dishId: Int) {

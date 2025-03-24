@@ -8,5 +8,6 @@ data class DishItem(
     val price: Double,
     val weight: Double,
     val description: String,
-    val categoryId: Int? = null
+    val categoryId: Int? = null,
+    val count: Int
 )
