@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 class MenuMiniViewModel(
 
     // Внедряем UseCase через конструктор
-    // getDishsUseCase - UseCase для получения списка блюд по ID категории
+    // getDishsUseCase - UseCase для получения блюда по ID категории
     private val getDishsUseCase: GetDishMiniUseCase,
     private val dishId: Int
 ) : ViewModel() {

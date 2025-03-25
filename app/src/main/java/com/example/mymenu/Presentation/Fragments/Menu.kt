@@ -54,7 +54,7 @@ class Menu : Fragment() {
         menuMiniFragment.arguments = bundle
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.add(R.id.Container_frag, menuMiniFragment, "MenuMiniFragmentTag") // Добавили тег
+        transaction.add(R.id.Container_frag, menuMiniFragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }

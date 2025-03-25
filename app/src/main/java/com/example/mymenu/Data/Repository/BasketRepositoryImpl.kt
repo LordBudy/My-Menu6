@@ -37,14 +37,7 @@ class BasketRepositoryImpl(
             list.map { it.toDomainDishItem() }
         }
     }
-
-    override suspend fun getDishesFromBasket(): Flow<List<DishItem>> = withContext(Dispatchers.IO) {
-        basketDao.getAllBasketItems().map { list ->
-            list.map { it.toDomainDishItem() }
-        }
-    }
-
-    override suspend fun deleteDishFromBasket(dish: DishItem) {
+    override suspend fun deleteDishBasket(dish: DishItem) {
         TODO("Not yet implemented")
     }
 

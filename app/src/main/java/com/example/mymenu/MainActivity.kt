@@ -27,7 +27,8 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.home,
                 R.id.account,
-                R.id.menuMini
+                R.id.menuMini,
+                R.id.basket
             )
         )
         bottomNavigationView.setupWithNavController(navController)

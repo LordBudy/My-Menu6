@@ -67,29 +67,25 @@ class MenuMini : Fragment() {
         // Возвращаем созданный View
         return view
     }
+    private fun openBasketFragment(dishId: Int) {
+        val bundle = Bundle()
+        bundle.putInt("dishId", dishId)
+        findNavController().navigate(R.id.action_menuMini_to_basket, bundle)
+
+    }
     // onViewCreated - вызывается после создания View фрагмента
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //кнопка добавить в корзину
         // Инициализация базы данных и DAO
         database = AppDataBase.getDatabase(requireContext())
         basketDao = database.basketDao()
 
-        // Создаем UseCase
         val dishDataSource = DishDataSource()
         val basketRepository = BasketRepositoryImpl(dishDataSource, basketDao) // Передаем basketDao
         addDishToBasketUseCase = AddDishToBasketUseCase(basketRepository)
 
-
         val addToBasket: Button = view.findViewById(R.id.add_Bascket)
         addToBasket.setOnClickListener {
-            val name = dishNameTextView.text.toString()
-            val priceText = dishPriceTextView.text.toString().replace("[^\\d.,]".toRegex(), "") // Удаляем все символы, кроме цифр, точки и запятой
-            val price = priceText.toDoubleOrNull() ?: 0.0 // Преобразуем в Double, если не удается, устанавливаем 0.0
-            val dishId = dishID
-            val weightText = dishWeightTextView.text.toString().replace("[^\\d.,]".toRegex(), "") // Удаляем все символы, кроме цифр, точки и запятой
-            val weight = weightText.toDoubleOrNull() ?: 0.0
-
 
         }
 
@@ -112,7 +108,7 @@ class MenuMini : Fragment() {
                 if (modelClass.isAssignableFrom(MenuMiniViewModel::class.java)) {
                     return MenuMiniViewModel(getDishsUseCase, dishID) as T
                 }
-                throw IllegalArgumentException("Unknown ViewModel class")
+                throw IllegalArgumentException("неизвестный ViewModel class")
             }
         })[MenuMiniViewModel::class.java]
         viewModel.loadDishs(dishID)
@@ -130,17 +126,8 @@ class MenuMini : Fragment() {
                 dishNameTextView.text = "Блюдо не найдено"
             }
         })
-        Log.d("MenuMini", "onViewCreated finished")
     }
 
-    private fun openMenuMiniFragment(dishId: Int) {
-        // 1. Создание Bundle
-        val bundle = Bundle()
-        // 2. Добавление данных в Bundle
-        bundle.putInt("dishId", dishId)
-        // 3. Навигация с использованием NavController
-        findNavController().navigate(R.id.action_menu_to_menuMini, bundle)
 
-    }
 
 }
