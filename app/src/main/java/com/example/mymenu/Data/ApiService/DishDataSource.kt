@@ -6,7 +6,11 @@ import com.example.mymenu.Domain.Models.DishItem
 
 class DishDataSource {
     // Имитация локального источника данных
+    // Метод для получения списка блюд по ID категории.
+    // Принимает categoryId (идентификатор категории).
+    // Возвращает List<DishEntity> (список объектов DishEntity).
     fun getDishesByCategoryId(categoryId: Int): List<DishEntity> {
+        // Используем оператор when для выбора списка блюд в зависимости от ID категории.
         return when (categoryId) {
             1 -> getDishesForCategory1() // Получаем блюда для категории 1
             2 -> getDishesForCategory1() // Получаем блюда для категории 2
@@ -15,14 +19,31 @@ class DishDataSource {
             else -> emptyList() // Если категория не найдена, возвращаем пустой список
         }
     }
+    // Метод для получения блюда по его идентификатору (dishId).
+    // Возвращает DishEntity?, где DishEntity - это класс данных, представляющий блюдо, а ? означает, что метод может вернуть null, если блюдо не найдено
     fun getDishById(dishId: Int): DishEntity? {
-       val dish = getDishesForCategory1().find { it.id == dishId }
-        return dish
+
+        // Вызываем метод getAllDishes(), чтобы получить список всех блюд из всех категорий.
+        // Затем используем функцию find { it.id == dishId }, чтобы найти блюдо в этом списке, у которого id совпадает с dishId.
+        // Функция find возвращает первый элемент, удовлетворяющий условию, или null, если такой элемент не найден
+        return getAllDishes().find { it.id == dishId }
+    }
+    // Приватный метод для получения списка всех блюд из всех категорий.
+    // Возвращает List<DishEntity>, представляющий список всех блюд
+    private fun getAllDishes(): List<DishEntity> {
+        // Объединяем списки блюд из каждой категории (getDishesForCategory1(), getDishesForCategory2() и т.д.) с помощью оператора +.
+        // Оператор + создает новый список, содержащий все элементы из исходных списков
+        return getDishesForCategory1() + getDishesForCategory2() + getDishesForCategory3() + getDishesForCategory4()
     }
 
     // Блюда для категории 1
+    // Метод для получения списка блюд для категории 1.
+    // Возвращает List<DishEntity> (список объектов DishEntity).
     fun getDishesForCategory1(): List<DishEntity> {
+        // Возвращаем список блюд, созданный с помощью функции listOf()
         return listOf(
+            // DishEntity(...)
+            // Создаем объект DishEntity с заданными параметрами (ID, URL изображения, название, цена, описание, вес, categoryId)
             DishEntity(
                 1,
                 "https://img.freepik.com/premium-photo/plate-with-tasty-pilaf-white_392895-19996.jpg?w=740",
@@ -270,6 +291,8 @@ class DishDataSource {
         )
     }
     // Блюда для категории 2
+    // Метод для получения списка блюд для категории 2.
+    // Возвращает List<DishEntity> (список объектов DishEntity).
     private fun getDishesForCategory2(): List<DishEntity> {
         return listOf(
             DishEntity(6,

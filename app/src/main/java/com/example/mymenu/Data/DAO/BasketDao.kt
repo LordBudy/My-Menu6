@@ -11,39 +11,34 @@ import com.example.mymenu.Data.ModelsEntitys.DishEntity
 import kotlinx.coroutines.flow.Flow
 
 //интерфейс -описывает методы которые будут использоваться для доступа к данным
-@Dao
+@Dao // Аннотация @Dao указывает, что это Data Access Object (DAO) - интерфейс для доступа к данным базы данных Room
 interface BasketDao {
         // Методы для работы с корзиной (BasketItemEntity)
-        @Insert(onConflict = OnConflictStrategy.REPLACE)
-        suspend fun insertBasketItem(item: BasketItemEntity)
 
-        @Query("SELECT * FROM basket_item") // Исправлено
-        fun getAllBasketItems(): Flow<List<BasketItemEntity>>
+        @Insert(onConflict = OnConflictStrategy.REPLACE) // Аннотация @Insert для вставки данных в таблицу
+        suspend fun insertBasketItem(item: BasketItemEntity) // Метод для вставки одного элемента корзины в БД.
 
-        @Query("SELECT * FROM basket_item WHERE id = :itemId") // Исправлено
-        suspend fun getBasketItemById(itemId: Int): BasketItemEntity?
+        @Query("SELECT * FROM basket_item") // Аннотация @Query для выполнения SQL-запроса
+        fun getAllBasketItems(): Flow<List<BasketItemEntity>> // Метод для получения всех элементов корзины из БД. Возвращает Flow, чтобы получать обновления данных асинхронно.
 
-        @Delete
-        suspend fun deleteBasketItem(item: BasketItemEntity)
+        @Query("SELECT * FROM basket_item WHERE id = :itemId") // Аннотация @Query для выполнения SQL-запроса
+        suspend fun getBasketItemById(itemId: Int): BasketItemEntity? // Метод для получения элемента корзины по его ID из БД.
+
+        @Delete // Аннотация @Delete для удаления данных из таблицы
+        suspend fun deleteBasketItem(item: BasketItemEntity) // Метод для удаления элемента корзины из БД.
 
         // Для работы с блюдами (DishEntity) - если они вам нужны
-        @Insert(onConflict = OnConflictStrategy.REPLACE)
-        suspend fun insertDish(dish: DishEntity)
+        @Insert(onConflict = OnConflictStrategy.REPLACE) // Аннотация @Insert для вставки данных в таблицу
+        suspend fun insertDish(dish: DishEntity) // Метод для вставки одного блюда в БД.
 
-        @Query("SELECT * FROM dish")
-        fun getAllDishes(): Flow<List<DishEntity>>
-        /* УДАЛИТЕ ЭТИ МЕТОДЫ, ОНИ НЕ НУЖНЫ
-        @Query("SELECT * FROM dish") // ИСПОЛЬЗУЕТСЯ НЕ ВЕРНАЯ ТАБЛИЦА
-        fun getAllBasket(): Flow<List<DishEntity>>//выведет весь список в бд
+        @Query("SELECT * FROM dish") // Аннотация @Query для выполнения SQL-запроса
+        fun getAllDishes(): Flow<List<DishEntity>> // Метод для получения всех блюд из БД. Возвращает Flow, чтобы получать обновления данных асинхронно.
 
-        @Query("SELECT * FROM dish WHERE id_dish = :dishId")//выведет одно блюдо по id
-        fun getBasketItem(dishId: Int) : Flow<DishEntity?>
-        */
         // МЕТОДЫ ДЛЯ ИЗМЕНЕНИЯ КОЛИЧЕСТВА БЛЮД В КОРЗИНЕ
 
-        @Update
-        suspend fun updateBasket(dishs: DishEntity)//обновит бд
+        @Update // Аннотация @Update для обновления данных в таблице
+        suspend fun updateBasket(dishs: DishEntity)//обновит бд // Метод для обновления информации о блюде в корзине.
 
-        @Delete
-        suspend fun deleteBasketItem(dishs: DishEntity) // Удаляем DishEntity
-    }
+        @Delete // Аннотация @Delete для удаления данных из таблицы
+        suspend fun deleteBasketItem(dishs: DishEntity) // Удаляем DishEntity // Метод для удаления блюда из корзины.
+}
