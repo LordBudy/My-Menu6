@@ -28,14 +28,10 @@ import com.example.mymenu.R
 class Home : Fragment() {
     // viewModel - ViewModel для этого фрагмента
     private lateinit var viewModel: HomeViewModel
-
     // recyclerView - RecyclerView для отображения списка категорий
     private lateinit var recyclerView: RecyclerView
-
     // categoryAdapter - Adapter для RecyclerView
     private lateinit var categoryAdapter: CategoryAdapter
-
-
     override fun onCreateView(
         inflater: LayoutInflater,// inflater - LayoutInflater для создания View из XML
         container: ViewGroup?,// container - ViewGroup, в который будет добавлен View фрагмента
@@ -47,7 +43,6 @@ class Home : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerViewCategories)
         // Устанавливаем LayoutManager для RecyclerView (в данном случае LinearLayoutManager для вертикального списка)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
         // Инициализируем адаптер с обработчиком нажатий
         categoryAdapter = CategoryAdapter(emptyList()) { category ->
             // Открываем MenuFragment при нажатии на категорию
@@ -61,12 +56,10 @@ class Home : Fragment() {
     // onViewCreated - вызывается после создания View фрагмента
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         // Создаем зависимости (CatDataSource, CategoryRepositoryImpl, GetCategoryUseCase)
         val catDataSource = CatDataSource()
         val categoryRepository = CategoryRepositoryImpl(catDataSource)
         val getCategoryUseCase = GetCategoryUseCase(categoryRepository)
-
         // Создаем ViewModel с использованием фабрики
         viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             // Метод create - вызывается для создания ViewModel
@@ -75,15 +68,12 @@ class Home : Fragment() {
                 return HomeViewModel(getCategoryUseCase) as T
             }
         })[HomeViewModel::class.java] // Получаем экземпляр ViewModel
-
         // Подписываемся на LiveData
         viewModel.categories.observe(viewLifecycleOwner, Observer { categoryList ->
             // Если categoryList не null, обновляем данные в адаптере
             categoryAdapter.updateData(categoryList!!) // Вызываем метод экземпляра adapter
-
         })
     }
-
     // Функция для открытия Menu по нажатию на категорию
     private fun openMenuFragment(categoryId: Int) {
         // 1. Создание Bundle

@@ -67,7 +67,6 @@ class Basket : Fragment() {
                 return BasketViewModel(getAllBasketUseCase) as T
             }
         })[BasketViewModel::class.java] // Получаем экземпляр BasketViewModel
-
         // 3. Подписка на LiveData и обновление адаптера (Observer)
         basketViewModel.basketItems.observe(viewLifecycleOwner, Observer { basketItems ->
             // Этот код будет выполнен каждый раз, когда basketItems (LiveData) в BasketViewModel изменится

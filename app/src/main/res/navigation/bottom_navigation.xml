@@ -30,7 +30,11 @@
         android:id="@+id/basket"
         android:name="com.example.mymenu.Presentation.Fragments.Basket"
         android:label="fragment_basket"
-        tools:layout="@layout/fragment_basket" />
+        tools:layout="@layout/fragment_basket" >
+        <action
+            android:id="@+id/action_basket_to_menu"
+            app:destination="@id/menu" />
+    </fragment>
     <fragment
         android:id="@+id/menu"
         android:name="com.example.mymenu.Presentation.Fragments.Menu"
