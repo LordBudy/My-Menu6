@@ -8,12 +8,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class MenuMiniRepositoryImpl(private val dishDataSource: DishDataSource): MenuMiniRepository {
-    override suspend fun getdishMini(dishId: Int): DishItem? = withContext(Dispatchers.IO){
+    override suspend fun getDish(dishId: Int): DishItem? = withContext(Dispatchers.IO){
         //гарантирует, что каждый список DishEntity в списке будет преобразован
         // в DishItem перед тем, как будет возвращен список
         dishDataSource.getDishById(dishId)?.toDomainDishItem()
 
     }
+
+    override suspend fun addDishToBasket(dishId: Int): DishItem {
+        TODO("Not yet implemented")
+    }
+
     private fun DishEntity.toDomainDishItem(): DishItem =
         DishItem(
             id = id,

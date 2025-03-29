@@ -51,8 +51,8 @@ class MenuMini : Fragment() {
         private lateinit var database: AppDataBase
         // Объявляем переменную basketDao (для доступа к DAO)
         private lateinit var basketDao: BasketDao
-        // Объявляем переменную addDishToBasketUseCase (для UseCase добавления блюда в корзину)
-        private lateinit var addDishToBasketUseCase: AddDishToBasketUseCase
+    private lateinit var addDishToBasketUseCase: AddDishToBasketUseCase
+    private lateinit var getDishsUseCase: GetDishMiniUseCase
         // Переопределяем метод onCreate() (вызывается при создании фрагмента)
         override fun onCreate(savedInstanceState: Bundle?) {
             // Вызываем super.onCreate() (выполняем базовую инициализацию)
@@ -88,7 +88,6 @@ class MenuMini : Fragment() {
             bundle.putInt("dishId", dishId)
             // Выполняем навигацию к фрагменту корзины
             findNavController().navigate(R.id.action_menuMini_to_basket, bundle)
-
         }
         // Переопределяем метод onViewCreated() (вызывается после создания View)
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -98,36 +97,12 @@ class MenuMini : Fragment() {
             database = AppDataBase.getDatabase(requireContext())
             // получаем DAO для работы с корзиной
             basketDao = database.basketDao()
-
-            // Создаем экземпляр DishDataSource
-            val dishDataSource = DishDataSource()
-            // Создаем экземпляр BasketRepositoryImpl, передавая basketDao
-            val basketRepository = BasketRepositoryImpl(dishDataSource, basketDao) // Передаем basketDao
-            // Создаем экземпляр AddDishToBasketUseCase, передавая basketRepository
-            addDishToBasketUseCase = AddDishToBasketUseCase(basketRepository)
-
             // Находим кнопку добавления в корзину
             val addToBasket: Button = view.findViewById(R.id.add_Bascket)
             // Устанавливаем обработчик нажатия на кнопку
             addToBasket.setOnClickListener {
                 // Добавляем логику добавления в корзину
-                CoroutineScope(Dispatchers.Main).launch {
-                    try {
-                        withContext(Dispatchers.IO) {
-                            addDishToBasketUseCase(dishID)
-                        }
-                        // Отображаем сообщение об успешном добавлении в корзину
-                        Toast.makeText(requireContext(), "Блюдо добавлено в корзину", Toast.LENGTH_SHORT).show()
-
-                        openBasketFragment(dishID)
-                    } catch (e: Exception) {
-                        Log.e("MenuMiniFragment", "Ошибка добавления в корзину: ${e.message}")
-                        // Отображаем сообщение об ошибке
-                        Toast.makeText(requireContext(), "Не удалось добавить блюдо в корзину", Toast.LENGTH_SHORT).show()
-                    }
-                }
             }
-
             // Находим кнопку закрытия
             val closeButton: Button = view.findViewById(R.id.close)
             // Устанавливаем обработчик нажатия на кнопку
@@ -139,34 +114,25 @@ class MenuMini : Fragment() {
                 transaction.remove(this)
                 // transaction.commit() - подтверждаем транзакцию
                 transaction.commit()
-
             }
-            // Создаем зависимости (DishDataSource, MenuMiniRepositoryImpl, GetCategoryUseCase)
-            // val menuMiniRepository = MenuMiniRepositoryImpl(dishDataSource)
-            val menuMiniRepository = MenuMiniRepositoryImpl(dishDataSource)
-            // val getDishsUseCase = GetDishMiniUseCase(menuMiniRepository)
-            val getDishsUseCase = GetDishMiniUseCase(menuMiniRepository)
-
             // Создаем ViewModel с помощью ViewModelProvider
             viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
-                // override fun <T : ViewModel> create(modelClass: Class<T>): T { ... }
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    // if (modelClass.isAssignableFrom(MenuMiniViewModel::class.java)) { ... } - проверяем, что modelClass - MenuMiniViewModel
+                    //  проверяем, что modelClass - MenuMiniViewModel
                     if (modelClass.isAssignableFrom(MenuMiniViewModel::class.java)) {
-                        // return MenuMiniViewModel(getDishsUseCase, dishID) as T - создаем и возвращаем экземпляр MenuMiniViewModel
-                        return MenuMiniViewModel(getDishsUseCase, dishID) as T
+                        //  создаем и возвращаем экземпляр MenuMiniViewModel
+                        return MenuMiniViewModel(getDishsUseCase,dishID ) as T
                     }
-                    // throw IllegalArgumentException("неизвестный ViewModel class") - выбрасываем исключение, если modelClass не MenuMiniViewModel
+                    // выбрасываем исключение, если modelClass не MenuMiniViewModel
                     throw IllegalArgumentException("неизвестный ViewModel class")
                 }
             })[MenuMiniViewModel::class.java] // Получаем экземпляр ViewModel
             // viewModel.loadDishs(dishID) - загружаем данные о блюде
-            viewModel.loadDishs(dishID)
-            // viewModel.dish.observe(viewLifecycleOwner, Observer { dish -> ... }) - подписываемся на изменения LiveData dish в ViewModel
+            viewModel.getDish(dishID)
+            //  подписываемся на изменения LiveData dish в ViewModel
             viewModel.dish.observe(viewLifecycleOwner, Observer { dish ->
-                // Log.d("MenuMiniFragment", "dish.observe: dish = $dish") - логируем информацию о блюде
+                // логируем информацию о блюде
                 Log.d("MenuMiniFragment", "dish.observe: dish = $dish")
-                // if (dish != null) { ... } - проверяем, что dish не null
                 if (dish != null) {
                     // dishNameTextView.text = dish.name - устанавливаем название блюда в TextView
                     dishNameTextView.text = dish.name

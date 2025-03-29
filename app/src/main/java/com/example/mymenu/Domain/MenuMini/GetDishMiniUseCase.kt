@@ -6,6 +6,6 @@ class GetDishMiniUseCase(private val repositoryMini: MenuMiniRepository) {
 
     suspend fun execute(dishId: Int): DishItem?{
 
-        return repositoryMini.getdishMini(dishId)
+        return repositoryMini.getDish(dishId)
     }
 }

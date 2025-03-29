@@ -14,7 +14,9 @@ class MenuMiniViewModel(
     // getDishsUseCase - UseCase для получения блюда по ID категории
     private val getDishsUseCase: GetDishMiniUseCase,
     private val dishId: Int
-) : ViewModel() {
+) : ViewModel(),MenuMiniViewModelInterface {
+
+
     // _dishs - MutableLiveData для хранения списка блюд (приватная переменная)
     private val _dish = MutableLiveData<DishItem?>()
 
@@ -25,17 +27,20 @@ class MenuMiniViewModel(
     // Инициализатор - вызывается при создании экземпляра MenuViewModel
     init {
         // Загружаем блюда при создании ViewModel, передавая ID блюда
-        loadDishs(dishId)
+        getDish(dishId)
     }
-
-    // loadDishs - метод для загрузки блюда
+    // getDish - метод для загрузки блюда
     // dishId -блюдо которое нужно добавить
-    fun loadDishs(dishId: Int) {
+    override fun getDish(dishId: Int) {
         // viewModelScope - корутин скоуп, связанный с жизненным циклом ViewModel
         viewModelScope.launch {
             // Вызываем UseCase для получения списка блюд по ID категории
             val dish = getDishsUseCase.execute(dishId)
             _dish.value = dish
         }
+    }
+
+    override fun addDishToBasket(dishId: Int) {
+        TODO("Not yet implemented")
     }
 }
