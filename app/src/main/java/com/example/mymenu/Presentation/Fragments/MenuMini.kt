@@ -9,30 +9,17 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.mymenu.Data.ApiService.DishDataSource
 import com.example.mymenu.Data.DAO.BasketDao
 import com.example.mymenu.Data.DB.AppDataBase
-import com.example.mymenu.Data.ModelsEntitys.CategoryEntity
-import com.example.mymenu.Data.ModelsEntitys.DishEntity
-import com.example.mymenu.Data.Repository.BasketRepositoryImpl
-import com.example.mymenu.Data.Repository.MenuMiniRepositoryImpl
 import com.example.mymenu.Domain.Basket.AddDishToBasketUseCase
-import com.example.mymenu.Domain.MenuMini.GetDishMiniUseCase
-import com.example.mymenu.Domain.Models.CategoryItem
-import com.example.mymenu.Domain.Models.DishItem
+import com.example.mymenu.Domain.MenuMini.GetDishUseCase
 import com.example.mymenu.Presentation.ViewModels.MenuMiniViewModel
 import com.example.mymenu.R
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @Suppress("UNCHECKED_CAST", "DEPRECATION")
 class MenuMini : Fragment() {
@@ -52,7 +39,7 @@ class MenuMini : Fragment() {
         // Объявляем переменную basketDao (для доступа к DAO)
         private lateinit var basketDao: BasketDao
     private lateinit var addDishToBasketUseCase: AddDishToBasketUseCase
-    private lateinit var getDishsUseCase: GetDishMiniUseCase
+    private lateinit var getDishsUseCase: GetDishUseCase
         // Переопределяем метод onCreate() (вызывается при создании фрагмента)
         override fun onCreate(savedInstanceState: Bundle?) {
             // Вызываем super.onCreate() (выполняем базовую инициализацию)

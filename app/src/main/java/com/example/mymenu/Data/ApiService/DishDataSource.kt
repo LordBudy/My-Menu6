@@ -3,6 +3,7 @@ package com.example.mymenu.Data.ApiService
 import android.util.Log
 import com.example.mymenu.Data.ModelsEntitys.DishEntity
 import com.example.mymenu.Domain.Models.DishItem
+import java.nio.file.Files.find
 
 class DishDataSource {
     // Имитация локального источника данных
@@ -19,23 +20,14 @@ class DishDataSource {
             else -> emptyList() // Если категория не найдена, возвращаем пустой список
         }
     }
-    // Метод для получения блюда по его идентификатору (dishId).
-    // Возвращает DishEntity?, где DishEntity - это класс данных, представляющий блюдо, а ? означает, что метод может вернуть null, если блюдо не найдено
-    fun getDishById(dishId: Int): DishEntity? {
 
-        // Вызываем метод getAllDishes(), чтобы получить список всех блюд из всех категорий.
-        // Затем используем функцию find { it.id == dishId }, чтобы найти блюдо в этом списке, у которого id совпадает с dishId.
-        // Функция find возвращает первый элемент, удовлетворяющий условию, или null, если такой элемент не найден
-        return getAllDishes().find { it.id == dishId }
+    // Метод для получения блюда по его ID и категории
+    fun getDish(dishId: Int, categoryId: Int): DishEntity? {
+        // Получаем список блюд для заданной категории
+        val dishsInCategory = getDishesByCategoryId(categoryId)
+        // Ищем блюдо с заданным ID в списке блюд для категории
+        return dishsInCategory.find { it.id == dishId }
     }
-    // Приватный метод для получения списка всех блюд из всех категорий.
-    // Возвращает List<DishEntity>, представляющий список всех блюд
-    private fun getAllDishes(): List<DishEntity> {
-        // Объединяем списки блюд из каждой категории (getDishesForCategory1(), getDishesForCategory2() и т.д.) с помощью оператора +.
-        // Оператор + создает новый список, содержащий все элементы из исходных списков
-        return getDishesForCategory1() + getDishesForCategory2() + getDishesForCategory3() + getDishesForCategory4()
-    }
-
     // Блюда для категории 1
     // Метод для получения списка блюд для категории 1.
     // Возвращает List<DishEntity> (список объектов DishEntity).

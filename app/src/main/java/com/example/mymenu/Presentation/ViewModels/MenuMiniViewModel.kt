@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mymenu.Domain.MenuMini.GetDishMiniUseCase
+import com.example.mymenu.Domain.MenuMini.GetDishUseCase
 import com.example.mymenu.Domain.Models.DishItem
 import kotlinx.coroutines.launch
 
@@ -12,7 +12,7 @@ class MenuMiniViewModel(
 
     // Внедряем UseCase через конструктор
     // getDishsUseCase - UseCase для получения блюда по ID категории
-    private val getDishsUseCase: GetDishMiniUseCase,
+    private val getDishsUseCase: GetDishUseCase,
     private val dishId: Int
 ) : ViewModel(),MenuMiniViewModelInterface {
 
