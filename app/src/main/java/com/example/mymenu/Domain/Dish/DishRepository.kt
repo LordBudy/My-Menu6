@@ -5,6 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface DishRepository {
     //выводит список блюд выбранной категории
-    fun getDishs(): Flow<List<DishItem>>
+    fun getDishs(dishId: Int, categoryId: Int): List<DishItem>
 
 }

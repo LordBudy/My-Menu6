@@ -5,13 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.mymenu.Data.DAO.BasketDao
-import com.example.mymenu.Data.ModelsEntitys.BasketItemEntity
 import com.example.mymenu.Data.ModelsEntitys.DishEntity
 // Аннотация @Database указывает, что это класс базы данных Room
 // entities = [DishEntity::class, BasketItemEntity::class] - список сущностей (таблиц) в базе данных
 // version = 1 - версия базы данных (нужна для миграций при изменении схемы)
 // exportSchema = false - не экспортировать схему базы данных в файл (рекомендуется для production)
-@Database(entities = [DishEntity::class, BasketItemEntity::class], version = 1, exportSchema = false)
+@Database(entities = [DishEntity::class], version = 1, exportSchema = false)
 abstract class AppDataBase : RoomDatabase() {
     // DAO для работы с блюдами в корзине
     // Абстрактный метод для получения экземпляра BasketDao.

@@ -13,7 +13,8 @@ class MenuMiniViewModel(
     // Внедряем UseCase через конструктор
     // getDishsUseCase - UseCase для получения блюда по ID категории
     private val getDishsUseCase: GetDishUseCase,
-    private val dishId: Int
+    private val dishId: Int,
+    private val categoryId: Int
 ) : ViewModel(),MenuMiniViewModelInterface {
 
 
@@ -27,15 +28,15 @@ class MenuMiniViewModel(
     // Инициализатор - вызывается при создании экземпляра MenuViewModel
     init {
         // Загружаем блюда при создании ViewModel, передавая ID блюда
-        getDish(dishId)
+        getDish(dishId, categoryId)
     }
     // getDish - метод для загрузки блюда
     // dishId -блюдо которое нужно добавить
-    override fun getDish(dishId: Int) {
+    override fun getDish(dishId: Int, categoryId: Int) {
         // viewModelScope - корутин скоуп, связанный с жизненным циклом ViewModel
         viewModelScope.launch {
             // Вызываем UseCase для получения списка блюд по ID категории
-            val dish = getDishsUseCase.execute(dishId)
+            val dish = getDishsUseCase.execute(dishId, categoryId)
             _dish.value = dish
         }
     }
