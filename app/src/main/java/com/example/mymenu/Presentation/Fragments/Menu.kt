@@ -132,6 +132,6 @@ class Menu : Fragment() {
             }
         })
 // Загружаем список блюд для заданной категории
-        viewModel.loadDishes(categoryId)
+        viewModel.loadDishes()
     }
 }

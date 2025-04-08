@@ -7,15 +7,17 @@ import androidx.lifecycle.viewModelScope
 import com.example.mymenu.Domain.Dish.GetDishsUseCase
 import com.example.mymenu.Domain.Models.DishItem
 import kotlinx.coroutines.launch
+
 // MenuViewModel - ViewModel для фрагмента Menu
 class MenuViewModel(
     // Внедряем UseCase через конструктор
-    // getDishsUseCase - UseCase для получения списка блюд по ID категории
+    // getDishsUseCase - UseCase для получения списка блюд по ID блюда и ID категории
     private val getDishsUseCase: GetDishsUseCase,
     private val categoryId: Int
 ) : ViewModel() {
     // _dishs - MutableLiveData для хранения списка блюд (приватная переменная)
     private val _dishs = MutableLiveData<List<DishItem>>()
+
     // dish - LiveData для предоставления списка блюд UI (публичная переменная)
     // UI может только наблюдать за изменениями, но не изменять список напрямую
     val dishs: LiveData<List<DishItem>> = _dishs
@@ -23,17 +25,19 @@ class MenuViewModel(
     // Инициализатор - вызывается при создании экземпляра MenuViewModel
     init {
         // Загружаем блюда при создании ViewModel, передавая ID категории
-        loadDishes(categoryId)
+        loadDishes()
     }
+
     // loadDishes - метод для загрузки списка блюд
     // categoryId - ID категории, для которой нужно загрузить блюда
-    fun loadDishes(categoryId: Int) {
-        // viewModelScope - корутин скоуп, связанный с жизненным циклом ViewModel
+    fun loadDishes() {
+        //  viewModelScope - корутин скоуп, связанный с жизненным циклом ViewModel
         viewModelScope.launch {
-            // Вызываем UseCase для получения списка блюд по ID категории
-                val dishs = getDishsUseCase.execute(categoryId) // Используем execute с categoryId
-            // Присваиваем полученный список блюд переменной _dishes
-                _dishs.value = dishs
+            //  Вызываем UseCase для получения списка блюд по ID категории
+            getDishsUseCase(categoryId).collect { dishes -> //  Используем UseCase с categoryId
+                //  Присваиваем полученный список блюд переменной _dishs
+                _dishs.value = dishes
+            }
         }
     }
 }

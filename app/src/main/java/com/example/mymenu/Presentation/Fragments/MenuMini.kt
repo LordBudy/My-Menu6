@@ -28,6 +28,7 @@ class MenuMini : Fragment() {
         private lateinit var viewModel: MenuMiniViewModel
         // Объявляем переменную dishID (для хранения ID блюда)
         private var dishID: Int = -1
+        private var categoryID: Int = -1
         // Объявляем переменные для хранения ссылок на элементы UI
         private lateinit var dishImageView: ImageView
         private lateinit var dishNameTextView: TextView
@@ -49,6 +50,7 @@ class MenuMini : Fragment() {
             arguments?.let {
                 //получаем значение dishId из Bundle
                 dishID = it.getInt("dishId", -1)
+                categoryID = it.getInt("categoryId", -1)
             }
         }
         // Переопределяем метод onCreateView() (создаем View фрагмента)
@@ -108,14 +110,14 @@ class MenuMini : Fragment() {
                     //  проверяем, что modelClass - MenuMiniViewModel
                     if (modelClass.isAssignableFrom(MenuMiniViewModel::class.java)) {
                         //  создаем и возвращаем экземпляр MenuMiniViewModel
-                        return MenuMiniViewModel(getDishsUseCase,dishID ) as T
+                        return MenuMiniViewModel(getDishsUseCase,dishID,categoryID ) as T
                     }
                     // выбрасываем исключение, если modelClass не MenuMiniViewModel
                     throw IllegalArgumentException("неизвестный ViewModel class")
                 }
             })[MenuMiniViewModel::class.java] // Получаем экземпляр ViewModel
             // viewModel.loadDishs(dishID) - загружаем данные о блюде
-            viewModel.getDish(dishID)
+            viewModel.getDish(dishID, categoryID)
             //  подписываемся на изменения LiveData dish в ViewModel
             viewModel.dish.observe(viewLifecycleOwner, Observer { dish ->
                 // логируем информацию о блюде
