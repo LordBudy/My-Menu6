@@ -11,16 +11,16 @@ import com.example.mymenu.R
 import com.squareup.picasso.Picasso
 // Объявляем класс DishAdapter, который наследуется от RecyclerView.Adapter
 // Этот адаптер отвечает за отображение списка блюд в RecyclerView
-class DishAdapter(
+class MenuAdapter(
     // Список блюд, которые нужно отобразить
     private var dishs: List<DishItem>,
     private val onClick: (DishItem) -> Unit //  Лямбда-функция, вызываемая при нажатии на блюдо
     // Указываем тип ViewHolder, который будет использоваться
-     ) : RecyclerView.Adapter<DishAdapter.DishViewHolder>() {
+     ) : RecyclerView.Adapter<MenuAdapter.DishViewHolder>() {
     // Метод для обновления данных в адаптере
-    fun updateData(newDishes: List<DishItem>) {
+    fun updateData(newDish: List<DishItem>) {
         // Обновляем список блюд
-        dishs = newDishes
+        dishs =newDish
         // Сообщаем адаптеру, что данные изменились, чтобы он переписал список
         notifyDataSetChanged()
     }
@@ -33,7 +33,7 @@ class DishAdapter(
         // TextView для отображения цены блюда
         val PriceTextView: TextView = itemView.findViewById(R.id.Price)
         // TextView для отображения веса блюда
-        val WeightTextView: TextView = itemView.findViewById(R.id.Price)
+        val WeightTextView: TextView = itemView.findViewById(R.id.Weight)
     }
     // Этот метод вызывается, когда нужно создать новый ViewHolder для элемента списка
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishViewHolder {

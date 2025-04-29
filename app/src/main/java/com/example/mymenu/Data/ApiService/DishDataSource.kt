@@ -20,21 +20,16 @@ class DishDataSource {
             else -> emptyList() // Если категория не найдена, возвращаем пустой список
         }
     }
-
-    // Метод для получения блюда по его ID и категории
+    // Добавьте функцию для получения одного блюда по ID
     fun getDish(dishId: Int, categoryId: Int): DishEntity? {
-        // Получаем список блюд для заданной категории
-        val dishsInCategory = getDishesByCategoryId(categoryId)
-        // Ищем блюдо с заданным ID в списке блюд для категории
-        return dishsInCategory.find { it.id == dishId }
+        val dishes = getDishesByCategoryId(categoryId)
+        return dishes.find { it.id == dishId } // Ищем блюдо с нужным ID
     }
     // Блюда для категории 1
     // Метод для получения списка блюд для категории 1.
-    // Возвращает List<DishEntity> (список объектов DishEntity).
     fun getDishesForCategory1(): List<DishEntity> {
         // Возвращаем список блюд, созданный с помощью функции listOf()
         return listOf(
-            // DishEntity(...)
             // Создаем объект DishEntity с заданными параметрами (ID, URL изображения, название, цена, описание, вес, categoryId)
             DishEntity(
                 1,

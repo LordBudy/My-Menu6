@@ -14,6 +14,7 @@
         android:layout_height="100dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
+        android:contentDescription="@string/Блюдо"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <TextView
@@ -63,8 +64,9 @@
         android:layout_marginBottom="15dp"
         android:gravity="center"
         android:text="@string/плюс"
+        android:textColor="#000000"
         app:icon="@drawable/plus"
-        app:rippleColor="#FF5722"
+        app:rippleColor="#22FFFF"
         tools:ignore="TouchTargetSizeCheck" />
 
     <Button
@@ -77,6 +79,7 @@
         android:layout_toEndOf="@+id/price"
         android:gravity="center"
         android:text="@string/плюс"
+        android:textColor="#000000"
         app:icon="@drawable/baseline_exposure_neg_1_24"
         app:rippleColor="#22FFFF"
         tools:ignore="TouchTargetSizeCheck" />
@@ -91,7 +94,7 @@
         android:layout_toStartOf="@+id/plusBtn"
         android:layout_toEndOf="@+id/minusBtn"
         android:gravity="center"
-        android:text="0"
+        android:text="@string/ноль"
         android:textSize="16sp" />
 
 </RelativeLayout>

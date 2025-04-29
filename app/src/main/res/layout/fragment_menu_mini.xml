@@ -5,25 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#00000000"
     android:clickable="true"
     android:focusable="true"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
-    tools:context=".Presentation.Fragments.MenuMini"
-    tools:ignore="ExtraText">
+    tools:context=".Presentation.Fragments.MenuMini">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@color/grey"
-        android:clickable="true"
-        android:focusable="true"
         android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="UseCompoundDrawables,UselessParent">
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/close"
@@ -31,11 +25,12 @@
             android:layout_height="35dp"
             android:layout_gravity="right|top"
             android:layout_margin="10dp"
+            android:backgroundTintMode="add"
             android:forceHasOverlappingRendering="false"
             android:foreground="@drawable/close"
             android:gravity="center"
             android:textColor="#151514"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <ImageView
             android:id="@+id/Image"

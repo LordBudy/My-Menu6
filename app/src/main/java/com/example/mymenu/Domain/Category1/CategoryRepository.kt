@@ -6,6 +6,6 @@ import com.example.mymenu.Domain.Models.CategoryItem
 interface CategoryRepository {
 
     //Выводит список квтегорий
-    fun getDishsByCategoryId(): List<CategoryItem>
+    fun getCategoryId(): List<CategoryItem>
 
 }

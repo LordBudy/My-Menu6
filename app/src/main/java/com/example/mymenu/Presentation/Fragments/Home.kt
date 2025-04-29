@@ -7,10 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -19,13 +15,15 @@ import com.example.mymenu.Data.ApiService.CatDataSource
 import com.example.mymenu.Data.Repository.CategoryRepositoryImpl
 import com.example.mymenu.Domain.Category1.GetCategoryUseCase
 import com.example.mymenu.Domain.Models.CategoryItem
+import com.example.mymenu.MainActivity
 import com.example.mymenu.Presentation.Adapters.CategoryAdapter
+import com.example.mymenu.Presentation.ViewModels.Interfaces.HomeInterface
 import com.example.mymenu.Presentation.ViewModels.HomeViewModel
 import com.example.mymenu.R
 
 // Отключил предупреждение о небезопасном приведении типов
 @Suppress("UNCHECKED_CAST")
-class Home : Fragment() {
+class Home : Fragment(), HomeInterface {
     // viewModel - ViewModel для этого фрагмента
     private lateinit var viewModel: HomeViewModel
     // recyclerView - RecyclerView для отображения списка категорий
@@ -46,13 +44,14 @@ class Home : Fragment() {
         // Инициализируем адаптер с обработчиком нажатий
         categoryAdapter = CategoryAdapter(emptyList()) { category ->
             // Открываем MenuFragment при нажатии на категорию
-            openMenuFragment(category.id)
+            onCategoryClicked(category) //  Сообщаем ViewModel о нажатии
         }
         // Устанавливаем adapter для RecyclerView
         recyclerView.adapter = categoryAdapter
         // Возвращаем созданный View
         return view
     }
+
     // onViewCreated - вызывается после создания View фрагмента
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -68,20 +67,25 @@ class Home : Fragment() {
                 return HomeViewModel(getCategoryUseCase) as T
             }
         })[HomeViewModel::class.java] // Получаем экземпляр ViewModel
-        // Подписываемся на LiveData
-        viewModel.categories.observe(viewLifecycleOwner, Observer { categoryList ->
-            // Если categoryList не null, обновляем данные в адаптере
-            categoryAdapter.updateData(categoryList!!) // Вызываем метод экземпляра adapter
+        // Устанавливаем ссылку на интерфейс
+        viewModel.homeInterface = this
+        viewModel.categories.observe(viewLifecycleOwner, {categoryes ->
+            if(categoryes != null) {
+                showCategoryes(categoryes)
+               }
         })
     }
+
+    //методы интерфейса для отображения категорий и открытия меню по клику на одно из категорий
+    override fun showCategoryes(categoryes: List<CategoryItem>) {
+        categoryAdapter.updateData(categoryes)
+    }
+
     // Функция для открытия Menu по нажатию на категорию
-    private fun openMenuFragment(categoryId: Int) {
+    override fun onCategoryClicked(categoryId: CategoryItem) {
         // 1. Создание Bundle
         val bundle = Bundle()
         // 2. Добавление данных в Bundle
-        bundle.putInt("categoryId", categoryId)
-        // 3. Навигация с использованием NavController
-        findNavController().navigate(R.id.action_home_to_menu, bundle)
-
+        (activity as? MainActivity)?.navigateToMenu(categoryId.id)
     }
 }

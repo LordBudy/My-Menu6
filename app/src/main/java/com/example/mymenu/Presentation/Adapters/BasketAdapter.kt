@@ -1,9 +1,11 @@
 package com.example.mymenu.Presentation.Adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymenu.Domain.Models.DishItem
@@ -20,7 +22,7 @@ class BasketAdapter (
     class BasketViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // Находим View элементы в layout-файле item_dish_basket.xml
         // ImageButton для отображения изображения блюда
-        val urlImageView: ImageButton = itemView.findViewById(R.id.urlImage)
+        val urlImageView: ImageView = itemView.findViewById(R.id.urlImage)
         // TextView для отображения названия блюда
         val nameTextView: TextView = itemView.findViewById(R.id.name)
         // TextView для отображения цены блюда
@@ -38,6 +40,7 @@ class BasketAdapter (
     }
     // Этот метод вызывается, чтобы привязать данные к ViewHolder
     override fun onBindViewHolder(holder: BasketViewHolder, position: Int) {
+        Log.d("BasketAdapter", "onBindViewHolder: position = $position, basketItems.size = ${basketItems.size}")
         // Получаем элемент корзины по позиции
         val item = basketItems[position]
         // Устанавливаем данные в соответствующие View элементы
@@ -53,6 +56,7 @@ class BasketAdapter (
     }
     //метод возвращает количество элементов в списке
     override fun getItemCount(): Int {
+        Log.d("BasketAdapter", "getItemCount: basketItems.size = ${basketItems.size}")
         // Возвращаем размер списка элементов корзины
         return basketItems.size
     }

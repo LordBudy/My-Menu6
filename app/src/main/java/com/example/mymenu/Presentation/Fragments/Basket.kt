@@ -1,6 +1,7 @@
 package com.example.mymenu.Presentation.Fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +15,15 @@ import com.example.mymenu.Data.ApiService.DishDataSource
 import com.example.mymenu.Data.DB.AppDataBase
 import com.example.mymenu.Data.Repository.BasketRepositoryImpl
 import com.example.mymenu.Domain.Basket.GetAllBasketUseCase
+import com.example.mymenu.Domain.Models.DishItem
 import com.example.mymenu.Presentation.Adapters.BasketAdapter
 import com.example.mymenu.Presentation.ViewModels.BasketViewModel
+import com.example.mymenu.Presentation.ViewModels.Interfaces.BasketInterface
 import com.example.mymenu.R
 
 
 @Suppress("UNCHECKED_CAST")
-class Basket : Fragment() {
+class Basket : Fragment(),BasketInterface {
     //переменные, которые будут использоваться
     // RecyclerView для отображения списка элементов корзины
     private lateinit var recyclerView: RecyclerView
@@ -36,7 +39,9 @@ class Basket : Fragment() {
         // Раздуваем (inflate) layout fragment_basket.xml, который содержит UI для этого фрагмента
         val view = inflater.inflate(R.layout.fragment_basket, container, false)
         // Находим RecyclerView по его ID в раздутом View
+        Log.d("BasketFragment", "Before findViewById")
         recyclerView = view.findViewById(R.id.rvBasket)
+        Log.d("BasketFragment", "After findViewById")
         // Устанавливаем LinearLayoutManager для RecyclerView (управляет расположением элементов в списке)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         // Возвращаем созданое View
@@ -49,10 +54,7 @@ class Basket : Fragment() {
         // Создаем экземпляр BasketAdapter с пустым списком (пока нет данных)
         basketAdapter = BasketAdapter(emptyList())
         // Устанавливаем basketAdapter как адаптер для RecyclerView
-        // (RecyclerView теперь знает, как отображать данные)
         recyclerView.adapter = basketAdapter
-        // 1. Создание зависимостей (DI-dependency injection - внедрение зависимостей)
-        // Создаем экземпляр источника данных (для получения информации о блюдах)
         val dishDataSource = DishDataSource()
         // Получаем доступ к DAO (Data Access Object) для работы с базой данных
         val basketDao = AppDataBase.getDatabase(requireContext()).basketDao()
@@ -69,9 +71,25 @@ class Basket : Fragment() {
         })[BasketViewModel::class.java] // Получаем экземпляр BasketViewModel
         // 3. Подписка на LiveData и обновление адаптера (Observer)
         basketViewModel.basketItems.observe(viewLifecycleOwner, Observer { basketItems ->
-            // Этот код будет выполнен каждый раз, когда basketItems (LiveData) в BasketViewModel изменится
             // Обновляем данные в адаптере новым списком элементов корзины
+            Log.d("BasketFragment", "Observed basketItems: ${basketItems.size}")
             basketAdapter.updateData(basketItems)
         })
+    }
+
+    override fun showAllBasket(dishs: DishItem?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun plus(dishId: DishItem) {
+        TODO("Not yet implemented")
+    }
+
+    override fun minus(dishId: DishItem) {
+        TODO("Not yet implemented")
+    }
+
+    override fun delete(dishId: DishItem) {
+        TODO("Not yet implemented")
     }
 }

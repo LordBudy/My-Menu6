@@ -54,4 +54,6 @@
     <string name="цена">Цена</string>
     <string name="вес">Вес</string>
     <string name="назад">назад</string>
+    <string name="ноль">0</string>
+    <string name="К_оплате">К оплате</string>
 </resources>

@@ -24,7 +24,7 @@ interface BasketDao {
     @Query("SELECT * FROM dish")
     // Метод для получения всех блюд из БД
     // Возвращает Flow, чтобы получать обновления данных асинхронно
-    fun getAllDishes(): Flow<List<DishEntity>>
+    fun getAllDishs(): Flow<List<DishEntity>>
 
     // Метод для обновления информации о блюде в корзине
     @Update // Аннотация @Update для обновления данных в таблице

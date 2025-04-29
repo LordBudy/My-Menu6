@@ -45,7 +45,7 @@
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/price"
+            android:id="@+id/Price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -67,7 +67,7 @@
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/Price"
+            android:id="@+id/Weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"

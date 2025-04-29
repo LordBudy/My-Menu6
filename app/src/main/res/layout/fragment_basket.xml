@@ -15,16 +15,18 @@
         android:id="@+id/itogo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#F33E05"
-        android:text="К оплате"
+        android:background="#03F6F6"
+        android:text="@string/К_оплате"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvBasket"
+        app:layout_constraintVertical_bias="0.0"
         tools:ignore="VisualLintButtonSize" />
 
     <androidx.recyclerview.widget.RecyclerView
