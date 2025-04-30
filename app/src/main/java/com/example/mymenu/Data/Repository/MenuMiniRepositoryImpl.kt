@@ -2,17 +2,17 @@ package com.example.mymenu.Data.Repository
 
 import com.example.mymenu.Data.ApiService.DishDataSource
 import com.example.mymenu.Data.ModelsEntitys.DishEntity
-import com.example.mymenu.Domain.Menu.DishRepository
+import com.example.mymenu.Domain.MenuMini.MenuMiniRepository
 import com.example.mymenu.Domain.Models.DishItem
 
-class DishRepositoryImpl(private val dishDataSource: DishDataSource
-) : DishRepository {
-    override suspend fun getDishs(categoryId: Int): List<DishItem> {
-        val dishEntities = dishDataSource.getDishesByCategoryId(categoryId)
-        return dishEntities.map { category ->
-            category.toDomainDishItem()
-        }
+class MenuMiniRepositoryImpl(private val dishDataSource: DishDataSource) : MenuMiniRepository {
+
+    override suspend fun getDish(dishId: Int, categoryId: Int): DishItem? {
+        // Получаем одно блюдо по dishId и categoryId
+        val dishEntity = dishDataSource.getDish(dishId, categoryId)
+        return dishEntity?.toDomainDishItem()
     }
+
 }
 
 private fun DishEntity.toDomainDishItem(): DishItem =
@@ -26,4 +26,5 @@ private fun DishEntity.toDomainDishItem(): DishItem =
         categoryId = categoryId,
         count = 1
     )
+
 

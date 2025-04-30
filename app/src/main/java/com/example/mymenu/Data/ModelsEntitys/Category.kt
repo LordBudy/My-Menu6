@@ -1,6 +1,6 @@
 package com.example.mymenu.Data.ModelsEntitys
 
-data class CategoryEntity(
+data class Category(
 
     val id: Int,
     val url_cat: String,

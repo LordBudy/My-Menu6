@@ -9,25 +9,22 @@ import androidx.room.Update
 import com.example.mymenu.Data.ModelsEntitys.DishEntity
 import kotlinx.coroutines.flow.Flow
 
-//интерфейс -описывает методы которые будут использоваться для доступа к данным
 @Dao
 interface BasketDao {
+    // Методы для работы с корзиной (DishEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertBasket(dishs: DishEntity)//добавит в бд
+    suspend fun insertDish(dish: DishEntity) // Метод для вставки одного блюда в БД
 
-    @Query("SELECT * FROM dishs")
-    fun getAllBasket(): Flow<List<DishEntity>>//выведет весь список в бд
+    @Query("SELECT * FROM dish")
+    fun getAllDishs(): Flow<List<DishEntity>>
 
-    @Query("SELECT * FROM dishs WHERE id_dish = :dishId")//выведет одно блюдо по id
-    fun getBasketItem(dishId: Int) : Flow<DishEntity?>
+    @Query("SELECT * FROM dish WHERE id = :dishId")
+    suspend fun getDishById(dishId: Int?): DishEntity?
 
     @Update
-    suspend fun updateBasket(dishs: DishEntity)//обновит бд
+    suspend fun updateDish(dish: DishEntity) // Исправлено: метод для обновления DishEntity
 
-    @Delete
-    suspend fun deleteBasketItem(dishs: DishEntity) // Удаляем DishEntity
-//    @Query("DELETE FROM dishes WHERE id_dish = :dishId")//удалить один обьект из бд
-//    suspend fun deleteBasketItem(dishId: Int)
-
+    @Query("DELETE FROM dish WHERE id = :dishId")
+    suspend fun deleteDishById(dishId: Int?)
 }

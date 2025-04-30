@@ -1,29 +1,141 @@
 package com.example.mymenu.Presentation.Fragments
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.mymenu.Data.ApiService.DishDataSource
+import com.example.mymenu.Data.DAO.BasketDao
+import com.example.mymenu.Data.DB.AppDataBase
+import com.example.mymenu.Data.Repository.BasketRepositoryImpl
+import com.example.mymenu.Data.Repository.MenuMiniRepositoryImpl
+import com.example.mymenu.Domain.Basket.AddDishToBasketUseCase
+import com.example.mymenu.Domain.MenuMini.GetDishMiniUseCase
+import com.example.mymenu.Domain.Models.DishItem
+import com.example.mymenu.MainActivity
+import com.example.mymenu.Presentation.ViewModels.Interfaces.MenuMiniListener
+import com.example.mymenu.Presentation.ViewModels.Interfaces.MiniInterface
+import com.example.mymenu.Presentation.ViewModels.MenuMiniViewModel
 import com.example.mymenu.R
+import com.squareup.picasso.Picasso
 
+@Suppress("UNCHECKED_CAST", "DEPRECATION")
 class MenuMini : Fragment() {
+    // Объявляем переменную viewModel
+    private lateinit var viewModel: MenuMiniViewModel
+    // Объявляем переменные(для хранения id блюда и id категории)
+    private var dishId: Int = -1
+    private var categoryId: Int = -1
+    private var listener: MenuMiniListener? = null
 
+    private lateinit var dishImageView: ImageView //картинка
+    private lateinit var dishNameTextView: TextView //название
+    private lateinit var dishPriceTextView: TextView //цена
+    private lateinit var dishWeightTextView: TextView //вес
+    private lateinit var dishDescriptionTextView: TextView //описание
+
+    private lateinit var database: AppDataBase
+    private lateinit var basketDao: BasketDao
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is MenuMiniListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement MenuMiniListener")
+        }
+    }
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
+            dishId = it.getInt("dishId", -1)
+            categoryId = it.getInt("categoryId", -1)
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, // для создания View из XML
+        container: ViewGroup?, // в который будет добавлен View фрагмента
+        savedInstanceState: Bundle? // содержащий сохраненное состояние фрагмента
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_menu_mini, container, false)
+        // Создаем View из XML-файла fragment_menu_mini.xml
+        val view = inflater.inflate(R.layout.fragment_menu_mini, container, false)
+        // Инициализируем переменные, связывая их с элементами UI
+        dishImageView = view.findViewById(R.id.Image)
+        dishNameTextView = view.findViewById(R.id.name_dish)
+        dishPriceTextView = view.findViewById(R.id.price)
+        dishWeightTextView = view.findViewById(R.id.weight)
+        dishDescriptionTextView = view.findViewById(R.id.description)
+        return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        database = AppDataBase.getDatabase(requireContext())
+        basketDao = database.basketDao()
 
+        val closeButton: Button = view.findViewById(R.id.close) //кнопка закрытия
+        closeButton.setOnClickListener {
+            (activity as? MainActivity)?.hideMenuMiniFragment()
+        }
+        val aadButton: Button = view.findViewById(R.id.add_Bascket)//кнопка добавить в корзину
+        aadButton.setOnClickListener {
+            val dish = viewModel.dish.value
+
+            if (dish != null) {
+                listener?.onAddToCartClicked(dish) // Вызываем метод интерфейса
+                (activity as? MainActivity)?.hideMenuMiniFragment()
+            } else {
+                Toast.makeText(requireContext(), "Блюдо не загружено", Toast.LENGTH_SHORT).show()
+            }
+        }
+        val dishDataSource = DishDataSource()
+        val menuMiniRepository = MenuMiniRepositoryImpl(dishDataSource)
+        val getDishMiniUseCase = GetDishMiniUseCase(menuMiniRepository)
+        val basketRepository = BasketRepositoryImpl(dishDataSource, basketDao)
+        val addDishToBasketUseCase = AddDishToBasketUseCase(basketRepository)
+
+        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(MenuMiniViewModel::class.java)) {
+                    return MenuMiniViewModel(addDishToBasketUseCase,
+                        getDishMiniUseCase) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
+        })[MenuMiniViewModel::class.java]
+
+        viewModel.dish.observe(viewLifecycleOwner, Observer { dish ->
+            showMini(dish)
+        })
+        viewModel.getDish(dishId, categoryId)
     }
+    fun showMini(dish: DishItem?) {
+        if (dish != null) {
+            dishNameTextView.text = dish.name
+            dishPriceTextView.text = "Цена: \n${dish.price}р."
+            dishWeightTextView.text = "Вес:\n${dish.weight}гр."
+            dishDescriptionTextView.text = dish.description
+            Picasso.get()
+                .load(dish.url)
+                .into(dishImageView)
+        } else {
+            dishNameTextView.text = "Блюдо не найдено"
+        }
+    }
+}
+

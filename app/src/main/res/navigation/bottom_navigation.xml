@@ -14,23 +14,34 @@
             android:id="@+id/action_home_to_menu"
             app:destination="@id/menu" />
         <action
-            android:id="@+id/action_home_to_basket"
-            app:destination="@id/basket" />
+            android:id="@+id/action_home_to_account"
+            app:destination="@id/account" />
         <action
             android:id="@+id/action_home_to_fastSearch"
             app:destination="@id/fastSearch" />
         <action
-            android:id="@+id/action_home_to_account"
-            app:destination="@id/account" />
-        <action
-            android:id="@+id/action_home_to_menu2"
-            app:destination="@id/menu" />
+            android:id="@+id/action_home_to_basket"
+            app:destination="@id/basket" />
     </fragment>
     <fragment
         android:id="@+id/basket"
         android:name="com.example.mymenu.Presentation.Fragments.Basket"
         android:label="fragment_basket"
-        tools:layout="@layout/fragment_basket" />
+        tools:layout="@layout/fragment_basket" >
+        <action
+            android:id="@+id/action_basket_to_fastSearch"
+            app:destination="@id/fastSearch" />
+        <action
+            android:id="@+id/action_basket_to_account"
+            app:destination="@id/account" />
+        <action
+            android:id="@+id/action_basket_to_home"
+            app:destination="@id/home" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_basket"
+        app:destination="@id/basket" />
     <fragment
         android:id="@+id/menu"
         android:name="com.example.mymenu.Presentation.Fragments.Menu"
@@ -40,11 +51,14 @@
             android:id="@+id/action_menu_to_menuMini"
             app:destination="@id/menuMini" />
         <action
-            android:id="@+id/action_menu_to_fastSearch"
-            app:destination="@id/fastSearch" />
+            android:id="@+id/action_menu_to_basket"
+            app:destination="@id/basket" />
         <action
             android:id="@+id/action_menu_to_home"
             app:destination="@id/home" />
+        <action
+            android:id="@+id/action_menu_to_fastSearch"
+            app:destination="@id/fastSearch" />
     </fragment>
     <fragment
         android:id="@+id/menuMini"
@@ -55,18 +69,14 @@
             android:id="@+id/action_menuMini_to_basket"
             app:destination="@id/basket" />
         <action
-            android:id="@+id/action_menuMini_to_menu"
-            app:destination="@id/menu" />
+            android:id="@+id/action_menuMini_to_home"
+            app:destination="@id/home" />
     </fragment>
     <fragment
         android:id="@+id/fastSearch"
         android:name="com.example.mymenu.Presentation.Fragments.FastSearch"
         android:label="fragment_fast_search"
-        tools:layout="@layout/fragment_fast_search">
-        <action
-            android:id="@+id/action_fastSearch_to_menuMini"
-            app:destination="@id/menuMini" />
-    </fragment>
+        tools:layout="@layout/fragment_fast_search"/>
     <fragment
         android:id="@+id/account"
         android:name="com.example.mymenu.Presentation.Fragments.Account"

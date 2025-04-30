@@ -1,60 +1,109 @@
 package com.example.mymenu.Presentation.Fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.mymenu.Data.ApiService.DishDataSource
+import com.example.mymenu.Data.DAO.BasketDao
+import com.example.mymenu.Data.DB.AppDataBase
+import com.example.mymenu.Data.ModelsEntitys.DishEntity
+import com.example.mymenu.Data.Repository.BasketRepositoryImpl
+import com.example.mymenu.Domain.Basket.GetAllBasketUseCase
+import com.example.mymenu.Domain.Models.DishItem
+import com.example.mymenu.Presentation.Adapters.BasketAdapter
+import com.example.mymenu.Presentation.ViewModels.BasketViewModel
+import com.example.mymenu.Presentation.ViewModels.Interfaces.BasketInterface
 import com.example.mymenu.R
+import kotlinx.coroutines.launch
+import com.example.mymenu.Data.ModelsEntitys.toDomainDishItem
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+@Suppress("UNCHECKED_CAST")
+class Basket : Fragment(), BasketInterface {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [Basket.newInstance] factory method to
- * create an instance of this fragment.
- */
-class Basket : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var basketAdapter: BasketAdapter
+    private lateinit var basketViewModel: BasketViewModel
+    private lateinit var basketDao: BasketDao
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_basket, container, false)
+        val view = inflater.inflate(R.layout.fragment_basket, container, false)
+        recyclerView = view.findViewById(R.id.rvBasket)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Basket.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Basket().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        basketAdapter = BasketAdapter(emptyList())
+        recyclerView.adapter = basketAdapter
+
+        val dishDataSource = DishDataSource()
+        basketDao = AppDataBase.getDatabase(requireContext()).basketDao()
+        val basketRepository = BasketRepositoryImpl(dishDataSource, basketDao)
+        val getAllBasketUseCase = GetAllBasketUseCase(basketRepository)
+
+        basketViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return BasketViewModel(getAllBasketUseCase) as T
             }
+        })[BasketViewModel::class.java]
+
+        basketViewModel.basketItems.observe(viewLifecycleOwner, Observer { basketItems ->
+            val dishItems = basketItems.map {
+                it.toDomainDishItem() } // Преобразование DishEntity в DishItem
+            basketAdapter.updateData(dishItems) // Обновление адаптера с новыми данными
+        })
+        basketViewModel.loadBasketItems()
+    }
+
+    override fun plus(dishId: DishItem) {
+        updateDishCount(dishId.id, 1, "Увеличено")
+    }
+
+    override fun minus(dishId: DishItem) {
+        updateDishCount(dishId.id, -1, "Уменьшено")
+    }
+
+    private fun updateDishCount(dishId: Int, change: Int, message: String) {
+        lifecycleScope.launch {
+            try {
+                val dishEntity = basketDao.getDishById(dishId)
+                if (dishEntity != null) {
+                    dishEntity.count = (dishEntity.count + change).coerceAtLeast(1) // Минимум 1
+                    basketDao.updateDish(dishEntity)
+                    basketViewModel.loadBasketItems()
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Log.e("BasketFragment", "Ошибка при обновлении количества", e)
+                Toast.makeText(requireContext(), "Ошибка", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun delete(dishId: DishItem) {
+        lifecycleScope.launch {
+            try {
+                basketDao.deleteDishById(dishId.id)
+                basketViewModel.loadBasketItems()
+                Toast.makeText(requireContext(), "Удалено", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Ошибка", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
