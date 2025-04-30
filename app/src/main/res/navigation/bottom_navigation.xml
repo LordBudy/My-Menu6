@@ -38,6 +38,10 @@
             android:id="@+id/action_basket_to_home"
             app:destination="@id/home" />
     </fragment>
+
+    <action
+        android:id="@+id/action_global_basket"
+        app:destination="@id/basket" />
     <fragment
         android:id="@+id/menu"
         android:name="com.example.mymenu.Presentation.Fragments.Menu"
@@ -55,9 +59,6 @@
         <action
             android:id="@+id/action_menu_to_fastSearch"
             app:destination="@id/fastSearch" />
-        <action
-            android:id="@+id/action_menu_to_basket2"
-            app:destination="@id/basket" />
     </fragment>
     <fragment
         android:id="@+id/menuMini"

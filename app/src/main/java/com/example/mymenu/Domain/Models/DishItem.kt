@@ -1,5 +1,9 @@
 package com.example.mymenu.Domain.Models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class DishItem(
 
     val id: Int,
@@ -10,4 +14,4 @@ data class DishItem(
     val description: String,
     val categoryId: Int? = null,
     val count: Int
-)
+) : Parcelable

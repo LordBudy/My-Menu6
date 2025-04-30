@@ -10,7 +10,7 @@ interface BasketRepository {
 
     fun getAllDishes(): Flow<List<DishItem>>
 
-    suspend fun deleteDishBasket(dish: DishItem)
+    suspend fun deleteDishBasket(dishId: Int)
 
     suspend fun minusDish(id: Int): DishItem
 

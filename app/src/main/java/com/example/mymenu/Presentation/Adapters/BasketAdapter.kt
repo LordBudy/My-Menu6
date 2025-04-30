@@ -20,22 +20,15 @@ class BasketAdapter (
     RecyclerView.Adapter<BasketAdapter.BasketViewHolder>() {
     // Класс BasketViewHolder, который представляет собой контейнер для View элемента списка
     class BasketViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // Находим View элементы в layout-файле item_dish_basket.xml
-        // ImageButton для отображения изображения блюда
         val urlImageView: ImageView = itemView.findViewById(R.id.urlImage)
-        // TextView для отображения названия блюда
         val nameTextView: TextView = itemView.findViewById(R.id.name)
-        // TextView для отображения цены блюда
         val priceTextView: TextView = itemView.findViewById(R.id.price)
-        // TextView для отображения веса блюда
         val weightTextView: TextView = itemView.findViewById(R.id.weight)
     }
     // Этот метод вызывается, когда нужно создать новый ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasketViewHolder {
-// Раздуваем (inflate) layout item_dish_basket.xml
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_dish_basket, parent, false)
-// Создаем и возвращаем ViewHolder
         return BasketViewHolder(view)
     }
     // Этот метод вызывается, чтобы привязать данные к ViewHolder

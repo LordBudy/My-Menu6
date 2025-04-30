@@ -11,20 +11,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-
-// Этот класс отвечает за доступ к данным корзины
 class BasketRepositoryImpl(
-    // Источник данных для получения информации о блюдах
     private val dishDataSource: DishDataSource,
-    // DAO для работы с базой данных корзины
     private val basketDao: BasketDao
-    // Указываем, что этот класс реализует интерфейс BasketRepository
 ) : BasketRepository {
 
     override suspend fun addDishToBasket(dishId: Int): DishItem {
         val dishEntity = dishDataSource.getDish(dishId, categoryId = 1)
-            ?: throw IllegalArgumentException("Dish with ID $dishId not found")
-
+            ?: throw IllegalArgumentException("Блюдо с ID $dishId не найдено")
         basketDao.insertDish(dishEntity)
         return dishEntity.toDomainDishItem()
     }
@@ -33,29 +27,35 @@ class BasketRepositoryImpl(
             Log.d("BasketRepositoryImpl", "getAllDishes: list size = ${list.size}")
             list.map { it.toDomainDishItem() }
         }
-
-    override suspend fun deleteDishBasket(dish: DishItem) {
-        val dishEntity = DishEntity(
-            id = dish.id,
-            url = dish.url,
-            name = dish.name,
-            price = dish.price,
-            weight = dish.weight,
-            description = dish.description,
-            categoryId = dish.categoryId,
-            count = dish.count
-        )
-        basketDao.deleteBasketItem(dishEntity)
+    override suspend fun deleteDishBasket(dishId: Int) {
+        basketDao.deleteDishById(dishId)  //  Передаем dishId
     }
-
     override suspend fun minusDish(id: Int): DishItem {
-        TODO()
-    }
+        // Получаем блюдо по ID из базы данных
+        val dishEntity = basketDao.getDishById(id) ?: throw IllegalArgumentException("Блюдо с ID $id не найдено")
 
+        // Уменьшаем количество, но только если оно больше 1
+        if (dishEntity.count > 1) {
+            dishEntity.count -= 1
+            basketDao.updateDish(dishEntity)
+        } else if (dishEntity.count == 1) {
+            // Если количество равно 1, можно удалить блюдо из корзины
+            deleteDishBasket(id)
+            return dishEntity.toDomainDishItem() // Возвращаем DishItem, если удалили
+        }
+        // Возвращаем преобразованное блюдо
+        return dishEntity.toDomainDishItem()
+    }
     override suspend fun plusDish(id: Int): DishItem {
-        TODO()
+        // Получаем блюдо по ID из базы данных
+        val dishEntity = basketDao.getDishById(id) ?: throw IllegalArgumentException("Блюдо с ID $id не найдено")
+        // Увеличиваем количество блюда
+        dishEntity.count += 1
+        // Обновляем блюдо в базе данных
+        basketDao.updateDish(dishEntity)
+        // Возвращаем преобразованное блюдо
+        return dishEntity.toDomainDishItem()
     }
-
     // Функция-расширение для преобразования DishEntity в DishItem.
     private fun DishEntity.toDomainDishItem(): DishItem =
         DishItem(

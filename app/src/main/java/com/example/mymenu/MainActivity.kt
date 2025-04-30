@@ -13,19 +13,25 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.mymenu.Domain.Models.DishItem
 import com.example.mymenu.Presentation.Fragments.MenuMini
+import com.example.mymenu.Presentation.ViewModels.Interfaces.MenuMiniListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 // @Suppress("DEPRECATION") - подавляем предупреждения о использовании устаревших API
 @Suppress("DEPRECATION")
-class MainActivity : AppCompatActivity() {private lateinit var appBarConfiguration: AppBarConfiguration
+class MainActivity : AppCompatActivity(), MenuMiniListener {
+
+    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bNav)
-        navController = findNavController(R.id.Container_frag)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.Container_frag) as NavHostFragment
+        navController = navHostFragment.navController
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -35,17 +41,23 @@ class MainActivity : AppCompatActivity() {private lateinit var appBarConfigurati
                 R.id.basket
             )
         )
+
         val backButton: ImageButton = findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            onBackPressed()
+        }
+
+        // Setup ActionBar after setting up navController
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (appBarConfiguration.topLevelDestinations.contains(destination.id)) {
-                backButton.visibility = View.GONE
+            backButton.visibility = if (appBarConfiguration.topLevelDestinations.contains(destination.id)) {
+                View.GONE
             } else {
-                backButton.visibility = View.VISIBLE
+                View.VISIBLE
             }
         }
+
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
@@ -79,11 +91,25 @@ class MainActivity : AppCompatActivity() {private lateinit var appBarConfigurati
                 else -> false
             }
         }
+    }
+    override fun onAddToCartClicked(dishItem: DishItem) {
+        val bundle = Bundle().apply {
+            putParcelable("dish", dishItem)
+        }
+        navController.navigate(R.id.action_global_basket, bundle)
+    }
+    fun hideMenuMiniFragment() {
+        val menuMiniContainer: FrameLayout = findViewById(R.id.menu_mini_container)
+        menuMiniContainer.visibility = View.GONE
 
-        findViewById<ImageButton>(R.id.backButton).setOnClickListener {
-            onBackPressed()
+        val fragment = supportFragmentManager.findFragmentByTag("menuMiniFragment")
+        if (fragment != null) {
+            supportFragmentManager.beginTransaction()
+                .remove(fragment)
+                .commit()
         }
     }
+
     private fun clearBackStack(destinationId: Int) {
         if (navController.currentDestination?.id != destinationId) {
             navController.popBackStack(destinationId, false)
@@ -92,6 +118,7 @@ class MainActivity : AppCompatActivity() {private lateinit var appBarConfigurati
     fun navigateToMenu(categoryId: Int) {
         val bundle = Bundle()
         bundle.putInt("categoryId", categoryId)
+        // Исправлено:  action_home_to_menu  ->  action_global_menu
         navController.navigate(R.id.action_home_to_menu, bundle)
     }
     override fun onSupportNavigateUp(): Boolean {
@@ -104,12 +131,10 @@ class MainActivity : AppCompatActivity() {private lateinit var appBarConfigurati
                 super.onBackPressed()
             }
         } catch (e: Exception) {
-            e.printStackTrace()
-            Log.e("MainActivity", "Ошибка при нажатии BackPressed в MainActivity: ${e.message}")
+            Log.e("MainActivity", "Error in onBackPressed: ${e.message}")
             super.onBackPressed()
         }
     }
-
     fun showMenuMiniFragment(dishId: Int, categoryId: Int) {
         findViewById<FrameLayout>(R.id.menu_mini_container).visibility = View.VISIBLE
 
@@ -119,21 +144,11 @@ class MainActivity : AppCompatActivity() {private lateinit var appBarConfigurati
                 putInt("categoryId", categoryId)
             }
         }
-
         supportFragmentManager.beginTransaction()
             .add(R.id.menu_mini_container, menuMiniFragment)
             .commit()
     }
-
-    fun hideMenuMiniFragment() {
-        findViewById<FrameLayout>(R.id.menu_mini_container).visibility = View.GONE
-
-        // Очищаем контейнер
-        val fragment = supportFragmentManager.findFragmentById(R.id.menu_mini_container)
-        if (fragment != null) {
-            supportFragmentManager.beginTransaction()
-                .remove(fragment)
-                .commit()
-        }
-    }
 }
+
+
+

@@ -1,5 +1,9 @@
 package com.example.mymenu.Domain.Basket
 
-class MinusDishUseCase {
+import com.example.mymenu.Domain.Models.DishItem
 
+class MinusDishUseCase(private val basketRepository: BasketRepository) {
+    suspend operator fun invoke(id: Int): DishItem {
+        return basketRepository.minusDish(id)
+    }
 }

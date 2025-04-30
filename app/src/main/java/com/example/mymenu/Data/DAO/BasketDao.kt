@@ -9,25 +9,22 @@ import androidx.room.Update
 import com.example.mymenu.Data.ModelsEntitys.DishEntity
 import kotlinx.coroutines.flow.Flow
 
-@Dao // Аннотация @Dao указывает, что это Data Access Object (DAO) - интерфейс для доступа к данным базы данных Room
+@Dao
 interface BasketDao {
-    // Методы для работы с корзиной (BasketItemEntity)
+    // Методы для работы с корзиной (DishEntity)
 
-    @Delete // Аннотация @Delete для удаления данных из таблицы
-    suspend fun deleteBasketItem(item: DishEntity) // Метод для удаления блюда в корзине и из БД
-
-    // Аннотация @Insert для вставки данных в таблицу в БД
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDish(dish: DishEntity) // Метод для вставки одного блюда в БД
 
-    // Аннотация @Query для выполнения SQL-запроса
     @Query("SELECT * FROM dish")
-    // Метод для получения всех блюд из БД
-    // Возвращает Flow, чтобы получать обновления данных асинхронно
     fun getAllDishs(): Flow<List<DishEntity>>
 
-    // Метод для обновления информации о блюде в корзине
-    @Update // Аннотация @Update для обновления данных в таблице
-    suspend fun updateBasket(dishs: DishEntity)//обновит бд
+    @Query("SELECT * FROM dish WHERE id = :dishId")
+    suspend fun getDishById(dishId: Int?): DishEntity?
 
+    @Update
+    suspend fun updateDish(dish: DishEntity) // Исправлено: метод для обновления DishEntity
+
+    @Query("DELETE FROM dish WHERE id = :dishId")
+    suspend fun deleteDishById(dishId: Int?)
 }

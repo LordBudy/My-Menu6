@@ -9,6 +9,7 @@ import com.example.mymenu.Domain.Models.DishItem
 import com.example.mymenu.Presentation.ViewModels.Interfaces.MenuInterface
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 // Объявляем класс BasketViewModel, который наследуется от ViewModel (предоставляет данные для UI)
@@ -17,7 +18,6 @@ class BasketViewModel(
 ) : ViewModel() {
 
     private val _basketItems = MutableLiveData<List<DishItem>>()
-
     val basketItems: LiveData<List<DishItem>> = _basketItems
 
     // Блок инициализации (выполняется при создании ViewModel)
@@ -26,10 +26,10 @@ class BasketViewModel(
     }
 
     // Метод для загрузки элементов корзины
-    private fun loadBasketItems() {
+    fun loadBasketItems() {
         // Запускаем корутину в viewModelScope (scope жизненного цикла ViewModel)
         viewModelScope.launch {
-            getAllBasketUseCase().collect { items ->
+            getAllBasketUseCase().collectLatest { items ->
                 _basketItems.value = items
             }
         }
