@@ -97,6 +97,7 @@ class MenuMini : Fragment() {
             val dish = viewModel.dish.value
 
             if (dish != null) {
+                viewModel.addDishToBasket(dish)
                 listener?.onAddToCartClicked(dish) // Вызываем метод интерфейса
                 (activity as? MainActivity)?.hideMenuMiniFragment()
             } else {

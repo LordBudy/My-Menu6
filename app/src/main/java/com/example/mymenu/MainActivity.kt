@@ -24,13 +24,14 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
-
+    private val MENU_MINI_TAG = "menuMiniFragment"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bNav)
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.Container_frag) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.Container_frag) as NavHostFragment
         navController = navHostFragment.navController
 
         appBarConfiguration = AppBarConfiguration(
@@ -46,16 +47,15 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
         backButton.setOnClickListener {
             onBackPressed()
         }
-
-        // Setup ActionBar after setting up navController
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            backButton.visibility = if (appBarConfiguration.topLevelDestinations.contains(destination.id)) {
-                View.GONE
-            } else {
-                View.VISIBLE
-            }
+            backButton.visibility =
+                if (appBarConfiguration.topLevelDestinations.contains(destination.id)) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
         }
 
         bottomNavigationView.setOnItemSelectedListener { item ->
@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
                     }
                     true
                 }
+
                 R.id.fastSearch -> {
                     if (navController.currentDestination?.id != R.id.fastSearch) {
                         clearBackStack(R.id.fastSearch)
@@ -74,6 +75,7 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
                     }
                     true
                 }
+
                 R.id.basket -> {
                     if (navController.currentDestination?.id != R.id.basket) {
                         clearBackStack(R.id.basket)
@@ -81,6 +83,7 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
                     }
                     true
                 }
+
                 R.id.account -> {
                     if (navController.currentDestination?.id != R.id.account) {
                         clearBackStack(R.id.account)
@@ -88,25 +91,37 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
                     }
                     true
                 }
+
                 else -> false
             }
         }
     }
+
     override fun onAddToCartClicked(dishItem: DishItem) {
         val bundle = Bundle().apply {
             putParcelable("dish", dishItem)
         }
         navController.navigate(R.id.action_global_basket, bundle)
     }
-    fun hideMenuMiniFragment() {
-        val menuMiniContainer: FrameLayout = findViewById(R.id.menu_mini_container)
-        menuMiniContainer.visibility = View.GONE
 
-        val fragment = supportFragmentManager.findFragmentByTag("menuMiniFragment")
-        if (fragment != null) {
-            supportFragmentManager.beginTransaction()
-                .remove(fragment)
-                .commit()
+    fun hideMenuMiniFragment() {
+        val menuMiniContainer: FrameLayout? = findViewById(R.id.menu_mini_container)
+        if (menuMiniContainer?.visibility == View.VISIBLE) { // Проверяем, что контейнер виден
+            menuMiniContainer.visibility = View.GONE
+
+            val fragment = supportFragmentManager.findFragmentByTag(MENU_MINI_TAG)
+            fragment?.let {
+                try {
+                    supportFragmentManager.beginTransaction()
+                        .remove(it)
+                        .commitNow() // Используем commitNow()
+                    supportFragmentManager.executePendingTransactions() // Принудительное выполнение
+
+                    Log.d("close menumini Activity", "Фрагмент удален")
+                } catch (e: Exception) {
+                    Log.e("MainActivity", "Ошибка при удалении MenuMiniFragment: ${e.message}")
+                }
+            }
         }
     }
 
@@ -115,15 +130,17 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
             navController.popBackStack(destinationId, false)
         }
     }
+
     fun navigateToMenu(categoryId: Int) {
         val bundle = Bundle()
         bundle.putInt("categoryId", categoryId)
-        // Исправлено:  action_home_to_menu  ->  action_global_menu
         navController.navigate(R.id.action_home_to_menu, bundle)
     }
+
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         try {
@@ -135,8 +152,10 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
             super.onBackPressed()
         }
     }
+
     fun showMenuMiniFragment(dishId: Int, categoryId: Int) {
-        findViewById<FrameLayout>(R.id.menu_mini_container).visibility = View.VISIBLE
+        val menuMiniContainer: FrameLayout? = findViewById(R.id.menu_mini_container)
+        menuMiniContainer?.visibility = View.VISIBLE
 
         val menuMiniFragment = MenuMini().apply {
             arguments = Bundle().apply {
@@ -144,9 +163,15 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
                 putInt("categoryId", categoryId)
             }
         }
-        supportFragmentManager.beginTransaction()
-            .add(R.id.menu_mini_container, menuMiniFragment)
-            .commit()
+
+        try {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.menu_mini_container, menuMiniFragment, MENU_MINI_TAG) // Заменяем фрагмент
+                .commit()
+
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Ошибка при добавлении MenuMiniFragment: ${e.message}")
+        }
     }
 }
 

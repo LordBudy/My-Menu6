@@ -16,9 +16,9 @@ class BasketRepositoryImpl(
     private val basketDao: BasketDao
 ) : BasketRepository {
 
-    override suspend fun addDishToBasket(dishId: Int): DishItem {
-        val dishEntity = dishDataSource.getDish(dishId, categoryId = 1)
-            ?: throw IllegalArgumentException("Блюдо с ID $dishId не найдено")
+    override suspend fun addDishToBasket(dish: Int): DishItem {
+        val dishEntity = dishDataSource.getDish(dish, categoryId = 1)
+            ?: throw IllegalArgumentException("Блюдо с ID $dish не найдено")
         basketDao.insertDish(dishEntity)
         return dishEntity.toDomainDishItem()
     }

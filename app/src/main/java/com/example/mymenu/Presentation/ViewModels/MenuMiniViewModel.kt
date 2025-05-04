@@ -1,5 +1,6 @@
 package com.example.mymenu.Presentation.ViewModels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,6 +29,16 @@ class MenuMiniViewModel(
             } catch (e: Exception) {
                 println("Error fetching dish: ${e.message}")
                 _dish.value = null
+            }
+        }
+    }
+    fun addDishToBasket(dish: DishItem) {
+        viewModelScope.launch {
+            try {
+                addDishToBasketUseCase.execute(dish)
+            } catch (e: Exception) {
+                Log.d("MiniViewModel", "ошибка добавления влюда в бд")
+                // Обработка ошибок (например, логирование)
             }
         }
     }
