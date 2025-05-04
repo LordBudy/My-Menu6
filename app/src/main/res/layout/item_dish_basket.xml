@@ -54,7 +54,8 @@
         android:textColor="@color/black"
         android:textSize="16sp" />
 
-    <Button
+
+    <ImageButton
         android:id="@+id/plusBtn"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -63,38 +64,39 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
         android:gravity="center"
-        android:text="@string/плюс"
-        android:textColor="#000000"
-        app:icon="@drawable/plus"
+        android:src="@drawable/plus"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/плюс"
         app:rippleColor="#22FFFF"
         tools:ignore="TouchTargetSizeCheck" />
 
-    <Button
+    <ImageButton
         android:id="@+id/minusBtn"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="55dp"
+        android:layout_marginStart="35dp"
         android:layout_marginTop="45dp"
         android:layout_marginBottom="15dp"
         android:layout_toEndOf="@+id/price"
         android:gravity="center"
-        android:text="@string/плюс"
-        android:textColor="#000000"
-        app:icon="@drawable/baseline_exposure_neg_1_24"
-        app:rippleColor="#22FFFF"
+        android:src="@drawable/baseline_exposure_neg_1_24"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/минус"
         tools:ignore="TouchTargetSizeCheck" />
 
     <TextView
-        android:id="@+id/count"
-        android:layout_width="match_parent"
+        android:id="@+id/count1"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_alignBottom="@+id/plusBtn"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_toStartOf="@+id/plusBtn"
         android:layout_toEndOf="@+id/minusBtn"
         android:gravity="center"
         android:text="@string/ноль"
-        android:textSize="16sp" />
+        android:textColor="#000000"
+        android:textSize="16sp"
+        />
 
 </RelativeLayout>

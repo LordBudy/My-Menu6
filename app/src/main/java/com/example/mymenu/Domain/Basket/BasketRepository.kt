@@ -16,5 +16,5 @@ interface BasketRepository {
 
     suspend fun plusDish(id: Int): DishItem
 
-    suspend fun addDishToBasket(dishId: Int): DishItem
+    suspend fun addDishToBasket(dish: Int): DishItem
 }

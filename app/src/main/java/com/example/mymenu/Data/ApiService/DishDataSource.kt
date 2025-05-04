@@ -33,7 +33,7 @@ class DishDataSource {
             // Создаем объект DishEntity с заданными параметрами (ID, URL изображения, название, цена, описание, вес, categoryId)
             DishEntity(
                 1,
-                "https://img.freepik.com/premium-photo/plate-with-tasty-pilaf-white_392895-19996.jpg?w=740",
+                "http://img.freepik.com/premium-photo/plate-with-tasty-pilaf-white_392895-19996.jpg?w=740",
                 "Рис с овощами",
                 450.0,
                 "В китайской кухне рис с овощами готовят " +
@@ -61,7 +61,7 @@ class DishDataSource {
             ),
             DishEntity(
                 3,
-                "https://img.freepik.com/premium-photo/grilled-salmon-fillet-with-risotto_738298-3633.jpg?w=740",
+                "http://img.freepik.com/premium-photo/grilled-salmon-fillet-with-risotto_738298-3633.jpg?w=740",
                 "Рыба с овощами и рисом",
                 330.0,
                 "Это - очень вкусное и очень простое домашнее блюдо:" +
@@ -95,7 +95,7 @@ class DishDataSource {
             ),
             DishEntity(
                 6,
-                "https://img.freepik.com/premium-photo/ham-roll-with-cheese-white-plate-mortadella-ricotta-rolls-isolated-white-background_229797-827.jpg?w=900",
+                "http://img.freepik.com/premium-photo/ham-roll-with-cheese-white-plate-mortadella-ricotta-rolls-isolated-white-background_229797-827.jpg?w=900",
                 "Рулеты из ветчины",
                 400.0,
                 "Рулетики из ветчины — это изысканное и вкусное блюдо, которое завоевывает любовь гурманов по всему миру." +
@@ -107,7 +107,7 @@ class DishDataSource {
             ),
             DishEntity(
                 7,
-                "https://img.freepik.com/premium-photo/spinach-fettuccine-with-mushroom_1339-24457.jpg?w=826",
+                "http://img.freepik.com/premium-photo/spinach-fettuccine-with-mushroom_1339-24457.jpg?w=826",
                 "Фетучини с грибами",
                 270.0,
                 "Фетучини Альфредо — итальянское блюдо из пасты фетучини, смешанной со сливочным маслом и" +
@@ -119,7 +119,7 @@ class DishDataSource {
             ),
             DishEntity(
                 8,
-                "https://img.freepik.com/premium-photo/baked-pork-meat-with-vegetables_738298-2579.jpg?w=996",
+                "http://img.freepik.com/premium-photo/baked-pork-meat-with-vegetables_738298-2579.jpg?w=996",
                 "Паэлья из утки",
                 550.0,
                 "Паэ́лья — национальное испанское и валенсийское блюдо из риса, подкрашенного шафраном," +
@@ -130,7 +130,7 @@ class DishDataSource {
             ),
             DishEntity(
                 9,
-                "https://img.freepik.com/premium-photo/ratatouille-traditional-provencal-vegetable-dish-french-food-vegetarian-food-healthy-eating_97840-5811.jpg?w=740",
+                "http://img.freepik.com/premium-photo/ratatouille-traditional-provencal-vegetable-dish-french-food-vegetarian-food-healthy-eating_97840-5811.jpg?w=740",
                 "Рататуй",
                 175.0,
                 "Рататуй - традиционное овощное блюдо прованской кухни из перцев, баклажанов" +
@@ -142,7 +142,7 @@ class DishDataSource {
             ),
             DishEntity(
                 10,
-                "https://img.freepik.com/free-photo/delicious-food-white-plate_144627-34711.jpg?t=st=1709222938~exp=1709226538~hmac=0c398f5a22dd87524b512c959a03792e059e9f0db74f17624bee36ce324a3e75&w=826",
+                "http://img.freepik.com/free-photo/delicious-food-white-plate_144627-34711.jpg?t=st=1709222938~exp=1709226538~hmac=0c398f5a22dd87524b512c959a03792e059e9f0db74f17624bee36ce324a3e75&w=826",
                 "Шницель",
                 240.0,
                 "Родиной шницеля является Австрия, а не Германия, как думают многие." +
@@ -154,7 +154,7 @@ class DishDataSource {
             ),
             DishEntity(
                 11,
-                "https://img.freepik.com/premium-photo/russian-pork-dumplings-pelmeni_738298-4053.jpg?w=826",
+                "http://img.freepik.com/premium-photo/russian-pork-dumplings-pelmeni_738298-4053.jpg?w=826",
                 "Пельмени",
                 190.0,
                 "В Китае пельмень — блюдо национальное и символизирует достаток. По легенде," +
@@ -167,7 +167,7 @@ class DishDataSource {
             ),
             DishEntity(
                 12,
-                "https://img.freepik.com/free-photo/delicious-pancakes-with-strawberry-jam_2829-15767.jpg?t=st=1709223250~exp=1709226850~hmac=241c2a3eb2651d89377f9bba91ce8a80b9ac3fae56f827b76bbc3ca84e0d6e0e&w=826",
+                "http://img.freepik.com/free-photo/delicious-pancakes-with-strawberry-jam_2829-15767.jpg?t=st=1709223250~exp=1709226850~hmac=241c2a3eb2651d89377f9bba91ce8a80b9ac3fae56f827b76bbc3ca84e0d6e0e&w=826",
                 "Олади",
                 100.0,
                 "Оладьи –традиционное русское блюдо. Они готовятся из различных ингредиентов," +
@@ -201,7 +201,7 @@ class DishDataSource {
             ),
             DishEntity(
                 15,
-                "https://media.leverans.ru/product_images_inactive/moscow/sam-am-beri/samamberi-ru-006.jpg",
+                "http://media.leverans.ru/product_images_inactive/moscow/sam-am-beri/samamberi-ru-006.jpg",
                 "Мясо ассорти в соусе",
                 400.0,
                 "Украшением мясного ассорти вполне могут стать тонко нарезанный куриный рулет, индюшатина," +
@@ -225,7 +225,7 @@ class DishDataSource {
             ),
             DishEntity(
                 17,
-                "https://lime-sushi.com/wa-data/public/shop/products/43/00/43/images/54/54.970.png",
+                "http://lime-sushi.com/wa-data/public/shop/products/43/00/43/images/54/54.970.png",
                 "Фунчоза с креветками и овощами",
                 320.0,
                 "Фунчоза с креветками и овощами идеально подойдет для подачи на ужин с любимыми. Она хорошо" +
@@ -237,7 +237,7 @@ class DishDataSource {
             ),
             DishEntity(
                 18,
-                "https://cdn-img.perekrestok.ru/i/400x400-fit/xdelivery/files/48/e2/b46bfb25b1edde303b63b92ef3ee.jpg",
+                "http://cdn-img.perekrestok.ru/i/400x400-fit/xdelivery/files/48/e2/b46bfb25b1edde303b63b92ef3ee.jpg",
                 "Суп рамэн со свининой",
                 190.0,
                 "Сытный свиной суп рамен или рамен курицей и пекинской капустой, получаются невероятного вкуса" +
@@ -249,7 +249,7 @@ class DishDataSource {
             ),
             DishEntity(
                 19,
-                "https://img.freepik.com/premium-photo/plate-with-tasty-pilaf-white_392895-19996.jpg?w=740",
+                "http://img.freepik.com/premium-photo/plate-with-tasty-pilaf-white_392895-19996.jpg?w=740",
                 "Рис с овощами",
                 450.0,
                 "В китайской кухне рис с овощами готовят " +
@@ -263,7 +263,7 @@ class DishDataSource {
             ),
             DishEntity(
                 20,
-                "https://img.freepik.com/premium-photo/plate-with-tasty-pilaf-white_392895-19996.jpg?w=740",
+                "http://img.freepik.com/premium-photo/plate-with-tasty-pilaf-white_392895-19996.jpg?w=740",
                 "Рис с овощами",
                 450.0,
                 "В китайской кухне рис с овощами готовят " +
