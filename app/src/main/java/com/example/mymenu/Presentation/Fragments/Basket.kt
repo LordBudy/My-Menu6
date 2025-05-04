@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 import com.example.mymenu.Data.ModelsEntitys.toDomainDishItem
 
 @Suppress("UNCHECKED_CAST")
-class Basket : Fragment(), BasketInterface {
+class Basket : Fragment(), BasketInterface{
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var basketAdapter: BasketAdapter
@@ -48,7 +48,7 @@ class Basket : Fragment(), BasketInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        basketAdapter = BasketAdapter(emptyList())
+        basketAdapter = BasketAdapter(emptyList(), this)
         recyclerView.adapter = basketAdapter
 
         val dishDataSource = DishDataSource()
@@ -63,9 +63,8 @@ class Basket : Fragment(), BasketInterface {
         })[BasketViewModel::class.java]
 
         basketViewModel.basketItems.observe(viewLifecycleOwner, Observer { basketItems ->
-            val dishItems = basketItems.map {
-                it.toDomainDishItem() } // Преобразование DishEntity в DishItem
-            basketAdapter.updateData(dishItems) // Обновление адаптера с новыми данными
+            Log.d("BasketFragment", "basketViewModel.basketItems.observe: ${basketItems.size}")
+            basketAdapter.updateData(basketItems)
         })
         basketViewModel.loadBasketItems()
     }
@@ -83,10 +82,18 @@ class Basket : Fragment(), BasketInterface {
             try {
                 val dishEntity = basketDao.getDishById(dishId)
                 if (dishEntity != null) {
-                    dishEntity.count = (dishEntity.count + change).coerceAtLeast(1) // Минимум 1
-                    basketDao.updateDish(dishEntity)
-                    basketViewModel.loadBasketItems()
-                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                    val newCount = dishEntity.count + change // Сначала вычисляем новое значение
+                    if (newCount > 0) { // Проверяем, что новое значение больше нуля
+                        dishEntity.count = newCount // Устанавливаем новое значение
+                        basketDao.updateDish(dishEntity) // Обновляем в базе данных
+                        basketViewModel.loadBasketItems() // Обновляем список
+                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                    } else {
+                        delete(DishItem(dishEntity.id,dishEntity.url,
+                            dishEntity.name,dishEntity.price,dishEntity.weight,
+                            dishEntity.description,dishEntity.categoryId,
+                            dishEntity.count)) // Если 0, удаляем
+                    }
                 }
             } catch (e: Exception) {
                 Log.e("BasketFragment", "Ошибка при обновлении количества", e)

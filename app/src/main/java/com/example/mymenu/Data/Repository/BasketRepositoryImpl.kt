@@ -38,8 +38,8 @@ class BasketRepositoryImpl(
         if (dishEntity.count > 1) {
             dishEntity.count -= 1
             basketDao.updateDish(dishEntity)
-        } else if (dishEntity.count == 1) {
-            // Если количество равно 1, можно удалить блюдо из корзины
+        } else if (dishEntity.count < 1) {
+            // Если количество меньше 1,  удалить блюдо из корзины и бд
             deleteDishBasket(id)
             return dishEntity.toDomainDishItem() // Возвращаем DishItem, если удалили
         }
