@@ -9,18 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymenu.Data.ApiService.DishDataSource
 
-import com.example.mymenu.Data.Repository.DishRepositoryImpl  // Замените на путь к вашему DishRepositoryImpl
-import com.example.mymenu.Domain.Menu.GetDishsMenuUseCase  // Замените на путь к вашему GetDishesUseCase
-import com.example.mymenu.Domain.Models.DishItem
+import com.example.mymenu.Data.Repository.DishRepositoryImpl
+import com.example.mymenu.Domain.Menu.GetDishsMenuUseCase
 import com.example.mymenu.MainActivity
 import com.example.mymenu.Presentation.Adapters.MenuAdapter
-import com.example.mymenu.Presentation.ViewModels.Interfaces.MenuInterface
-import com.example.mymenu.Presentation.ViewModels.MenuViewModel  // Замените на путь к вашей MenuViewModel
+import com.example.mymenu.Presentation.ViewModels.MenuViewModel
 import com.example.mymenu.R
 
 @Suppress("UNCHECKED_CAST")

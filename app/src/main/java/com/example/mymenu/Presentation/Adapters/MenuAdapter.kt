@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mymenu.Domain.Models.DishItem
 import com.example.mymenu.R
 import com.squareup.picasso.Picasso
-// Объявляем класс DishAdapter, который наследуется от RecyclerView.Adapter
-// Этот адаптер отвечает за отображение списка блюд в RecyclerView
+
 class MenuAdapter(
     // Список блюд, которые нужно отобразить
     private var dishs: List<DishItem>,
@@ -42,26 +41,17 @@ class MenuAdapter(
         // Создаем и возвращаем ViewHolder
         return DishViewHolder(view)
     }
-    // Этот метод вызывается, чтобы привязать данные к ViewHolder
+    // привязываем данные к ViewHolder
     override fun onBindViewHolder(holder: DishViewHolder, position: Int) {
-        // Получаем блюдо по позиции
-        val dish = dishs[position]
-        // Устанавливаем данные в соответствующие View
-        // Устанавливаем название блюда
-        holder.dishNameTextView.text = dish.name
-        // Устанавливаем цену блюда
-        holder.PriceTextView.text = dish.price.toString()
-        // Устанавливаем вес блюда
-        holder.WeightTextView.text = dish.weight.toString()
-        // Загружаем изображение блюда с помощью Picasso
+        val dish = dishs[position]// Получаем блюдо по позиции
+        holder.dishNameTextView.text = dish.name //название блюда
+        holder.PriceTextView.text = dish.price.toString()//цена блюда
+        holder.WeightTextView.text = dish.weight.toString()// вес блюда
         Picasso.get()
             // Загружаем изображение по URL
             .load(dish.url)
-            // Устанавливаем изображение-заполнитель (отображается, пока загружается изображение)
             .placeholder(R.drawable.placeholder_image)
-            // Устанавливаем изображение ошибки (отображается, если не удалось загрузить изображение)
             .error(R.drawable.error_image)
-            // Помещаем загруженное изображение в dishImageView
             .into(holder.dishImageView)
 
         //  Обработчик нажатия на элемент списка

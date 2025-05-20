@@ -6,28 +6,46 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import com.example.mymenu.Data.ApiService.DishDataSource
+import com.example.mymenu.Data.DAO.BasketDao
+import com.example.mymenu.Data.DB.AppDataBase
+import com.example.mymenu.Data.Repository.BasketRepositoryImpl
+import com.example.mymenu.Domain.Basket.GetAllBasketUseCase
 import com.example.mymenu.Domain.Models.DishItem
 import com.example.mymenu.Presentation.Fragments.MenuMini
-import com.example.mymenu.Presentation.ViewModels.Interfaces.MenuMiniListener
+import com.example.mymenu.Presentation.ViewModels.BasketViewModel
+import com.example.mymenu.Presentation.ViewModels.Factoryes.BasketViewModelFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 // @Suppress("DEPRECATION") - подавляем предупреждения о использовании устаревших API
 @Suppress("DEPRECATION")
-class MainActivity : AppCompatActivity(), MenuMiniListener {
+class MainActivity : AppCompatActivity(){
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private val MENU_MINI_TAG = "menuMiniFragment"
+    private lateinit var basketViewModel: BasketViewModel
+    private lateinit var getAllBasketUseCase: GetAllBasketUseCase
+    private lateinit var dishDataSource : DishDataSource
+    private lateinit var basketDao : BasketDao
+    private lateinit var basketRepository : BasketRepositoryImpl
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        dishDataSource = DishDataSource()
+        basketDao = AppDataBase.getDatabase(applicationContext).basketDao()
+        basketRepository = BasketRepositoryImpl(dishDataSource, basketDao)
+        getAllBasketUseCase = GetAllBasketUseCase(basketRepository)
+// Инициализируем ViewModel, используя фабрику
+        basketViewModel = ViewModelProvider(this, BasketViewModelFactory(getAllBasketUseCase, basketRepository))
+            .get(BasketViewModel::class.java)
 
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bNav)
         val navHostFragment =
@@ -97,7 +115,7 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
         }
     }
 
-    override fun onAddToCartClicked(dishItem: DishItem) {
+    fun onAddToCartClicked(dishItem: DishItem) {
         val bundle = Bundle().apply {
             putParcelable("dish", dishItem)
         }
@@ -114,12 +132,12 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
                 try {
                     supportFragmentManager.beginTransaction()
                         .remove(it)
-                        .commitNow() // Используем commitNow()
+                        .commitNow()
                     supportFragmentManager.executePendingTransactions() // Принудительное выполнение
 
                     Log.d("close menumini Activity", "Фрагмент удален")
                 } catch (e: Exception) {
-                    Log.e("MainActivity", "Ошибка при удалении MenuMiniFragment: ${e.message}")
+                    //Log.e("MainActivity", "Ошибка при удалении MenuMiniFragment: ${e.message}")
                 }
             }
         }
@@ -157,7 +175,7 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
         val menuMiniContainer: FrameLayout? = findViewById(R.id.menu_mini_container)
         menuMiniContainer?.visibility = View.VISIBLE
 
-        val menuMiniFragment = MenuMini().apply {
+        val menuMiniFragment = MenuMini(basketViewModel).apply {
             arguments = Bundle().apply {
                 putInt("dishId", dishId)
                 putInt("categoryId", categoryId)
@@ -166,7 +184,11 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
 
         try {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.menu_mini_container, menuMiniFragment, MENU_MINI_TAG) // Заменяем фрагмент
+                .replace(
+                    R.id.menu_mini_container,
+                    menuMiniFragment,
+                    MENU_MINI_TAG
+                ) // Заменяем фрагмент
                 .commit()
 
         } catch (e: Exception) {

@@ -5,11 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mymenu.Data.ModelsEntitys.DishEntity
 import com.example.mymenu.Domain.Basket.AddDishToBasketUseCase
 import com.example.mymenu.Domain.MenuMini.GetDishMiniUseCase
 import com.example.mymenu.Domain.Models.DishItem
-import com.example.mymenu.Presentation.ViewModels.Interfaces.MiniInterface
 import kotlinx.coroutines.launch
 
 class MenuMiniViewModel(
@@ -27,8 +25,7 @@ class MenuMiniViewModel(
             try {
                 _dish.value = getDishMiniUseCase.execute(dishId, categoryId)
             } catch (e: Exception) {
-                println("Error fetching dish: ${e.message}")
-                _dish.value = null
+                Log.e("MenuMiniViewModel", "Ошибка при загрузке блюда", e)
             }
         }
     }
@@ -38,7 +35,7 @@ class MenuMiniViewModel(
                 addDishToBasketUseCase.execute(dish)
             } catch (e: Exception) {
                 Log.d("MiniViewModel", "ошибка добавления влюда в бд")
-                // Обработка ошибок (например, логирование)
+
             }
         }
     }

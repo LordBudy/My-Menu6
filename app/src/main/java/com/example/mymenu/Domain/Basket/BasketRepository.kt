@@ -7,14 +7,13 @@ import kotlinx.coroutines.flow.Flow
 // работающими с данными корзины. Это позволяет отделить бизнес-логику от конкретной
 // реализации доступа к данным база данных
 interface BasketRepository {
-
+    suspend fun addDishToBasket(dish: Int): DishItem
     fun getAllDishes(): Flow<List<DishItem>>
-
+    suspend fun getBasketItemByDishId(dishId: Int): DishItem?
+    suspend fun updateBasketItem(basketItem: DishItem)
     suspend fun deleteDishBasket(dishId: Int)
-
-    suspend fun minusDish(id: Int): DishItem
-
+    suspend fun minusDish(id: Int): DishItem?
     suspend fun plusDish(id: Int): DishItem
 
-    suspend fun addDishToBasket(dish: Int): DishItem
+
 }
