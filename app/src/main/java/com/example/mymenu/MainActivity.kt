@@ -18,6 +18,7 @@ import com.example.mymenu.Data.DB.AppDataBase
 import com.example.mymenu.Data.Repository.BasketRepositoryImpl
 import com.example.mymenu.Domain.Basket.GetAllBasketUseCase
 import com.example.mymenu.Domain.Models.DishItem
+import com.example.mymenu.Presentation.Fragments.FastMenu
 import com.example.mymenu.Presentation.Fragments.MenuMini
 import com.example.mymenu.Presentation.ViewModels.BasketViewModel
 import com.example.mymenu.Presentation.ViewModels.Factoryes.BasketViewModelFactory
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity(){
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.Container_frag) as NavHostFragment
         navController = navHostFragment.navController
-
+ 
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.home,
@@ -113,6 +114,13 @@ class MainActivity : AppCompatActivity(){
                 else -> false
             }
         }
+    }
+    fun showSearchResults(query: String) {
+        val fastMenuFragment = FastMenu.newInstance(query)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.Container_frag, fastMenuFragment) // Replace with your container ID
+            .addToBackStack(null) // Add to back stack to allow navigation back
+            .commit()
     }
 
     fun onAddToCartClicked(dishItem: DishItem) {

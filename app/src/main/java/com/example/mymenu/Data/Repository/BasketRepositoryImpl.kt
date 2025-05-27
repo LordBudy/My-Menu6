@@ -60,11 +60,11 @@ class BasketRepositoryImpl(
         }
 
     override suspend fun getBasketItemByDishId(dishId: Int): DishItem? {
-        return basketDao.getDishById(dishId)?.toDomainDishItem() // Map to domain object
+        return basketDao.getDishById(dishId)?.toDomainDishItem()
     }
 
     override suspend fun updateBasketItem(basketItem: DishItem) {
-        val dishEntity = basketItem.toDishEntity() // Map to entity
+        val dishEntity = basketItem.toDishEntity()
         basketDao.updateDish(dishEntity)
     }
 
@@ -88,7 +88,8 @@ class BasketRepositoryImpl(
     }
     override suspend fun plusDish(id: Int): DishItem {
         // Получаем блюдо по ID из базы данных
-        val dishEntity = basketDao.getDishById(id) ?: throw IllegalArgumentException("Блюдо с ID $id не найдено")
+        val dishEntity = basketDao.getDishById(id) ?:
+        throw IllegalArgumentException("Блюдо с ID $id не найдено")
         // Увеличиваем количество блюда
         dishEntity.count += 1
         // Обновляем блюдо в базе данных

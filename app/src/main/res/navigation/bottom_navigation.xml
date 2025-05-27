@@ -59,6 +59,9 @@
         <action
             android:id="@+id/action_menu_to_fastSearch"
             app:destination="@id/fastSearch" />
+        <action
+            android:id="@+id/action_menu_to_fastMenu"
+            app:destination="@id/fastMenu" />
     </fragment>
     <fragment
         android:id="@+id/menuMini"
@@ -76,10 +79,23 @@
         android:id="@+id/fastSearch"
         android:name="com.example.mymenu.Presentation.Fragments.FastSearch"
         android:label="fragment_fast_search"
-        tools:layout="@layout/fragment_fast_search"/>
+        tools:layout="@layout/fragment_fast_search">
+        <action
+            android:id="@+id/action_fastSearch_to_fastMenu"
+            app:destination="@id/fastMenu" />
+    </fragment>
     <fragment
         android:id="@+id/account"
         android:name="com.example.mymenu.Presentation.Fragments.Account"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/fastMenu"
+        android:name="com.example.mymenu.Presentation.Fragments.FastMenu"
+        android:label="fast_menu"
+        tools:layout="@layout/fast_menu" >
+        <action
+            android:id="@+id/action_fastMenu_to_menuMini"
+            app:destination="@id/menuMini" />
+    </fragment>
 </navigation>

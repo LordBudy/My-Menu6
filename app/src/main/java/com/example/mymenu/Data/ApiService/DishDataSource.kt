@@ -3,6 +3,7 @@ package com.example.mymenu.Data.ApiService
 import android.util.Log
 import com.example.mymenu.Data.ModelsEntitys.DishEntity
 import com.example.mymenu.Domain.Models.DishItem
+import kotlinx.coroutines.flow.flow
 import java.nio.file.Files.find
 
 class DishDataSource {
@@ -25,8 +26,17 @@ class DishDataSource {
         val dishes = getDishesByCategoryId(categoryId)
         return dishes.find { it.id == dishId } // Ищем блюдо с нужным ID
     }
+    //Поиск по всем категориям по имени
+    fun getDishAcrossAllCategoriesByName(dishName: String)= flow  {
+        for (categoryId in 1..4) {
+            val dishes = getDishesByCategoryId(categoryId)
+            val dish = dishes.find { it.name.equals(dishName, ignoreCase = true) }
+            if (dish != null) {
+                emit(dish)
+            }
+        }
+    }
     // Блюда для категории 1
-    // Метод для получения списка блюд для категории 1.
     fun getDishesForCategory1(): List<DishEntity> {
         // Возвращаем список блюд, созданный с помощью функции listOf()
         return listOf(
@@ -278,8 +288,6 @@ class DishDataSource {
         )
     }
     // Блюда для категории 2
-    // Метод для получения списка блюд для категории 2.
-    // Возвращает List<DishEntity> (список объектов DishEntity).
     private fun getDishesForCategory2(): List<DishEntity> {
         return listOf(
             DishEntity(6,
@@ -292,7 +300,6 @@ class DishDataSource {
                 1) // categoryId
         )
     }
-
     // Блюда для категории 3
     private fun getDishesForCategory3(): List<DishEntity> {
         return listOf(
