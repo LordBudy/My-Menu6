@@ -9,15 +9,13 @@ import java.nio.file.Files.find
 class DishDataSource {
     // Имитация локального источника данных
     // Метод для получения списка блюд по ID категории.
-    // Принимает categoryId (идентификатор категории).
-    // Возвращает List<DishEntity> (список объектов DishEntity).
     fun getDishesByCategoryId(categoryId: Int): List<DishEntity> {
         // Используем оператор when для выбора списка блюд в зависимости от ID категории.
         return when (categoryId) {
             1 -> getDishesForCategory1() // Получаем блюда для категории 1
-            2 -> getDishesForCategory1() // Получаем блюда для категории 2
-            3 -> getDishesForCategory1() // Получаем блюда для категории 3
-            4 -> getDishesForCategory1() // Получаем блюда для категории 4
+            2 -> getDishesForCategory2() // Получаем блюда для категории 2
+            3 -> getDishesForCategory3() // Получаем блюда для категории 3
+            4 -> getDishesForCategory4() // Получаем блюда для категории 4
             else -> emptyList() // Если категория не найдена, возвращаем пустой список
         }
     }
@@ -30,9 +28,9 @@ class DishDataSource {
     fun getDishAcrossAllCategoriesByName(dishName: String)= flow  {
         for (categoryId in 1..4) {
             val dishes = getDishesByCategoryId(categoryId)
-            val dish = dishes.find { it.name.equals(dishName, ignoreCase = true) }
-            if (dish != null) {
-                emit(dish)
+            val dish = dishes.filter { it.name.startsWith(dishName, ignoreCase = true) }
+            dish.forEach{
+                emit(it)
             }
         }
     }

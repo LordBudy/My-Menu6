@@ -93,7 +93,7 @@
         android:id="@+id/fastMenu"
         android:name="com.example.mymenu.Presentation.Fragments.FastMenu"
         android:label="fast_menu"
-        tools:layout="@layout/fast_menu" >
+        tools:layout="@layout/fragment_fast_menu" >
         <action
             android:id="@+id/action_fastMenu_to_menuMini"
             app:destination="@id/menuMini" />

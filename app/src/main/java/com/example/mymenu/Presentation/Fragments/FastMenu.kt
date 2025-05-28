@@ -1,6 +1,7 @@
 package com.example.mymenu.Presentation.Fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mymenu.Data.ApiService.DishDataSource
 import com.example.mymenu.Data.Repository.DishRepositoryImpl
 import com.example.mymenu.Domain.Menu.Search.GetSearchDishesUseCase
+import com.example.mymenu.MainActivity
 import com.example.mymenu.Presentation.Adapters.SearchAdapter
 import com.example.mymenu.Presentation.ViewModels.Factoryes.SearchViewModelFactory
 import com.example.mymenu.Presentation.ViewModels.SearchViewModel
@@ -21,12 +23,12 @@ class FastMenu : Fragment() {
     private lateinit var viewModel: SearchViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchAdapter: SearchAdapter
-    private var searchQuery: String? = null // Store search query
+    private var searchQuery: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            searchQuery = it.getString("search_query") // Get the query
+            searchQuery = it.getString("search_query")
         }
     }
 
@@ -34,9 +36,9 @@ class FastMenu : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for the FastMenu fragment
-        val view = inflater.inflate(R.layout.fragment_fast_search, container, false) // Replace with your layout
-        recyclerView = view.findViewById(R.id.recyclerFastMenu) //Correct the ids again
+
+        val view = inflater.inflate(R.layout.fragment_fast_menu, container, false)
+        recyclerView = view.findViewById(R.id.recyclerFastMenu)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         return view
     }
@@ -52,8 +54,8 @@ class FastMenu : Fragment() {
         viewModel = ViewModelProvider(this, factory)[SearchViewModel::class.java]
 
         searchAdapter = SearchAdapter(emptyList()) { dishItem ->
-            // Handle item click here
-            // Example: (activity as? MainActivity)?.showDishDetails(dishItem)
+            Log.d("FastMenu", "Dish clicked: ${dishItem.name}")
+            (activity as? MainActivity)?.showMenuMiniFragment(dishItem.id, 1)
         }
 
         recyclerView.adapter = searchAdapter
@@ -65,7 +67,6 @@ class FastMenu : Fragment() {
                 Toast.makeText(requireContext(), "Не удалось загрузить блюда", Toast.LENGTH_SHORT).show()
             }
         })
-        // Trigger the search if a query is available
         searchQuery?.let {
             viewModel.loadDishs(it)
         }

@@ -74,7 +74,7 @@ class MenuMini(private val basketViewModel: BasketViewModel) : Fragment() {
 
         val closeButton: Button = view.findViewById(R.id.close) //кнопка закрытия
         closeButton.setOnClickListener {
-            (activity as? MainActivity)?.hideMenuMiniFragment()
+            parentFragmentManager.beginTransaction().remove(this@MenuMini).commit()
         }
         val aadButton: Button = view.findViewById(R.id.add_Bascket)//кнопка добавить в корзину
         aadButton.setOnClickListener {

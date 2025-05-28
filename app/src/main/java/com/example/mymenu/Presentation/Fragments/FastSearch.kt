@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -24,17 +25,18 @@ import com.example.mymenu.Presentation.ViewModels.MenuViewModel
 import com.example.mymenu.Presentation.ViewModels.SearchViewModel
 import com.example.mymenu.R
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "DEPRECATION")
 class FastSearch : Fragment() {
     private lateinit var viewModel: SearchViewModel
     private lateinit var searchView: SearchView
-
+    private lateinit var btnSearch: Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_fast_search, container, false)
         searchView = view.findViewById(R.id.searchView)
+        btnSearch = view.findViewById(R.id.btnSearch)
         return view
     }
 
@@ -48,11 +50,17 @@ class FastSearch : Fragment() {
         val factory = SearchViewModelFactory(getSearchDishesUseCase)
         viewModel = ViewModelProvider(this, factory)[SearchViewModel::class.java]
 
+        btnSearch.setOnClickListener {
+            val query = searchView.query.toString()
+            if (query.isNotEmpty()) {
+                (activity as? MainActivity)?.showSearchResults(query)
+                fragmentManager?.beginTransaction()?.remove(this)?.commit()
+            } else {
+                Toast.makeText(requireContext(), "Введите название блюда", Toast.LENGTH_SHORT).show()
+            }
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let {
-                    (activity as? MainActivity)?.showSearchResults(it)
-                }
                 return true
             }
 

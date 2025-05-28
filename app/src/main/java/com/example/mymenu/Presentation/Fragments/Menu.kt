@@ -62,7 +62,6 @@ class Menu : Fragment() {
             } else {
                 // Обработка случая, когда dishId или categoryId равны null
                 Toast.makeText(requireContext(), "Ошибка: ID блюда или категории не найдены", Toast.LENGTH_SHORT).show()
-                // Или другая логика обработки ошибки
             }
         }
         recyclerView.adapter = menuAdapter
