@@ -16,16 +16,15 @@ class SearchViewModel(
     private val _dishs = MutableLiveData<List<DishItem>>()
     val dishs: LiveData<List<DishItem>> = _dishs
 
-    fun loadDishs(query: String) { // Added name parameter here, remove from params
-        //  viewModelScope - корутин , связанный с жизненным циклом ViewModel
+    fun loadDishs(query: String) {
         viewModelScope.launch {
             try {
                 //  Вызываем UseCase для получения списка блюд по запросу
                 getSearchDishesUseCase.execute(query).collectLatest { dishes ->
-                    _dishs.value = dishes // Assign the list of dishes
+                    _dishs.value = dishes
                 }
             } catch (e: Exception) {
-                println("Error loading dishs: ${e.message}")
+                println("Ошибка загрузки блюд: ${e.message}")
                 _dishs.value = emptyList()
             }
         }

@@ -29,10 +29,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
+    private val MENU_MINI_TAG = "menuMiniFragment"
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
-    private val MENU_MINI_TAG = "menuMiniFragment"
     private lateinit var basketViewModel: BasketViewModel
     private lateinit var getAllBasketUseCase: GetAllBasketUseCase
     private lateinit var dishDataSource: DishDataSource
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+//зависимости
         dishDataSource = DishDataSource()
         basketDao = AppDataBase.getDatabase(applicationContext).basketDao()
         basketRepository = BasketRepositoryImpl(dishDataSource, basketDao)
@@ -94,7 +94,8 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-}
+    }
+
     fun showSearchResults(query: String) {
         val bundle = Bundle().apply {
             putString("search_query", query)
@@ -125,6 +126,7 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+
     fun hideMenuMiniFragment() {
         val menuMiniContainer: FrameLayout? = findViewById(R.id.menu_mini_container)
         menuMiniContainer?.visibility = View.GONE

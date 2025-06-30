@@ -22,49 +22,54 @@
             tools:ignore="VisualLintBounds">
 
             <Button
-                android:id="@+id/btn_Все_меню"
+                android:id="@+id/btnAllMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginStart="5dp"
+                android:gravity="center"
                 android:text="@string/все_меню"
+                android:textColor="#212121"
                 tools:ignore="ButtonStyle" />
 
             <Button
-                android:id="@+id/btn_салаты"
+                android:id="@+id/btnWithMeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:text="@string/с_мясом"
+                android:textColor="#212121"
+                tools:ignore="ButtonStyle" />
+
+            <Button
+                android:id="@+id/btnWithRice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:text="@string/с_рисом"
+                android:textColor="#212121"
+                tools:ignore="ButtonStyle" />
+
+            <Button
+                android:id="@+id/btnWithFish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:text="@string/с_рыбой"
+                android:textColor="#212121"
+                tools:ignore="ButtonStyle" />
+
+            <Button
+                android:id="@+id/btnSalads"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginStart="5dp"
                 android:text="@string/салаты"
+                android:textColor="#212121"
                 tools:ignore="ButtonStyle" />
-
-            <Button
-                android:id="@+id/btn_с_рисом"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginStart="5dp"
-                android:text="@string/с_рисом"
-                tools:ignore="ButtonStyle" />
-
-            <Button
-                android:id="@+id/btn_с_рыбой"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginStart="5dp"
-                android:text="@string/с_рыбой"
-                tools:ignore="ButtonStyle" />
-
-            <Button
-                android:id="@+id/btn_с_мясом"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginStart="5dp"
-                android:text="@string/с_мясом"
-                tools:ignore="ButtonStyle,TextContrastCheck" />
         </LinearLayout>
     </HorizontalScrollView>
 
