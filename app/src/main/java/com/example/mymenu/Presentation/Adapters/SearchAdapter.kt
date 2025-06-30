@@ -1,5 +1,6 @@
 package com.example.mymenu.Presentation.Adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,19 +11,14 @@ import com.example.mymenu.Domain.Models.DishItem
 import com.example.mymenu.R
 import com.squareup.picasso.Picasso
 
-class MenuAdapter(
-    // Список блюд, которые нужно отобразить
+class SearchAdapter(
+// Список блюд, которые нужно отобразить
     private var dishs: List<DishItem>,
     private val onClick: (DishItem) -> Unit //  Лямбда-функция, вызываемая при нажатии на блюдо
     // Указываем тип ViewHolder, который будет использоваться
-     ) : RecyclerView.Adapter<MenuAdapter.DishViewHolder>() {
+) : RecyclerView.Adapter<SearchAdapter.DishViewHolder>() {
     // Метод для обновления данных в адаптере
-    fun updateData(newDish: List<DishItem>) {
-        // Обновляем список блюд
-        dishs =newDish
-        // Сообщаем адаптеру, что данные изменились, чтобы он переписал список
-        notifyDataSetChanged()
-    }
+
     // Класс DishViewHolder, который представляет собой контейнер для View элемента списка
     class DishViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // ImageButton для отображения изображения блюда
@@ -37,7 +33,8 @@ class MenuAdapter(
     // Этот метод вызывается, когда нужно создать новый ViewHolder для элемента списка
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishViewHolder {
         // Раздуваем (inflate) layout item_dish_menu.xml, который содержит UI для одного блюда
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dish_menu, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_dish_menu, parent, false)
         // Создаем и возвращаем ViewHolder
         return DishViewHolder(view)
     }
@@ -57,6 +54,7 @@ class MenuAdapter(
         //  Обработчик нажатия на элемент списка
         holder.itemView.setOnClickListener {
             onClick(dish) //  Вызываем лямбда-функцию, передавая DishItem
+            Log.d("BasketFragment", "клик по блюду прошел ")
         }
     }
     //метод возвращает количество элементов в списке
@@ -64,4 +62,11 @@ class MenuAdapter(
         // Возвращаем размер списка блюд
         return dishs.size
     }
+    fun updateData(newDish: List<DishItem>) {
+        // Обновляем список блюд
+        dishs = newDish
+        // Сообщаем адаптеру, что данные изменились, чтобы он переписал список
+        notifyDataSetChanged()
+    }
+
 }

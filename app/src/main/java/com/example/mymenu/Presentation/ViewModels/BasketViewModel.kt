@@ -1,36 +1,93 @@
 package com.example.mymenu.Presentation.ViewModels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mymenu.Data.DAO.BasketDao
+import com.example.mymenu.Data.Repository.BasketRepositoryImpl
 import com.example.mymenu.Domain.Basket.GetAllBasketUseCase
 import com.example.mymenu.Domain.Models.DishItem
-import com.example.mymenu.Presentation.ViewModels.Interfaces.MenuInterface
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-// Объявляем класс BasketViewModel, который наследуется от ViewModel (предоставляет данные для UI)
 class BasketViewModel(
-    private val getAllBasketUseCase: GetAllBasketUseCase
+    private val getAllBasketUseCase: GetAllBasketUseCase,
+    private val basketRepository: BasketRepositoryImpl
+
 ) : ViewModel() {
 
     private val _basketItems = MutableLiveData<List<DishItem>>()
     val basketItems: LiveData<List<DishItem>> = _basketItems
 
-    // Блок инициализации (выполняется при создании ViewModel)
-    init {
-        loadBasketItems() // Загружаем элементы корзины при создании ViewModel
-    }
+    private val _totalPrice = MutableLiveData<Double>()
+    val totalPrice: LiveData<Double> = _totalPrice
 
-    // Метод для загрузки элементов корзины
+    init {
+        loadBasketItems()
+    }
+    private fun calculateTotalPrice(dishList: List<DishItem>) {
+        var total = 0.0
+        for (dish in dishList) {
+            total += dish.price * dish.count
+            Log.d("BasketViewModel",
+                "calculateTotalPrice: dish.name = ${dish.name}," +
+                        " dish.price = ${dish.price}," +
+                        " dish.count = ${dish.count}, total = $total")
+        }
+        _totalPrice.value = total
+    }
+    // загрузка элементов корзины
     fun loadBasketItems() {
-        // Запускаем корутину в viewModelScope (scope жизненного цикла ViewModel)
         viewModelScope.launch {
             getAllBasketUseCase().collectLatest { items ->
                 _basketItems.value = items
+                calculateTotalPrice(items)
+                Log.d("loadingBasket","ok = ${_basketItems}")
+            }
+        }
+    }
+    //увелечение кол-ва на 1
+    fun onPlusClicked(dishItem :DishItem){
+        viewModelScope.launch {
+            try {
+                basketRepository.plusDish(dishItem.id)
+                loadBasketItems()
+            } catch (e: Exception) {
+                Log.e("BasketViewModel", "Ошибка при увеличении количества", e)
+            }
+        }
+    }
+    //уменьшение кол-ва на 1
+    fun onMinusClicked(dishItem: DishItem) {
+        viewModelScope.launch {
+            try {
+                basketRepository.minusDish(dishItem.id)
+                loadBasketItems()
+            } catch (e: Exception) {
+                Log.e("BasketViewModel", "Ошибка при уменьшении количества", e)
+            }
+        }
+    }
+    //удаление товара если < 1
+    fun onDeleteClicked(dishItem :DishItem){
+        viewModelScope.launch {
+            try {
+                basketRepository.deleteDishBasket(dishItem.id)
+                loadBasketItems()
+            } catch (e: Exception) {
+                Log.e("BasketViewModel", "Ошибка при удалении количества", e)
+            }
+        }
+    }
+    fun addDishToBasket(dishId: Int) {
+        viewModelScope.launch {
+            try {
+                basketRepository.addDishToBasket(dishId) // Use the repository to add the dish.
+                loadBasketItems()
+            } catch (e: Exception) {
+                Log.e("BasketViewModel", "Error adding dish: ${e.message}", e)
             }
         }
     }

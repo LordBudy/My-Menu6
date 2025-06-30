@@ -27,7 +27,7 @@ abstract class AppDataBase : RoomDatabase() {
                     AppDataBase::class.java,
                     // Название файла базы данных
                     "app_database"
-                ).build()// Строим базу данных
+                ).fallbackToDestructiveMigration().build()// Строим базу данных
                 // Сохраняем созданный экземпляр базы данных в INSTANCE
                 INSTANCE = instance
                 // Возвращаем созданный экземпляр базы данных.

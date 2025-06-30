@@ -6,33 +6,58 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.mymenu.Data.ApiService.DishDataSource
+import com.example.mymenu.Data.DAO.BasketDao
+import com.example.mymenu.Data.DB.AppDataBase
+import com.example.mymenu.Data.Repository.BasketRepositoryImpl
+import com.example.mymenu.Domain.Basket.GetAllBasketUseCase
 import com.example.mymenu.Domain.Models.DishItem
+import com.example.mymenu.Presentation.Fragments.FastMenu
 import com.example.mymenu.Presentation.Fragments.MenuMini
-import com.example.mymenu.Presentation.ViewModels.Interfaces.MenuMiniListener
+import com.example.mymenu.Presentation.ViewModels.BasketViewModel
+import com.example.mymenu.Presentation.ViewModels.Factoryes.BasketViewModelFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 // @Suppress("DEPRECATION") - подавляем предупреждения о использовании устаревших API
 @Suppress("DEPRECATION")
-class MainActivity : AppCompatActivity(), MenuMiniListener {
+class MainActivity : AppCompatActivity() {
 
+    private val MENU_MINI_TAG = "menuMiniFragment"
+    private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
-    private val MENU_MINI_TAG = "menuMiniFragment"
+    private lateinit var basketViewModel: BasketViewModel
+    private lateinit var getAllBasketUseCase: GetAllBasketUseCase
+    private lateinit var dishDataSource: DishDataSource
+    private lateinit var basketDao: BasketDao
+    private lateinit var basketRepository: BasketRepositoryImpl
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+//зависимости
+        dishDataSource = DishDataSource()
+        basketDao = AppDataBase.getDatabase(applicationContext).basketDao()
+        basketRepository = BasketRepositoryImpl(dishDataSource, basketDao)
+        getAllBasketUseCase = GetAllBasketUseCase(basketRepository)
 
-        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bNav)
+// Инициализируем ViewModel, используя фабрику
+        basketViewModel =
+            ViewModelProvider(this, BasketViewModelFactory(getAllBasketUseCase, basketRepository))
+                .get(BasketViewModel::class.java)
+
+        bottomNavigationView = findViewById(R.id.bNav)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.Container_frag) as NavHostFragment
         navController = navHostFragment.navController
+        bottomNavigationView.setupWithNavController(navController)
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -42,12 +67,12 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
                 R.id.basket
             )
         )
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
         val backButton: ImageButton = findViewById(R.id.backButton)
         backButton.setOnClickListener {
             onBackPressed()
         }
-        setupActionBarWithNavController(navController, appBarConfiguration)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             backButton.visibility =
@@ -56,39 +81,13 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
                 } else {
                     View.VISIBLE
                 }
+            hideMenuMiniFragment()
         }
 
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.home -> {
-                    if (navController.currentDestination?.id != R.id.home) {
-                        clearBackStack(R.id.home)
-                        navController.navigate(R.id.home)
-                    }
-                    true
-                }
-
-                R.id.fastSearch -> {
-                    if (navController.currentDestination?.id != R.id.fastSearch) {
-                        clearBackStack(R.id.fastSearch)
-                        navController.navigate(R.id.fastSearch)
-                    }
-                    true
-                }
-
-                R.id.basket -> {
-                    if (navController.currentDestination?.id != R.id.basket) {
-                        clearBackStack(R.id.basket)
-                        navController.navigate(R.id.basket)
-                    }
-                    true
-                }
-
-                R.id.account -> {
-                    if (navController.currentDestination?.id != R.id.account) {
-                        clearBackStack(R.id.account)
-                        navController.navigate(R.id.account)
-                    }
+                R.id.home, R.id.fastSearch, R.id.basket, R.id.account -> {
+                    navController.navigate(item.itemId)
                     true
                 }
 
@@ -97,44 +96,24 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
         }
     }
 
-    override fun onAddToCartClicked(dishItem: DishItem) {
+    fun showSearchResults(query: String) {
         val bundle = Bundle().apply {
-            putParcelable("dish", dishItem)
+            putString("search_query", query)
         }
-        navController.navigate(R.id.action_global_basket, bundle)
+        navController.navigate(R.id.fastMenu, bundle)
     }
 
-    fun hideMenuMiniFragment() {
-        val menuMiniContainer: FrameLayout? = findViewById(R.id.menu_mini_container)
-        if (menuMiniContainer?.visibility == View.VISIBLE) { // Проверяем, что контейнер виден
-            menuMiniContainer.visibility = View.GONE
-
-            val fragment = supportFragmentManager.findFragmentByTag(MENU_MINI_TAG)
-            fragment?.let {
-                try {
-                    supportFragmentManager.beginTransaction()
-                        .remove(it)
-                        .commitNow() // Используем commitNow()
-                    supportFragmentManager.executePendingTransactions() // Принудительное выполнение
-
-                    Log.d("close menumini Activity", "Фрагмент удален")
-                } catch (e: Exception) {
-                    Log.e("MainActivity", "Ошибка при удалении MenuMiniFragment: ${e.message}")
-                }
+    fun showMenuMiniFragment(dishId: Int, categoryId: Int) {
+        val menuMiniFragment = MenuMini(basketViewModel).apply {
+            arguments = Bundle().apply {
+                putInt("dishId", dishId)
+                putInt("categoryId", categoryId)
             }
         }
-    }
-
-    private fun clearBackStack(destinationId: Int) {
-        if (navController.currentDestination?.id != destinationId) {
-            navController.popBackStack(destinationId, false)
-        }
-    }
-
-    fun navigateToMenu(categoryId: Int) {
-        val bundle = Bundle()
-        bundle.putInt("categoryId", categoryId)
-        navController.navigate(R.id.action_home_to_menu, bundle)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.Container_frag, menuMiniFragment, MENU_MINI_TAG)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -143,34 +122,18 @@ class MainActivity : AppCompatActivity(), MenuMiniListener {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        try {
-            if (!navController.navigateUp()) {
-                super.onBackPressed()
-            }
-        } catch (e: Exception) {
-            Log.e("MainActivity", "Error in onBackPressed: ${e.message}")
+        if (!navController.popBackStack()) {
             super.onBackPressed()
         }
     }
 
-    fun showMenuMiniFragment(dishId: Int, categoryId: Int) {
+    fun hideMenuMiniFragment() {
         val menuMiniContainer: FrameLayout? = findViewById(R.id.menu_mini_container)
-        menuMiniContainer?.visibility = View.VISIBLE
+        menuMiniContainer?.visibility = View.GONE
 
-        val menuMiniFragment = MenuMini().apply {
-            arguments = Bundle().apply {
-                putInt("dishId", dishId)
-                putInt("categoryId", categoryId)
-            }
-        }
-
-        try {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.menu_mini_container, menuMiniFragment, MENU_MINI_TAG) // Заменяем фрагмент
-                .commit()
-
-        } catch (e: Exception) {
-            Log.e("MainActivity", "Ошибка при добавлении MenuMiniFragment: ${e.message}")
+        val fragment = supportFragmentManager.findFragmentByTag(MENU_MINI_TAG)
+        fragment?.let {
+            supportFragmentManager.beginTransaction().remove(it).commit()
         }
     }
 }

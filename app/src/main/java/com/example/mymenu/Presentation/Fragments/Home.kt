@@ -86,6 +86,7 @@ class Home : Fragment(), HomeInterface {
         // 1. Создание Bundle
         val bundle = Bundle()
         // 2. Добавление данных в Bundle
-        (activity as? MainActivity)?.navigateToMenu(categoryId.id)
+        bundle.putInt("categoryId", categoryId.id)
+        findNavController().navigate(R.id.action_home_to_menu, bundle)
     }
 }

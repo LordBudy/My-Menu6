@@ -1,42 +1,45 @@
 package com.example.mymenu.Presentation.Fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.SearchView
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymenu.Data.ApiService.DishDataSource
 import com.example.mymenu.Data.Repository.DishRepositoryImpl
-import com.example.mymenu.Domain.Menu.GetDishsMenuUseCase
 import com.example.mymenu.Domain.Menu.Search.GetSearchDishesUseCase
 import com.example.mymenu.MainActivity
-import com.example.mymenu.Presentation.Adapters.MenuAdapter
 import com.example.mymenu.Presentation.Adapters.SearchAdapter
 import com.example.mymenu.Presentation.ViewModels.Factoryes.SearchViewModelFactory
-import com.example.mymenu.Presentation.ViewModels.MenuViewModel
 import com.example.mymenu.Presentation.ViewModels.SearchViewModel
 import com.example.mymenu.R
-
-@Suppress("UNCHECKED_CAST", "DEPRECATION")
-class FastSearch : Fragment() {
+class FastMenu : Fragment() {
     private lateinit var viewModel: SearchViewModel
-    private lateinit var searchView: SearchView
-    private lateinit var btnSearch: Button
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var searchAdapter: SearchAdapter
+    private var searchQuery: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            searchQuery = it.getString("search_query")
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_fast_search, container, false)
-        searchView = view.findViewById(R.id.searchView)
-        btnSearch = view.findViewById(R.id.btnSearch)
+
+        val view = inflater.inflate(R.layout.fragment_fast_menu, container, false)
+        recyclerView = view.findViewById(R.id.recyclerFastMenu)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         return view
     }
 
@@ -50,23 +53,33 @@ class FastSearch : Fragment() {
         val factory = SearchViewModelFactory(getSearchDishesUseCase)
         viewModel = ViewModelProvider(this, factory)[SearchViewModel::class.java]
 
-        btnSearch.setOnClickListener {
-            val query = searchView.query.toString()
-            if (query.isNotEmpty()) {
-                (activity as? MainActivity)?.showSearchResults(query)
-                fragmentManager?.beginTransaction()?.remove(this)?.commit()
-            } else {
-                Toast.makeText(requireContext(), "Введите название блюда", Toast.LENGTH_SHORT).show()
-            }
+        searchAdapter = SearchAdapter(emptyList()) { dishItem ->
+            Log.d("FastMenu", "Dish clicked: ${dishItem.name}")
+            (activity as? MainActivity)?.showMenuMiniFragment(dishItem.id, 1)
         }
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return true
+        recyclerView.adapter = searchAdapter
+
+        viewModel.dishs.observe(viewLifecycleOwner, Observer { dishList ->
+            if (dishList != null) {
+                searchAdapter.updateData(dishList)
+            } else {
+                Toast.makeText(requireContext(), "Не удалось загрузить блюда", Toast.LENGTH_SHORT).show()
             }
         })
+        searchQuery?.let {
+            viewModel.loadDishs(it)
+        }
     }
+
+    companion object {
+        fun newInstance(query: String): FastMenu {
+            val fragment = FastMenu()
+            val args = Bundle()
+            args.putString("search_query", query)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
 }

@@ -3,20 +3,19 @@ package com.example.mymenu.Data.ApiService
 import android.util.Log
 import com.example.mymenu.Data.ModelsEntitys.DishEntity
 import com.example.mymenu.Domain.Models.DishItem
+import kotlinx.coroutines.flow.flow
 import java.nio.file.Files.find
 
 class DishDataSource {
     // Имитация локального источника данных
     // Метод для получения списка блюд по ID категории.
-    // Принимает categoryId (идентификатор категории).
-    // Возвращает List<DishEntity> (список объектов DishEntity).
     fun getDishesByCategoryId(categoryId: Int): List<DishEntity> {
         // Используем оператор when для выбора списка блюд в зависимости от ID категории.
         return when (categoryId) {
             1 -> getDishesForCategory1() // Получаем блюда для категории 1
-            2 -> getDishesForCategory1() // Получаем блюда для категории 2
-            3 -> getDishesForCategory1() // Получаем блюда для категории 3
-            4 -> getDishesForCategory1() // Получаем блюда для категории 4
+            2 -> getDishesForCategory2() // Получаем блюда для категории 2
+            3 -> getDishesForCategory3() // Получаем блюда для категории 3
+            4 -> getDishesForCategory4() // Получаем блюда для категории 4
             else -> emptyList() // Если категория не найдена, возвращаем пустой список
         }
     }
@@ -25,8 +24,17 @@ class DishDataSource {
         val dishes = getDishesByCategoryId(categoryId)
         return dishes.find { it.id == dishId } // Ищем блюдо с нужным ID
     }
+    //Поиск по всем категориям по имени
+    fun getDishAcrossAllCategoriesByName(dishName: String)= flow  {
+        for (categoryId in 1..4) {
+            val dishes = getDishesByCategoryId(categoryId)
+            val dish = dishes.filter { it.name.startsWith(dishName, ignoreCase = true) }
+            dish.forEach{
+                emit(it)
+            }
+        }
+    }
     // Блюда для категории 1
-    // Метод для получения списка блюд для категории 1.
     fun getDishesForCategory1(): List<DishEntity> {
         // Возвращаем список блюд, созданный с помощью функции listOf()
         return listOf(
@@ -278,8 +286,6 @@ class DishDataSource {
         )
     }
     // Блюда для категории 2
-    // Метод для получения списка блюд для категории 2.
-    // Возвращает List<DishEntity> (список объектов DishEntity).
     private fun getDishesForCategory2(): List<DishEntity> {
         return listOf(
             DishEntity(6,
@@ -292,7 +298,6 @@ class DishDataSource {
                 1) // categoryId
         )
     }
-
     // Блюда для категории 3
     private fun getDishesForCategory3(): List<DishEntity> {
         return listOf(

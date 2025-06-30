@@ -13,5 +13,5 @@ data class DishItem(
     val weight: Double,
     val description: String,
     val categoryId: Int? = null,
-    val count: Int
+    var count: Int
 ) : Parcelable

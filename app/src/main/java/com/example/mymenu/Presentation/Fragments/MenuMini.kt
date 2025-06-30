@@ -1,6 +1,5 @@
 package com.example.mymenu.Presentation.Fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -22,20 +20,18 @@ import com.example.mymenu.Domain.Basket.AddDishToBasketUseCase
 import com.example.mymenu.Domain.MenuMini.GetDishMiniUseCase
 import com.example.mymenu.Domain.Models.DishItem
 import com.example.mymenu.MainActivity
-import com.example.mymenu.Presentation.ViewModels.Interfaces.MenuMiniListener
-import com.example.mymenu.Presentation.ViewModels.Interfaces.MiniInterface
+import com.example.mymenu.Presentation.ViewModels.BasketViewModel
 import com.example.mymenu.Presentation.ViewModels.MenuMiniViewModel
 import com.example.mymenu.R
 import com.squareup.picasso.Picasso
 
 @Suppress("UNCHECKED_CAST", "DEPRECATION")
-class MenuMini : Fragment() {
+class MenuMini(private val basketViewModel: BasketViewModel) : Fragment() {
     // Объявляем переменную viewModel
     private lateinit var viewModel: MenuMiniViewModel
     // Объявляем переменные(для хранения id блюда и id категории)
     private var dishId: Int = -1
     private var categoryId: Int = -1
-    private var listener: MenuMiniListener? = null
 
     private lateinit var dishImageView: ImageView //картинка
     private lateinit var dishNameTextView: TextView //название
@@ -46,18 +42,6 @@ class MenuMini : Fragment() {
     private lateinit var database: AppDataBase
     private lateinit var basketDao: BasketDao
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is MenuMiniListener) {
-            listener = context
-        } else {
-            throw RuntimeException("$context must implement MenuMiniListener")
-        }
-    }
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,19 +74,15 @@ class MenuMini : Fragment() {
 
         val closeButton: Button = view.findViewById(R.id.close) //кнопка закрытия
         closeButton.setOnClickListener {
-            (activity as? MainActivity)?.hideMenuMiniFragment()
+            parentFragmentManager.beginTransaction().remove(this@MenuMini).commit()
         }
         val aadButton: Button = view.findViewById(R.id.add_Bascket)//кнопка добавить в корзину
         aadButton.setOnClickListener {
             val dish = viewModel.dish.value
-
             if (dish != null) {
-                viewModel.addDishToBasket(dish)
-                listener?.onAddToCartClicked(dish) // Вызываем метод интерфейса
-                (activity as? MainActivity)?.hideMenuMiniFragment()
-            } else {
-                Toast.makeText(requireContext(), "Блюдо не загружено", Toast.LENGTH_SHORT).show()
+                basketViewModel.addDishToBasket(dish.id)
             }
+                (activity as? MainActivity)?.hideMenuMiniFragment()
         }
         val dishDataSource = DishDataSource()
         val menuMiniRepository = MenuMiniRepositoryImpl(dishDataSource)

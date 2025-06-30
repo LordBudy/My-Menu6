@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface BasketDao {
     // Методы для работы с корзиной (DishEntity)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertDish(dish: DishEntity) // Метод для вставки одного блюда в БД
 
     @Query("SELECT * FROM dish")
