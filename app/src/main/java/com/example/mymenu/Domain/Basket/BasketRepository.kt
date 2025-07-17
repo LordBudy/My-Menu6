@@ -15,5 +15,4 @@ interface BasketRepository {
     suspend fun minusDish(id: Int): DishItem?
     suspend fun plusDish(id: Int): DishItem
 
-
 }
