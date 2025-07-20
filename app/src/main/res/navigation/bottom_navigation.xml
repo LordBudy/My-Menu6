@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/home"
-        android:name="com.example.mymenu.Presentation.Fragments.Home"
+        android:name="com.example.mymenu.category.presentation.fragment.Category"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/basket"
-        android:name="com.example.mymenu.Presentation.Fragments.Basket_fragment"
+        android:name="com.example.mymenu.basket.presentation.fragment.Basket_fragment"
         android:label="fragment_basket"
         tools:layout="@layout/fragment_basket" >
         <action
@@ -44,7 +44,7 @@
         app:destination="@id/basket" />
     <fragment
         android:id="@+id/menu"
-        android:name="com.example.mymenu.Presentation.Fragments.Menu"
+        android:name="com.example.mymenu.menu.presentation.fragment.Menu"
         android:label="fragment_menu"
         tools:layout="@layout/fragment_menu">
         <action
@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/menuMini"
-        android:name="com.example.mymenu.Presentation.Fragments.MenuMini"
+        android:name="com.example.mymenu.menuMini.presentation.fragment.MenuMini"
         android:label="fragment_menu_mini"
         tools:layout="@layout/fragment_menu_mini">
         <action
@@ -77,7 +77,7 @@
     </fragment>
     <fragment
         android:id="@+id/fastSearch"
-        android:name="com.example.mymenu.Presentation.Fragments.FastSearch"
+        android:name="com.example.mymenu.fastSearch.presentation.fragment.FastSearch"
         android:label="fragment_fast_search"
         tools:layout="@layout/fragment_fast_search">
         <action
@@ -86,12 +86,12 @@
     </fragment>
     <fragment
         android:id="@+id/account"
-        android:name="com.example.mymenu.Presentation.Fragments.Account_fragment"
+        android:name="com.example.mymenu.account.presentation.fragment.Account_fragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
     <fragment
         android:id="@+id/fastMenu"
-        android:name="com.example.mymenu.Presentation.Fragments.FastMenu"
+        android:name="com.example.mymenu.menu.presentation.fragment.FastMenu"
         android:label="fast_menu"
         tools:layout="@layout/fragment_fast_menu" >
         <action

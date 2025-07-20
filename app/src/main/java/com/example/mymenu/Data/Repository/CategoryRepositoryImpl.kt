@@ -1,9 +1,9 @@
 package com.example.mymenu.Data.Repository
 
-import com.example.mymenu.Data.ApiService.CatDataSource
-import com.example.mymenu.Data.ModelsEntitys.Category
-import com.example.mymenu.Domain.Category1.CategoryRepository
-import com.example.mymenu.Domain.Models.CategoryItem
+import com.example.mymenu.coreData.ApiService.CatDataSource
+import com.example.mymenu.coreData.ModelsEntitys.Category
+import com.example.mymenu.category.domain.CategoryRepository
+import com.example.mymenu.coreModels.CategoryItem
 
 
 class CategoryRepositoryImpl(private val catDataSource: CatDataSource) : CategoryRepository {

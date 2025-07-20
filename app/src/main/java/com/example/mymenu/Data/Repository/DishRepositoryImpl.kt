@@ -1,12 +1,11 @@
 package com.example.mymenu.Data.Repository
 
-import com.example.mymenu.Data.ApiService.DishDataSource
-import com.example.mymenu.Data.ModelsEntitys.DishEntity
-import com.example.mymenu.Domain.Menu.DishRepository
-import com.example.mymenu.Domain.Models.DishItem
+import com.example.mymenu.coreData.ApiService.DishDataSource
+import com.example.mymenu.coreData.ModelsEntitys.DishEntity
+import com.example.mymenu.menu.domain.DishRepository
+import com.example.mymenu.coreModels.DishItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 
 class DishRepositoryImpl(private val dishDataSource: DishDataSource
 ) : DishRepository {
