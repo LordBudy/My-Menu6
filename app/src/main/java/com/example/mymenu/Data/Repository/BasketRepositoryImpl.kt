@@ -14,23 +14,23 @@ class BasketRepositoryImpl(
     private val basketDao: BasketDao
 ) : BasketRepository {
 
-    override suspend fun addDishToBasket(dishId: Int): DishItem {
-        Log.d("BasketRepo", "addDishToBasket called with dishId: $dishId")
+    override suspend fun addDishToBasket(dish: Int): DishItem {
+        Log.d("BasketRepo", "addDishToBasket called with dishId: $dish")
         // 1. Проверяем, есть ли уже это блюдо в корзине
-        val existingDishEntity = basketDao.getDishById(dishId)
-        Log.d("BasketRepo", "existingDishEntity: $existingDishEntity")
-        return if (existingDishEntity != null) {
+        val dishEntity = basketDao.getDishById(dish)
+        Log.d("BasketRepo", "existingDishEntity: $dishEntity")
+        return if (dishEntity != null) {
             Log.d("BasketRepo", "Dish exists, incrementing count")
             // 2. Увеличиваем кол-во
-            existingDishEntity.count += 1
-            basketDao.updateDish(existingDishEntity)
-            Log.d("BasketRepo", "Dish updated: $existingDishEntity")
-            existingDishEntity.toDomainDishItem() // Return updated item
+            dishEntity.count += 1
+            basketDao.updateDish(dishEntity)
+            Log.d("BasketRepo", "Dish updated: $dishEntity")
+            dishEntity.toDomainDishItem() // Return updated item
         } else {
             Log.d("BasketRepo", "Dish does not exist, creating new")
             // 3. Добавляем новое блюдо в корзину с указанием количества 1
             val dishDataSource = DishDataSource()
-            val dishItem = dishDataSource.getDish(dishId, 1) ?: throw Exception("Dish id not found")
+            val dishItem = dishDataSource.getDish(dish, 1) ?: throw Exception("Dish id not found")
             Log.d("BasketRepo", "New DishItem: $dishItem")
             val newDishEntity = DishEntity(
                 id = dishItem.id,
