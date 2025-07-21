@@ -1,5 +1,5 @@
 [versions]
-agp = "8.3.1"
+agp = "8.4.0"
 kotlin = "2.1.0"
 coreKtx = "1.13.0"
 junit = "4.13.2"
@@ -9,11 +9,11 @@ appcompat = "1.7.0"
 kotlinxCoroutinesAndroid = "1.8.1"
 lifecycleLivedataKtx = "2.9.2"
 material = "1.12.0"
-#koin = "2.2.3"
+koin = "2.2.3"
 navigationFragmentKtx = "2.9.2"
 picasso = "2.8"
 roomCompiler = "2.7.2"
-kotlinStdlib = "1.9.0"
+
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
@@ -32,11 +32,9 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-#koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
-#koin-android = { group = "io.insert-koin", name = "koin-android", version = "2.2.3" }
-#koin-android-scope = { group = "io.insert-koin", name = "koin-android-scope", version = "2.2.3" }
-#koin-androidx-viewmodel = { group = "io.insert-koin", name = "koin-androidx-viewmodel", version = "2.2.3" }
-#koin-android-ext = { group = "io.insert-koin", name = "koin-android-ext", version.ref = "koin" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version = "2.2.3" }
+koin-android-ext = { group = "io.insert-koin", name = "koin-android-ext", version.ref = "koin" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 
 [plugins]

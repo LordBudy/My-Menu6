@@ -12,17 +12,17 @@ class CatDataSource {
             // Создаем объект CategoryEntity с ID=1, URL изображения и названием "Выпечка".
             Category(
                 1,
-                "http://img.freepik.com/premium-photo/composition-with-buckwheat-flour-fresh-bread-white-background_392895-171296.jpg?w=900",
+                "https://i.pinimg.com/736x/20/2f/5b/202f5ba961353fe53a32712047627792.jpg",
                 "Выпечка"
             ),
             Category(
                 2,
-                "http://img.freepik.com/premium-photo/junk-food-fast-food-burger-french-fries_744040-1059.jpg?w=1380",
+                "https ://i.pinimg.com/736x/f9/2c/c6/f92cc6c8994b89920b42cad1a759a8ef.jpg",
                 "Фасфуд"
             ),
             Category(
                 3,
-                "https://img.freepik.com/premium-photo/noodles-with-seafood_144962-852.jpg?w=900",
+                "https://i.pinimg.com/736x/59/c0/b6/59c0b6dfc3438f0503d0fc294a7c5cbc.jpg",
                 "Азиатская кухня"
             ),
             Category(

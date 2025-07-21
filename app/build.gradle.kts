@@ -12,8 +12,9 @@ android {
     defaultConfig {
         applicationId = "com.example.mymenu"
         minSdk = 24
-        //noinspection OldTargetApi
-        targetSdk = 34
+
+        //noinspection EditedTargetSdkVersion
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -57,10 +58,8 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 // Koin
-   // implementation(libs.koin.core)
-   // implementation(libs.koin.android)
-   // implementation(libs.koin.android.scope)
-   // implementation(libs.koin.androidx.viewmodel)
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
