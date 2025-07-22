@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mymenu.Data.Repository.BasketRepositoryImpl
+import com.example.mymenu.basket.data.BasketRepositoryImpl
 import com.example.mymenu.basket.domain.GetAllBasketUseCase
 import com.example.mymenu.coreModels.DishItem
 import kotlinx.coroutines.flow.collectLatest

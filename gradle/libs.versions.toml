@@ -1,5 +1,6 @@
 [versions]
 agp = "8.4.0"
+koinAndroid = "3.5.3"
 kotlin = "2.1.0"
 coreKtx = "1.13.0"
 junit = "4.13.2"
@@ -9,13 +10,16 @@ appcompat = "1.7.0"
 kotlinxCoroutinesAndroid = "1.8.1"
 lifecycleLivedataKtx = "2.9.2"
 material = "1.12.0"
-koin = "2.2.3"
+koin = "3.5.0"
 navigationFragmentKtx = "2.9.2"
 picasso = "2.8"
-roomCompiler = "2.7.2"
+roomCompiler = "2.7.0"
 
 
 [libraries]
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+koin-androidx-viewmodel = { module = "io.insert-koin:koin-androidx-viewmodel", version.ref = "koin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "lifecycleLivedataKtx" }
@@ -33,9 +37,9 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
-koin-android = { group = "io.insert-koin", name = "koin-android", version = "2.2.3" }
 koin-android-ext = { group = "io.insert-koin", name = "koin-android-ext", version.ref = "koin" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

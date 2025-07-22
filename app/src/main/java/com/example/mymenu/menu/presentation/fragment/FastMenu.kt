@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymenu.coreData.ApiService.DishDataSource
-import com.example.mymenu.Data.Repository.DishRepositoryImpl
+import com.example.mymenu.menu.data.DishRepositoryImpl
 import com.example.mymenu.fastSearch.domain.GetSearchDishesUseCase
 import com.example.mymenu.activity.MainActivity
 import com.example.mymenu.fastSearch.presentation.adapter.SearchAdapter

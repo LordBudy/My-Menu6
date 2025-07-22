@@ -2,7 +2,7 @@ package com.example.mymenu.basket.presentation.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.mymenu.Data.Repository.BasketRepositoryImpl
+import com.example.mymenu.basket.data.BasketRepositoryImpl
 import com.example.mymenu.basket.domain.GetAllBasketUseCase
 import com.example.mymenu.basket.presentation.viewModel.BasketViewModel
 @Suppress("UNCHECKED_CAST")

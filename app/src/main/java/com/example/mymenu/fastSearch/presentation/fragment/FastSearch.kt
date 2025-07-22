@@ -10,7 +10,7 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.mymenu.coreData.ApiService.DishDataSource
-import com.example.mymenu.Data.Repository.DishRepositoryImpl
+import com.example.mymenu.menu.data.DishRepositoryImpl
 import com.example.mymenu.fastSearch.domain.GetSearchDishesUseCase
 import com.example.mymenu.activity.MainActivity
 import com.example.mymenu.fastSearch.presentation.factory.SearchViewModelFactory

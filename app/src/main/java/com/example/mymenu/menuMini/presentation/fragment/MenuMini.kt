@@ -14,8 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mymenu.coreData.ApiService.DishDataSource
 import com.example.mymenu.coreData.DAO.BasketDao
 import com.example.mymenu.coreData.DB.AppDataBase
-import com.example.mymenu.Data.Repository.BasketRepositoryImpl
-import com.example.mymenu.Data.Repository.MenuMiniRepositoryImpl
+import com.example.mymenu.basket.data.BasketRepositoryImpl
+import com.example.mymenu.menuMini.data.MenuMiniRepositoryImpl
 import com.example.mymenu.basket.domain.AddDishToBasketUseCase
 import com.example.mymenu.menuMini.domain.GetDishMiniUseCase
 import com.example.mymenu.coreModels.DishItem

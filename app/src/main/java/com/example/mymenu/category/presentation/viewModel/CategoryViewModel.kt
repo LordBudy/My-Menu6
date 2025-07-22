@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mymenu.category.domain.GetCategoryUseCase
+import com.example.mymenu.coreData.ModelsEntitys.Category
 import com.example.mymenu.coreModels.CategoryItem
-import com.example.mymenu.CategoryInterface
 import kotlinx.coroutines.launch
 
 class CategoryViewModel(
@@ -14,9 +14,6 @@ class CategoryViewModel(
     // getCategoryUseCase - для получения списка категорий
     private val getCategoryUseCase: GetCategoryUseCase
 ) : ViewModel() {
-
-    //  Ссылка на интерфейс для взаимодействия с UI
-    var categoryInterface: CategoryInterface? = null
 
     // _categories - MutableLiveData для хранения списка категорий (внутренняя переменная)
     private val _categories = MutableLiveData<List<CategoryItem>?>()
@@ -41,17 +38,10 @@ class CategoryViewModel(
 
                 _categories.value = categoryes
 
-                categoryInterface?.showCategoryes(categoryes)
             } catch (e: Exception) {
                 println("Error loading cat: ${e.message}")
                 _categories.value = emptyList()
             }
         }
-    }
-
-    //  onDishClicked - метод, вызываемый при нажатии на блюдо
-    fun onCatClicked(categotyId: CategoryItem) {
-        //  Вызываем метод интерфейса для перехода к фрагменту Menu, передавая ID категории
-        categoryInterface?.onCategoryClicked(categotyId)
     }
 }

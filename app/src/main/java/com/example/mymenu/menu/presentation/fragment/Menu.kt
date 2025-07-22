@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymenu.coreData.ApiService.DishDataSource
 
-import com.example.mymenu.Data.Repository.DishRepositoryImpl
+import com.example.mymenu.menu.data.DishRepositoryImpl
 import com.example.mymenu.menu.domain.GetDishsMenuUseCase
 import com.example.mymenu.activity.MainActivity
 import com.example.mymenu.menu.presentation.adapter.MenuAdapter

@@ -15,7 +15,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.mymenu.coreData.ApiService.DishDataSource
 import com.example.mymenu.coreData.DAO.BasketDao
 import com.example.mymenu.coreData.DB.AppDataBase
-import com.example.mymenu.Data.Repository.BasketRepositoryImpl
+import com.example.mymenu.basket.data.BasketRepositoryImpl
 import com.example.mymenu.basket.domain.GetAllBasketUseCase
 import com.example.mymenu.menuMini.presentation.fragment.MenuMini
 import com.example.mymenu.basket.presentation.viewModel.BasketViewModel

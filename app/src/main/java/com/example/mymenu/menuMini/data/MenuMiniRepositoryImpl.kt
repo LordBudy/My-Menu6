@@ -1,9 +1,9 @@
-package com.example.mymenu.Data.Repository
+package com.example.mymenu.menuMini.data
 
 import com.example.mymenu.coreData.ApiService.DishDataSource
 import com.example.mymenu.coreData.ModelsEntitys.DishEntity
-import com.example.mymenu.menuMini.domain.MenuMiniRepository
 import com.example.mymenu.coreModels.DishItem
+import com.example.mymenu.menuMini.domain.MenuMiniRepository
 
 class MenuMiniRepositoryImpl(private val dishDataSource: DishDataSource) : MenuMiniRepository {
 
@@ -26,5 +26,3 @@ private fun DishEntity.toDomainDishItem(): DishItem =
         categoryId = categoryId,
         count = 1
     )
-
-

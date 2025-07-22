@@ -1,9 +1,9 @@
-package com.example.mymenu.Data.Repository
+package com.example.mymenu.menu.data
 
 import com.example.mymenu.coreData.ApiService.DishDataSource
 import com.example.mymenu.coreData.ModelsEntitys.DishEntity
-import com.example.mymenu.menu.domain.DishRepository
 import com.example.mymenu.coreModels.DishItem
+import com.example.mymenu.menu.domain.DishRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -41,4 +41,3 @@ private fun DishEntity.toDomainDishItem(): DishItem =
         categoryId = categoryId,
         count = 1
     )
-

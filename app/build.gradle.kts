@@ -60,6 +60,17 @@ dependencies {
 // Koin
     implementation(libs.koin.core)
     implementation(libs.koin.android)
+    //implementation(libs.koin.androidx.compose)
+  //  implementation(libs.koin.androidx.viewmodel)
+    implementation(libs.androidx.lifecycle.livedata.ktx) {
+        exclude(group = "androidx.lifecycle", module = "lifecycle-runtime-compose")
+    }
+    implementation(libs.androidx.lifecycle.viewmodel.ktx) {
+        exclude(group = "androidx.lifecycle", module = "lifecycle-runtime-compose")
+    }
+    implementation(libs.androidx.lifecycle.common) {
+        exclude(group = "androidx.lifecycle", module = "lifecycle-runtime-compose")
+    }
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
