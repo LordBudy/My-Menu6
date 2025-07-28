@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/home"
-        android:name="com.example.mymenu.category.presentation.fragment.Category"
+        android:name="com.example.mymenu.core.category.presentation.fragment.Category"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/basket"
-        android:name="com.example.mymenu.basket.presentation.fragment.Basket_fragment"
+        android:name="com.example.mymenu.core.basket.presentation.fragment.Basket_fragment"
         android:label="fragment_basket"
         tools:layout="@layout/fragment_basket" >
         <action
@@ -44,7 +44,7 @@
         app:destination="@id/basket" />
     <fragment
         android:id="@+id/menu"
-        android:name="com.example.mymenu.menu.presentation.fragment.Menu"
+        android:name="com.example.mymenu.core.menu.presentation.fragment.Menu"
         android:label="fragment_menu"
         tools:layout="@layout/fragment_menu">
         <action
@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/menuMini"
-        android:name="com.example.mymenu.menuMini.presentation.fragment.MenuMini"
+        android:name="com.example.mymenu.core.menumini.presentation.fragment.MenuMini"
         android:label="fragment_menu_mini"
         tools:layout="@layout/fragment_menu_mini">
         <action
@@ -77,7 +77,7 @@
     </fragment>
     <fragment
         android:id="@+id/fastSearch"
-        android:name="com.example.mymenu.fastSearch.presentation.fragment.FastSearch"
+        android:name="com.example.mymenu.core.fastsearch.presentation.fragment.FastSearch"
         android:label="fragment_fast_search"
         tools:layout="@layout/fragment_fast_search">
         <action
@@ -86,16 +86,38 @@
     </fragment>
     <fragment
         android:id="@+id/account"
-        android:name="com.example.mymenu.account.presentation.fragment.Account_fragment"
+        android:name="com.example.mymenu.core.account.presentation.fragment.Account_fragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
     <fragment
         android:id="@+id/fastMenu"
-        android:name="com.example.mymenu.menu.presentation.fragment.FastMenu"
+        android:name="com.example.mymenu.core.menu.presentation.fragment.FastMenu"
         android:label="fast_menu"
         tools:layout="@layout/fragment_fast_menu" >
         <action
             android:id="@+id/action_fastMenu_to_menuMini"
             app:destination="@id/menuMini" />
+    </fragment>
+    <fragment
+        android:id="@+id/registration_1"
+        android:name="com.example.mymenu.core.auth.presentation.fragment.Registration_1"
+        android:label="Registration_1" >
+        <action
+            android:id="@+id/action_registration_1_to_registration_2"
+            app:destination="@id/registration_2" />
+        <action
+            android:id="@+id/action_registration_1_to_home"
+            app:destination="@id/home" />
+    </fragment>
+    <fragment
+        android:id="@+id/registration_2"
+        android:name="com.example.mymenu.core.auth.presentation.fragment.Registration_2"
+        android:label="Registration_2" >
+        <action
+            android:id="@+id/action_registration_2_to_home"
+            app:destination="@id/home" />
+        <action
+            android:id="@+id/action_registration_2_to_registration_1"
+            app:destination="@id/registration_1" />
     </fragment>
 </navigation>

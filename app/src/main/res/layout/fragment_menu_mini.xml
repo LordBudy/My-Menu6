@@ -9,7 +9,7 @@
     android:focusable="true"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
-    tools:context=".menuMini.presentation.fragment.MenuMini">
+    tools:context=".menumini.presentation.fragment.MenuMini">
 
     <LinearLayout
         android:layout_width="match_parent"

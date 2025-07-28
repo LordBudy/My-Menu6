@@ -1,0 +1,42 @@
+package com.example.mymenu.core.menumini.presentation.viewModel
+
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.mymenu.core.basket.domain.AddDishToBasketUseCase
+import com.example.mymenu.core.menumini.domain.GetDishMiniUseCase
+import com.example.mymenu.core.models.DishItem
+import kotlinx.coroutines.launch
+
+class MenuMiniViewModel(
+    private val addDishToBasketUseCase: AddDishToBasketUseCase,
+    private val getDishMiniUseCase: GetDishMiniUseCase,
+) : ViewModel() {
+
+    private val _dish = MutableLiveData<DishItem?>()
+    val dish: LiveData<DishItem?> = _dish
+
+    fun getDish(dishId: Int, categoryId: Int) {
+        // viewModelScope - корутин скоуп, связанный с жизненным циклом ViewModel
+        viewModelScope.launch {
+            // Вызываем UseCase для получения списка блюд по ID категории
+            try {
+                _dish.value = getDishMiniUseCase.execute(dishId, categoryId)
+            } catch (e: Exception) {
+                Log.e("MenuMiniViewModel", "Ошибка при загрузке блюда", e)
+            }
+        }
+    }
+    fun addDishToBasket(dish: DishItem) {
+        viewModelScope.launch {
+            try {
+                addDishToBasketUseCase.execute(dish)
+            } catch (e: Exception) {
+                Log.d("MiniViewModel", "ошибка добавления влюда в бд")
+
+            }
+        }
+    }
+}
