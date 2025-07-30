@@ -14,6 +14,8 @@ koin = "3.5.0"
 navigationFragmentKtx = "2.9.2"
 picasso = "2.8"
 roomCompiler = "2.7.0"
+appcompatVersion = "1.7.1"
+carUiLib = "2.0.0"
 
 
 [libraries]
@@ -39,6 +41,8 @@ material = { group = "com.google.android.material", name = "material", version.r
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-android-ext = { group = "io.insert-koin", name = "koin-android-ext", version.ref = "koin" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
+car-ui-lib = { module = "com.android.car.ui:car-ui-lib", version.ref = "carUiLib" }
 
 
 [plugins]

@@ -3,8 +3,9 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("kotlin-kapt")
     id("kotlin-parcelize")
-}
 
+}
+apply(plugin = "androidx.navigation.safeargs.kotlin")
 android {
     namespace = "com.example.mymenu"
     compileSdk = 35
@@ -44,6 +45,8 @@ dependencies {
     // Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.car.ui.lib)
 
     kapt(libs.androidx.room.compiler)
 //coroutines
@@ -62,6 +65,7 @@ dependencies {
     implementation(libs.koin.android)
     //implementation(libs.koin.androidx.compose)
   //  implementation(libs.koin.androidx.viewmodel)
+
     implementation(libs.androidx.lifecycle.livedata.ktx) {
         exclude(group = "androidx.lifecycle", module = "lifecycle-runtime-compose")
     }

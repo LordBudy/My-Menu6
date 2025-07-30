@@ -1,5 +1,6 @@
 package com.example.mymenu.core.data.ApiService
 
+import android.util.Log
 import com.example.mymenu.core.data.ModelsEntitys.DishEntity
 import kotlinx.coroutines.flow.flow
 
@@ -23,10 +24,17 @@ class DishDataSource {
     }
     //Поиск по всем категориям по имени
     fun getDishAcrossAllCategoriesByName(dishName: String)= flow  {
+        Log.d("DishDataSource", "Поиск блюд по имени: $dishName")
         for (categoryId in 1..4) {
+            Log.d("DishDataSource", "Категория: $categoryId")
             val dishes = getDishesByCategoryId(categoryId)
+            Log.d("DishDataSource", "Найдено ${dishes.size} блюд в категории $categoryId")
+
             val dish = dishes.filter { it.name.startsWith(dishName, ignoreCase = true) }
+            Log.d("DishDataSource", "После фильтрации найдено ${dish.size} блюд")
+
             dish.forEach{
+                Log.d("DishDataSource", "Emit: ${it.name}")
                 emit(it)
             }
         }

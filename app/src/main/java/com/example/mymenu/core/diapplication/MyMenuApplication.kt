@@ -2,7 +2,9 @@ package com.example.mymenu.core.diapplication
 
 import android.app.Application
 import com.example.mymenu.core.category.di.categorydi
+import com.example.mymenu.core.fastsearch.di.fastsearchdi
 import com.example.mymenu.core.menu.di.menudi
+import com.example.mymenu.core.menumini.di.menuminidi
 
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -18,7 +20,9 @@ class MyMenuApplication : Application() {
             modules(
                 listOf(
                      categorydi,
-                    menudi
+                    menudi,
+                    fastsearchdi,
+                    menuminidi
                 )
             )
         }

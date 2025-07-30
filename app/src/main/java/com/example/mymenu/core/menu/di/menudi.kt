@@ -12,6 +12,7 @@ val menudi = module {
     single {
         DishDataSource()
     }
+
     single<DishRepository> {
         DishRepositoryImpl(dishDataSource = get())
     }

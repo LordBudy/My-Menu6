@@ -1,35 +1,29 @@
 package com.example.mymenu.core.menumini.presentation.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.example.mymenu.core.data.ApiService.DishDataSource
-import com.example.mymenu.core.data.DAO.BasketDao
-import com.example.mymenu.core.data.DB.AppDataBase
-import com.example.mymenu.core.basket.data.BasketRepositoryImpl
-import com.example.mymenu.core.menumini.data.MenuMiniRepositoryImpl
-import com.example.mymenu.core.basket.domain.AddDishToBasketUseCase
-import com.example.mymenu.core.menumini.domain.GetDishMiniUseCase
-import com.example.mymenu.core.models.DishItem
-import com.example.mymenu.core.activity.MainActivity
-import com.example.mymenu.core.basket.presentation.viewModel.BasketViewModel
 import com.example.mymenu.core.menumini.presentation.viewModel.MenuMiniViewModel
 import com.example.mymenu.R
+import com.example.mymenu.core.activity.MainActivity
+import com.example.mymenu.core.basket.presentation.viewModel.BasketViewModel
+import com.example.mymenu.core.models.DishItem
 import com.squareup.picasso.Picasso
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@Suppress("UNCHECKED_CAST", "DEPRECATION")
-class MenuMini(private val basketViewModel: BasketViewModel) : Fragment() {
-    // Объявляем переменную viewModel
-    private lateinit var viewModel: MenuMiniViewModel
-    // Объявляем переменные(для хранения id блюда и id категории)
+class MenuMini : Fragment() {
+
+    private val basketViewModel: BasketViewModel by viewModel()
+    private val menuMiniViewModel: MenuMiniViewModel by viewModel()
+
     private var dishId: Int = -1
     private var categoryId: Int = -1
 
@@ -38,18 +32,6 @@ class MenuMini(private val basketViewModel: BasketViewModel) : Fragment() {
     private lateinit var dishPriceTextView: TextView //цена
     private lateinit var dishWeightTextView: TextView //вес
     private lateinit var dishDescriptionTextView: TextView //описание
-
-    private lateinit var database: AppDataBase
-    private lateinit var basketDao: BasketDao
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            dishId = it.getInt("dishId", -1)
-            categoryId = it.getInt("categoryId", -1)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, // для создания View из XML
@@ -69,42 +51,40 @@ class MenuMini(private val basketViewModel: BasketViewModel) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        database = AppDataBase.getDatabase(requireContext())
-        basketDao = database.basketDao()
-
+        // Получаем аргументы здесь, чтобы гарантированно иметь доступ к Bundle
+        arguments?.let {
+            dishId = it.getInt("dishId", -1)
+            categoryId = it.getInt("categoryId", -1)
+        }
         val closeButton: Button = view.findViewById(R.id.close) //кнопка закрытия
         closeButton.setOnClickListener {
             parentFragmentManager.beginTransaction().remove(this@MenuMini).commit()
         }
         val aadButton: Button = view.findViewById(R.id.add_Bascket)//кнопка добавить в корзину
         aadButton.setOnClickListener {
-            val dish = viewModel.dish.value
+            val dish = menuMiniViewModel.dish.value
             if (dish != null) {
                 basketViewModel.addDishToBasket(dish.id)
             }
-                (activity as? MainActivity)?.hideMenuMiniFragment()
+            // Закрываем фрагмент после добавления
+            (activity as? MainActivity)?.hideMenuMiniFragment()
         }
-        val dishDataSource = DishDataSource()
-        val menuMiniRepository = MenuMiniRepositoryImpl(dishDataSource)
-        val getDishMiniUseCase = GetDishMiniUseCase(menuMiniRepository)
-        val basketRepository = BasketRepositoryImpl(dishDataSource, basketDao)
-        val addDishToBasketUseCase = AddDishToBasketUseCase(basketRepository)
-
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                if (modelClass.isAssignableFrom(MenuMiniViewModel::class.java)) {
-                    return MenuMiniViewModel(addDishToBasketUseCase,
-                        getDishMiniUseCase) as T
-                }
-                throw IllegalArgumentException("Unknown ViewModel class")
-            }
-        })[MenuMiniViewModel::class.java]
-
-        viewModel.dish.observe(viewLifecycleOwner, Observer { dish ->
+// Наблюдаем за LiveData dish из menuMiniViewModel
+        menuMiniViewModel.dish.observe(viewLifecycleOwner, Observer { dish ->
             showMini(dish)
         })
-        viewModel.getDish(dishId, categoryId)
+        // Загружаем данные блюда
+        if (dishId != -1 && categoryId != -1) {
+            Log.d("MenuMiniFragment", "Запрос плюда с  ID: $dishId, Category ID: $categoryId")
+            menuMiniViewModel.getDish(dishId, categoryId)
+        } else {
+            Log.e("MenuMiniFragment", "Неверный dishId или categoryId передан фрагменту MenuMini")
+            Toast.makeText(requireContext(), "Ошибка: Неверные ID блюда или категории.", Toast.LENGTH_SHORT).show()
+            // Возможно, стоит закрыть фрагмент, если ID некорректны
+            (activity as? MainActivity)?.hideMenuMiniFragment()
+        }
     }
+
     fun showMini(dish: DishItem?) {
         if (dish != null) {
             dishNameTextView.text = dish.name
@@ -116,6 +96,7 @@ class MenuMini(private val basketViewModel: BasketViewModel) : Fragment() {
                 .into(dishImageView)
         } else {
             dishNameTextView.text = "Блюдо не найдено"
+            Log.w("MenuMiniFragment", "Не удалось загрузить данные о блюде")
         }
     }
 }

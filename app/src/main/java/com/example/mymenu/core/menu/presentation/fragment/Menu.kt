@@ -27,7 +27,6 @@ class Menu : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var menuAdapter: MenuAdapter
     private var categoryId: Int = -1
-
     private lateinit var btnAllMenu: Button
     private lateinit var btnWithMeat: Button
     private lateinit var btnWithRice: Button
@@ -68,7 +67,7 @@ class Menu : Fragment() {
             val categoryId = dishItem.categoryId
 
             if (dishId != null && categoryId != null) {
-                (activity as? MainActivity)?.showMenuMiniFragment(dishId, categoryId)
+                (activity as? MainActivity)?.showMenuMiniFragment(dishId = dishId, categoryId = categoryId)
             } else {
                 // Обработка случая, когда dishId или categoryId равны null
                 Toast.makeText(
@@ -114,9 +113,5 @@ class Menu : Fragment() {
                 Toast.makeText(requireContext(), "Не удалось загрузить блюда", Toast.LENGTH_SHORT).show()
             }
         })
-
-
-
-
     }
 }

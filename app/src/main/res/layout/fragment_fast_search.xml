@@ -8,19 +8,34 @@
     android:clickable="true"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
-    tools:context=".fastsearch.presentation.fragment.FastSearch"
+    tools:context=".core.fastsearch.presentation.fragment.FastSearch"
     tools:ignore="ExtraText">
     <!-- #80 определяет уровень прозрачности (значение от 00 до FF) -->
     <!-- Добавленный атрибут clickable позволяет поглощать нажатия сквозь прозрачный фон -->
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            tools:listitem="@layout/item_dish_menu" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:layout_marginTop="130dp"
         android:background="#F3EFEF"
+        android:gravity="bottom"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="UseCompoundDrawables,UselessParent">
-
 
 
         <SearchView
@@ -33,17 +48,17 @@
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" >
+
+        </SearchView>
 
         <Button
-            android:id="@+id/btnSearch"
+            android:id="@+id/searc_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black"
-            android:text="Поиск"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            tools:ignore="VisualLintButtonSize" />
+            android:layout_weight="1"
+            android:text="Поиск" />
+
 
     </LinearLayout>
 </FrameLayout>

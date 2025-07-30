@@ -29,7 +29,7 @@ class MenuViewModel(
                 //  Присваиваем полученный список блюд переменной _dishs
                 _dishs.value = dishList
             } catch (e: Exception) {
-                println("Error loading dishs: ${e.message}")
+                println("Ошибка загрузки: ${e.message}")
                 _dishs.value = emptyList()
             }
         }
@@ -39,7 +39,6 @@ class MenuViewModel(
         viewModelScope.launch {
             val allDishes = getDishsMenuUseCase.execute(categoryId)
             val filteredDishes = if (filterType != null) {
-                //  Пример фильтрации (замените на вашу логику)
                 allDishes.filter { dish ->
                     when (filterType) {
                         "meat" -> dish.description?.contains(

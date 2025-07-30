@@ -9,7 +9,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    tools:context=".basket.presentation.fragment.Basket_fragment">
+    tools:context=".core.basket.presentation.fragment.BasketFragment">
 
     <Button
         android:id="@+id/itogo"

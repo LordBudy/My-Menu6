@@ -1,5 +1,6 @@
 package com.example.mymenu.core.fastsearch.presentation.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,10 +20,13 @@ class SearchViewModel(
         viewModelScope.launch {
             try {
                 //  Вызываем UseCase для получения списка блюд по запросу
-                getSearchDishesUseCase.execute(query).collectLatest { dishes ->
-                    _dishs.value = dishes
+                getSearchDishesUseCase.execute(query).collectLatest { dishs ->
+                    Log.d("SearchViewModel", "Получено ${dishs.size} блюд из UseCase для запроса '$query'")
+
+                    _dishs.value = dishs
                 }
             } catch (e: Exception) {
+                Log.e("SearchViewModel", "Ошибка при загрузке блюд: ${e.message}")
                 println("Ошибка загрузки блюд: ${e.message}")
                 _dishs.value = emptyList()
             }
