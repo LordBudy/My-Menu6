@@ -5,7 +5,6 @@ import com.example.mymenu.core.basket.data.BasketRepositoryImpl
 import com.example.mymenu.core.basket.domain.AddDishToBasketUseCase
 import com.example.mymenu.core.basket.domain.BasketRepository
 import com.example.mymenu.core.data.ApiService.DishDataSource
-import com.example.mymenu.core.data.DAO.BasketDao
 import com.example.mymenu.core.data.DB.AppDataBase
 import com.example.mymenu.core.menumini.data.MenuMiniRepositoryImpl
 import com.example.mymenu.core.menumini.domain.GetDishMiniUseCase
@@ -33,7 +32,7 @@ val menuminidi = module {
         GetDishMiniUseCase(repositoryMini = get())
     }
     factory {
-        AddDishToBasketUseCase(repository = get())
+        AddDishToBasketUseCase(basketRepository = get())
     }
     viewModel{
         MenuMiniViewModel(

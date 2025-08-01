@@ -64,10 +64,12 @@ class MenuMini : Fragment() {
         aadButton.setOnClickListener {
             val dish = menuMiniViewModel.dish.value
             if (dish != null) {
+                Log.d("MenuMiniFragment", "Добавляем блюдо в корзину: id=${dish.id}, name=${dish.name}")
                 basketViewModel.addDishToBasket(dish.id)
+            } else {
+                Log.w("MenuMiniFragment", "Блюдо отсутствует при попытке добавить в корзину")
             }
-            // Закрываем фрагмент после добавления
-            (activity as? MainActivity)?.hideMenuMiniFragment()
+            //(activity as? MainActivity)?.hideMenuMiniFragment()
         }
 // Наблюдаем за LiveData dish из menuMiniViewModel
         menuMiniViewModel.dish.observe(viewLifecycleOwner, Observer { dish ->

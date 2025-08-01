@@ -1,6 +1,7 @@
 package com.example.mymenu.core.diapplication
 
 import android.app.Application
+import com.example.mymenu.core.basket.di.basketdi
 import com.example.mymenu.core.category.di.categorydi
 import com.example.mymenu.core.fastsearch.di.fastsearchdi
 import com.example.mymenu.core.menu.di.menudi
@@ -22,7 +23,8 @@ class MyMenuApplication : Application() {
                      categorydi,
                     menudi,
                     fastsearchdi,
-                    menuminidi
+                    menuminidi,
+                    basketdi
                 )
             )
         }

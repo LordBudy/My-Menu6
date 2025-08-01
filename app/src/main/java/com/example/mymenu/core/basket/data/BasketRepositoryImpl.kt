@@ -15,23 +15,23 @@ class BasketRepositoryImpl(
 ) : BasketRepository {
 
     override suspend fun addDishToBasket(dish: Int): DishItem {
-        Log.d("BasketRepo", "addDishToBasket called with dishId: $dish")
+        Log.d("BasketRepo", "addDishToBasket вызывается с dishId: $dish")
         // 1. Проверяем, есть ли уже это блюдо в корзине
         val dishEntity = basketDao.getDishById(dish)
         Log.d("BasketRepo", "existingDishEntity: $dishEntity")
         return if (dishEntity != null) {
-            Log.d("BasketRepo", "Dish exists, incrementing count")
+            Log.d("BasketRepo", "Блюдо существует, увеличивается количество")
             // 2. Увеличиваем кол-во
             dishEntity.count += 1
             basketDao.updateDish(dishEntity)
             Log.d("BasketRepo", "Dish updated: $dishEntity")
             dishEntity.toDomainDishItem() // Return updated item
         } else {
-            Log.d("BasketRepo", "Dish does not exist, creating new")
+            Log.d("BasketRepo", "Блюдо не существует, создаем новое")
             // 3. Добавляем новое блюдо в корзину с указанием количества 1
-            val dishDataSource = DishDataSource()
-            val dishItem = dishDataSource.getDish(dish, 1) ?: throw Exception("Dish id not found")
-            Log.d("BasketRepo", "New DishItem: $dishItem")
+            val dishItem = dishDataSource.getDish(dish, 1)
+                ?: throw Exception("id блюда не найден")
+            Log.d("BasketRepo", "новое блюдо: $dishItem")
             val newDishEntity = DishEntity(
                 id = dishItem.id,
                 url = dishItem.url,
@@ -43,7 +43,7 @@ class BasketRepositoryImpl(
                 count = 1
             )
             basketDao.insertDish(newDishEntity)
-            Log.d("BasketRepo", "New DishEntity inserted: $newDishEntity")
+            Log.d("BasketRepo", "новый объект DishEntity: $newDishEntity")
             newDishEntity.toDomainDishItem()
         }
 
@@ -51,7 +51,7 @@ class BasketRepositoryImpl(
 
     override fun getAllDishes(): Flow<List<DishItem>> =
         basketDao.getAllDishs().map { list ->
-            Log.d("BasketRepositoryImpl", "getAllDishes: list size = ${list.size}")
+            Log.d("BasketRepositoryImpl", "getAllDishes: размер списка = ${list.size}")
             list.map { it.toDomainDishItem() }
         }
 
@@ -93,6 +93,7 @@ class BasketRepositoryImpl(
         // Возвращаем преобразованное блюдо
         return dishEntity.toDomainDishItem()
     }
+
 
 
     // преобразование DishEntity в DishItem

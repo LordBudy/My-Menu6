@@ -5,16 +5,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mymenu.core.basket.data.BasketRepositoryImpl
+import com.example.mymenu.core.basket.domain.AddDishToBasketUseCase
+import com.example.mymenu.core.basket.domain.DeleteDishBasketUseCase
 import com.example.mymenu.core.basket.domain.GetAllBasketUseCase
+import com.example.mymenu.core.basket.domain.MinusDishUseCase
+import com.example.mymenu.core.basket.domain.PlusDishUseCase
 import com.example.mymenu.core.models.DishItem
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class BasketViewModel(
+    private val addDishToBasketUseCase: AddDishToBasketUseCase,
     private val getAllBasketUseCase: GetAllBasketUseCase,
-    private val basketRepository: BasketRepositoryImpl
-
+    private val deleteDishBasketUseCase: DeleteDishBasketUseCase,
+    private val minusDishUseCase: MinusDishUseCase,
+    private val plusDishUseCase: PlusDishUseCase
 ) : ViewModel() {
 
     private val _basketItems = MutableLiveData<List<DishItem>>()
@@ -51,7 +56,7 @@ class BasketViewModel(
     fun onPlusClicked(dishItem : DishItem){
         viewModelScope.launch {
             try {
-                basketRepository.plusDish(dishItem.id)
+                plusDishUseCase(dishItem.id)
                 loadBasketItems()
             } catch (e: Exception) {
                 Log.e("BasketViewModel", "Ошибка при увеличении количества", e)
@@ -62,7 +67,7 @@ class BasketViewModel(
     fun onMinusClicked(dishItem: DishItem) {
         viewModelScope.launch {
             try {
-                basketRepository.minusDish(dishItem.id)
+                minusDishUseCase(dishItem.id)
                 loadBasketItems()
             } catch (e: Exception) {
                 Log.e("BasketViewModel", "Ошибка при уменьшении количества", e)
@@ -73,7 +78,7 @@ class BasketViewModel(
     fun onDeleteClicked(dishItem : DishItem){
         viewModelScope.launch {
             try {
-                basketRepository.deleteDishBasket(dishItem.id)
+                deleteDishBasketUseCase(dishItem.id)
                 loadBasketItems()
             } catch (e: Exception) {
                 Log.e("BasketViewModel", "Ошибка при удалении количества", e)
@@ -83,10 +88,10 @@ class BasketViewModel(
     fun addDishToBasket(dishId: Int) {
         viewModelScope.launch {
             try {
-                basketRepository.addDishToBasket(dishId) // Use the repository to add the dish.
+                addDishToBasketUseCase.execute(dishId)
                 loadBasketItems()
             } catch (e: Exception) {
-                Log.e("BasketViewModel", "Error adding dish: ${e.message}", e)
+                Log.e("BasketViewModel", "Ошибка добавления блюда: ${e.message}", e)
             }
         }
     }

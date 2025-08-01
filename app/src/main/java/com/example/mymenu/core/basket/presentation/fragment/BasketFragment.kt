@@ -15,13 +15,15 @@ import com.example.mymenu.core.models.DishItem
 import com.example.mymenu.core.basket.presentation.adapter.BasketAdapter
 import com.example.mymenu.core.basket.presentation.viewModel.BasketViewModel
 import com.example.mymenu.R
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.getValue
 
 @Suppress("UNCHECKED_CAST")
 class BasketFragment : Fragment() {
+    private val basketViewModel: BasketViewModel by viewModel()
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var basketAdapter: BasketAdapter
-    private lateinit var basketViewModel: BasketViewModel
     private lateinit var basketDao: BasketDao
     private lateinit var itogoButton: Button
     override fun onCreateView(

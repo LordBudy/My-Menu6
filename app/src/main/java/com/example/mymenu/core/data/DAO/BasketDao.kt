@@ -19,7 +19,7 @@ interface BasketDao {
     fun getAllDishs(): Flow<List<DishEntity>>
 
     @Query("SELECT * FROM dish WHERE id = :dishId")
-    suspend fun getDishById(dishId: Int?): DishEntity?
+    suspend fun getDishById(dishId: Int): DishEntity?
 
     @Update
     suspend fun updateDish(dish: DishEntity) // Исправлено: метод для обновления DishEntity

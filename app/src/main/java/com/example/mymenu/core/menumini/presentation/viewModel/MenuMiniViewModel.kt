@@ -9,6 +9,7 @@ import com.example.mymenu.core.basket.domain.AddDishToBasketUseCase
 import com.example.mymenu.core.menumini.domain.GetDishMiniUseCase
 import com.example.mymenu.core.models.DishItem
 import kotlinx.coroutines.launch
+import kotlin.coroutines.cancellation.CancellationException
 
 class MenuMiniViewModel(
     private val addDishToBasketUseCase: AddDishToBasketUseCase,
@@ -32,10 +33,13 @@ class MenuMiniViewModel(
     fun addDishToBasket(dish: DishItem) {
         viewModelScope.launch {
             try {
-                addDishToBasketUseCase.execute(dish)
+                addDishToBasketUseCase.execute(dish.id)
+                Log.d("MenuMiniViewModel", "Блюдо успешно добавлено: ${dish.name}")
+            } catch (e: CancellationException) {
+                Log.w("MenuMiniViewModel", "Добавление блюда отменено", e)
+                throw e // важно пробросить, чтобы отмена корректно обработалась
             } catch (e: Exception) {
-                Log.d("MiniViewModel", "ошибка добавления влюда в бд")
-
+                Log.e("MenuMiniViewModel", "Ошибка добавления блюда", e)
             }
         }
     }
