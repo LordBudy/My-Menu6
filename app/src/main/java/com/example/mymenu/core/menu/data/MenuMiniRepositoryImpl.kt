@@ -1,9 +1,9 @@
-package com.example.mymenu.core.menumini.data
+package com.example.mymenu.core.menu.data
 
 import com.example.mymenu.core.data.ApiService.DishDataSource
 import com.example.mymenu.core.data.ModelsEntitys.DishEntity
+import com.example.mymenu.core.menu.domain.MenuMiniRepository
 import com.example.mymenu.core.models.DishItem
-import com.example.mymenu.core.menumini.domain.MenuMiniRepository
 
 class MenuMiniRepositoryImpl(private val dishDataSource: DishDataSource) : MenuMiniRepository {
 

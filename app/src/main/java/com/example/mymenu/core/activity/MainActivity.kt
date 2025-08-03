@@ -10,7 +10,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.mymenu.core.menumini.presentation.fragment.MenuMini
+import com.example.mymenu.core.menu.presentation.fragment.MenuMini
 import com.example.mymenu.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 

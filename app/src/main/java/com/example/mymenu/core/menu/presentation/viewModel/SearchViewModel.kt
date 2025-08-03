@@ -1,11 +1,11 @@
-package com.example.mymenu.core.fastsearch.presentation.viewModel
+package com.example.mymenu.core.menu.presentation.viewModel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mymenu.core.fastsearch.domain.GetSearchDishesUseCase
+import com.example.mymenu.core.menu.domain.GetSearchDishesUseCase
 import com.example.mymenu.core.models.DishItem
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package com.example.mymenu.core.category.presentation.adapter
+package com.example.mymenu.core.menu.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,13 +6,9 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mymenu.R
 import com.example.mymenu.core.models.CategoryItem
 import com.squareup.picasso.Picasso
-import com.example.mymenu.R
-
-// CategoryAdapter - Adapter для RecyclerView, отображающий список категорий
-// categories - список объектов CategoryItem для отображения
-// onClick - лямбда-функция, которая вызывается при нажатии на элемент списка
 
 class CategoryAdapter(
     private var categories: List<CategoryItem>,

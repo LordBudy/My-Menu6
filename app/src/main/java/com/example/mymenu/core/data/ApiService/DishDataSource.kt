@@ -299,8 +299,8 @@ class DishDataSource {
                 100.0,
                 "Описание 6",
                 150.0,
-                 2,
-                1) // categoryId
+                 2,// categoryId
+                1) //count
         )
     }
     // Блюда для категории 3
@@ -312,8 +312,8 @@ class DishDataSource {
                 150.0,
                 "Описание 7",
                 200.0,
-                 3,
-                1) // categoryId
+                 3,// categoryId
+                1)
 
         )
     }
@@ -327,8 +327,8 @@ class DishDataSource {
                 200.0,
                 "Описание 8",
                 250.0,
-                 4,
-                1) //  categoryId
+                 4,//  categoryId
+                1)
 
         )
     }

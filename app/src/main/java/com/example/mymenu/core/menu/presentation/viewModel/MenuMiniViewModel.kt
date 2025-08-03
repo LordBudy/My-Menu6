@@ -1,4 +1,4 @@
-package com.example.mymenu.core.menumini.presentation.viewModel
+package com.example.mymenu.core.menu.presentation.viewModel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mymenu.core.basket.domain.AddDishToBasketUseCase
-import com.example.mymenu.core.menumini.domain.GetDishMiniUseCase
+import com.example.mymenu.core.menu.domain.GetDishMiniUseCase
 import com.example.mymenu.core.models.DishItem
 import kotlinx.coroutines.launch
 import kotlin.coroutines.cancellation.CancellationException

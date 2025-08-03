@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/home"
-        android:name="com.example.mymenu.core.category.presentation.fragment.Category"
+        android:name="com.example.mymenu.core.menu.presentation.fragment.Category"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/menuMini"
-        android:name="com.example.mymenu.core.menumini.presentation.fragment.MenuMini"
+        android:name="com.example.mymenu.core.menu.presentation.fragment.MenuMini"
         android:label="fragment_menu_mini"
         tools:layout="@layout/fragment_menu_mini">
         <action
@@ -77,7 +77,7 @@
     </fragment>
     <fragment
         android:id="@+id/fastSearch"
-        android:name="com.example.mymenu.core.fastsearch.presentation.fragment.FastSearch"
+        android:name="com.example.mymenu.core.menu.presentation.fragment.FastSearch"
         android:label="fragment_fast_search"
         tools:layout="@layout/fragment_fast_search">
         <action
@@ -93,7 +93,7 @@
     </fragment>
     <fragment
         android:id="@+id/account"
-        android:name="com.example.mymenu.core.account.presentation.fragment.Account_fragment"
+        android:name="com.example.mymenu.core.auth.presentation.fragment.Account_fragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
     <fragment
@@ -107,7 +107,7 @@
     </fragment>
     <fragment
         android:id="@+id/registration_1"
-        android:name="com.example.mymenu.core.auth.presentation.fragment.Registration_1"
+        android:name="com.example.mymenu.core.auth.presentation.fragment.Registration_1_fragment"
         android:label="Registration_1">
         <action
             android:id="@+id/action_registration_1_to_registration_2"
@@ -118,7 +118,7 @@
     </fragment>
     <fragment
         android:id="@+id/registration_2"
-        android:name="com.example.mymenu.core.auth.presentation.fragment.Registration_2"
+        android:name="com.example.mymenu.core.auth.presentation.fragment.Registration_2_fragment"
         android:label="Registration_2">
         <action
             android:id="@+id/action_registration_2_to_home"

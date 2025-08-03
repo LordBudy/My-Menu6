@@ -1,4 +1,4 @@
-package com.example.mymenu.core.menumini.presentation.fragment
+package com.example.mymenu.core.menu.presentation.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -11,10 +11,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.example.mymenu.core.menumini.presentation.viewModel.MenuMiniViewModel
 import com.example.mymenu.R
 import com.example.mymenu.core.activity.MainActivity
 import com.example.mymenu.core.basket.presentation.viewModel.BasketViewModel
+import com.example.mymenu.core.menu.presentation.viewModel.MenuMiniViewModel
 import com.example.mymenu.core.models.DishItem
 import com.squareup.picasso.Picasso
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -102,4 +102,3 @@ class MenuMini : Fragment() {
         }
     }
 }
-

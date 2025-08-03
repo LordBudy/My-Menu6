@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.example.mymenu.R
 
 
-class Registration_2 : Fragment() {
+class Registration_2_fragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

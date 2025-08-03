@@ -1,4 +1,4 @@
-package com.example.mymenu.core.fastsearch.presentation.adapter
+package com.example.mymenu.core.menu.presentation.adapter
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -14,8 +14,8 @@ import com.squareup.picasso.Picasso
 
 class FastSearchAdapter (
 // Список блюд, которые нужно отобразить
-        private var dishs: List<DishItem>,
-        private val onClick: (DishItem) -> Unit //  Лямбда-функция, вызываемая при нажатии на блюдо
+    private var dishs: List<DishItem>,
+    private val onClick: (DishItem) -> Unit //  Лямбда-функция, вызываемая при нажатии на блюдо
         // Указываем тип ViewHolder, который будет использоваться
     ) : RecyclerView.Adapter<FastSearchAdapter.DishViewHolder>() {
         // Метод для обновления данных в адаптере

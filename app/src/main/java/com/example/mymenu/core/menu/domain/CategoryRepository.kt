@@ -1,4 +1,4 @@
-package com.example.mymenu.core.category.domain
+package com.example.mymenu.core.menu.domain
 
 import com.example.mymenu.core.models.CategoryItem
 

@@ -1,23 +1,21 @@
-package com.example.mymenu.core.fastsearch.presentation.fragment
+package com.example.mymenu.core.menu.presentation.fragment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mymenu.core.fastsearch.presentation.viewModel.SearchViewModel
 import com.example.mymenu.R
 import com.example.mymenu.core.activity.MainActivity
-import com.example.mymenu.core.fastsearch.presentation.adapter.FastSearchAdapter
+import com.example.mymenu.core.menu.presentation.adapter.FastSearchAdapter
+import com.example.mymenu.core.menu.presentation.viewModel.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.getValue
 
 @Suppress("DEPRECATION")
 class FastSearch : Fragment() {
@@ -51,7 +49,10 @@ class FastSearch : Fragment() {
             Log.d("BasketFragment12", "клик по блюду прошел ,созданы переменные ")
             if (dishId != null && categoryId != null) {
                 Log.d("BasketFragment12", "клик по блюду прошел ,проверку null прошел ")
-                (activity as? MainActivity)?.showMenuMiniFragment(dishId = dishId, categoryId = categoryId)
+                (activity as? MainActivity)?.showMenuMiniFragment(
+                    dishId = dishId,
+                    categoryId = categoryId
+                )
             } else {
                 // если dishId или categoryId равны null то
                 Toast.makeText(

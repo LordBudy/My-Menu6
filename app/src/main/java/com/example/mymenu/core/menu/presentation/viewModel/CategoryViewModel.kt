@@ -1,11 +1,10 @@
-package com.example.mymenu.core.category.presentation.viewModel
+package com.example.mymenu.core.menu.presentation.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mymenu.core.category.domain.GetCategoryUseCase
-
+import com.example.mymenu.core.menu.domain.GetCategoryUseCase
 import com.example.mymenu.core.models.CategoryItem
 import kotlinx.coroutines.launch
 

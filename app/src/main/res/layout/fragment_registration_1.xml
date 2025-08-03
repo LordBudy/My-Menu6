@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".core.account.presentation.fragment.Account_fragment">
+    tools:context=".core.auth.presentation.fragment.Account_fragment">
 
     <TextView
         android:id="@+id/login"

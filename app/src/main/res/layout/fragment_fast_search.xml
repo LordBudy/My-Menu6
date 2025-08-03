@@ -8,7 +8,7 @@
     android:clickable="true"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
-    tools:context=".core.fastsearch.presentation.fragment.FastSearch"
+    tools:context=".core.menu.presentation.fragment.FastSearch"
     tools:ignore="ExtraText">
     <!-- #80 определяет уровень прозрачности (значение от 00 до FF) -->
     <!-- Добавленный атрибут clickable позволяет поглощать нажатия сквозь прозрачный фон -->

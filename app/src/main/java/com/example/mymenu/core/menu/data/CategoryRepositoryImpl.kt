@@ -1,6 +1,6 @@
-package com.example.mymenu.core.category.data
+package com.example.mymenu.core.menu.data
 
-import com.example.mymenu.core.category.domain.CategoryRepository
+import com.example.mymenu.core.menu.domain.CategoryRepository
 import com.example.mymenu.core.data.ApiService.CatDataSource
 import com.example.mymenu.core.data.ModelsEntitys.Category
 import com.example.mymenu.core.models.CategoryItem
