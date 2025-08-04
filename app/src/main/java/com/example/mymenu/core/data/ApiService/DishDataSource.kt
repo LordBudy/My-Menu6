@@ -20,6 +20,7 @@ class DishDataSource {
     // Добавьте функцию для получения одного блюда по ID
     fun getDish(dishId: Int, categoryId: Int): DishEntity? {
         val dishes = getDishesByCategoryId(categoryId)
+        Log.d("DishDataSource", "Полученные блюда для категории $categoryId: ${dishes.map { it.name }}")
         return dishes.find { it.id == dishId } // Ищем блюдо с нужным ID
     }
     //Поиск по всем категориям по имени
@@ -39,6 +40,15 @@ class DishDataSource {
             }
         }
     }
+    //ищет блюдо по id, перебирая все категории
+    fun getDishById(dishId: Int): DishEntity? {
+        for (categoryId in 1..4) {
+            val dish = getDishesByCategoryId(categoryId).find { it.id == dishId }
+            if (dish != null) return dish
+        }
+        return null
+    }
+
     // Блюда для категории 1
     fun getDishesForCategory1(): List<DishEntity> {
         // Возвращаем список блюд, созданный с помощью функции listOf()
@@ -293,11 +303,11 @@ class DishDataSource {
     // Блюда для категории 2
     private fun getDishesForCategory2(): List<DishEntity> {
         return listOf(
-            DishEntity(6,
-                "url2",
-                "Блюдо 6",
+            DishEntity(21,
+                "https://fsd.multiurok.ru/html/2019/05/17/s_5cdf19e3e26ec/1159510_1.png",
+                "Блюдо 21",
                 100.0,
-                "Описание 6",
+                "будешь толстым",
                 150.0,
                  2,// categoryId
                 1) //count
@@ -306,11 +316,11 @@ class DishDataSource {
     // Блюда для категории 3
     private fun getDishesForCategory3(): List<DishEntity> {
         return listOf(
-            DishEntity(7,
-                "url3",
-                "Блюдо 7",
+            DishEntity(22,
+                "https://imageproxy.wolt.com/menu/menu-images/5feb24cfc8bb28184a917850/0161ab4a-5015-11eb-a669-ee3d970aa644_kare_burosu_ramen.jpeg",
+                "Блюдо 22",
                 150.0,
-                "Описание 7",
+                "азиатская бурда",
                 200.0,
                  3,// categoryId
                 1)
@@ -321,11 +331,11 @@ class DishDataSource {
     // Блюда для категории 4
     private fun getDishesForCategory4(): List<DishEntity> {
         return listOf(
-            DishEntity(8,
-                "url4",
-                "Блюдо 8",
+            DishEntity(23,
+                "https://sushi-na-dom.com/image/cache/catalog/sushi-na-dom/menu/sup/%D1%81%D0%BE%D0%BB%D1%8F%D0%BD%D0%BA%D0%B0%20%D0%BC%D1%8F%D1%81%D0%BD%D0%B0%D1%8F%20169%D1%80%D1%83%D0%B1.-800x800.jpg",
+                "Блюдо 23",
                 200.0,
-                "Описание 8",
+                "суп",
                 250.0,
                  4,//  categoryId
                 1)

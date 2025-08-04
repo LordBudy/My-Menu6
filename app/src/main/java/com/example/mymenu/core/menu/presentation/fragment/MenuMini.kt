@@ -12,8 +12,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.mymenu.R
-import com.example.mymenu.core.activity.MainActivity
-import com.example.mymenu.core.basket.presentation.viewModel.BasketViewModel
 import com.example.mymenu.core.menu.presentation.viewModel.MenuMiniViewModel
 import com.example.mymenu.core.models.DishItem
 import com.squareup.picasso.Picasso
@@ -21,7 +19,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MenuMini : Fragment() {
 
-    private val basketViewModel: BasketViewModel by viewModel()
     private val menuMiniViewModel: MenuMiniViewModel by viewModel()
 
     private var dishId: Int = -1
@@ -55,6 +52,8 @@ class MenuMini : Fragment() {
         arguments?.let {
             dishId = it.getInt("dishId", -1)
             categoryId = it.getInt("categoryId", -1)
+            Log.d("MenuMiniFragment", "Получены аргументы: dishId=$dishId, categoryId=$categoryId")
+            menuMiniViewModel.getDish(dishId, categoryId)
         }
         val closeButton: Button = view.findViewById(R.id.close) //кнопка закрытия
         closeButton.setOnClickListener {
@@ -65,30 +64,31 @@ class MenuMini : Fragment() {
             val dish = menuMiniViewModel.dish.value
             if (dish != null) {
                 Log.d("MenuMiniFragment", "Добавляем блюдо в корзину: id=${dish.id}, name=${dish.name}")
-                basketViewModel.addDishToBasket(dish.id)
+                menuMiniViewModel.addDishToBasket(dish.id)
             } else {
                 Log.w("MenuMiniFragment", "Блюдо отсутствует при попытке добавить в корзину")
             }
-            //(activity as? MainActivity)?.hideMenuMiniFragment()
+//            parentFragmentManager.beginTransaction().remove(this).commit()
         }
 // Наблюдаем за LiveData dish из menuMiniViewModel
         menuMiniViewModel.dish.observe(viewLifecycleOwner, Observer { dish ->
+            Log.d("MenuMiniFragment", "Получены данные о блюде: $dish")
             showMini(dish)
         })
         // Загружаем данные блюда
         if (dishId != -1 && categoryId != -1) {
-            Log.d("MenuMiniFragment", "Запрос плюда с  ID: $dishId, Category ID: $categoryId")
+            Log.d("MenuMiniFragment", "Запрос блюда с  ID: $dishId, Category ID: $categoryId")
             menuMiniViewModel.getDish(dishId, categoryId)
         } else {
             Log.e("MenuMiniFragment", "Неверный dishId или categoryId передан фрагменту MenuMini")
             Toast.makeText(requireContext(), "Ошибка: Неверные ID блюда или категории.", Toast.LENGTH_SHORT).show()
-            // Возможно, стоит закрыть фрагмент, если ID некорректны
-            (activity as? MainActivity)?.hideMenuMiniFragment()
+            parentFragmentManager.beginTransaction().remove(this).commit()
         }
     }
 
     fun showMini(dish: DishItem?) {
         if (dish != null) {
+            Log.d("MenuMiniFragment", "Отображаем блюдо: ${dish.name}")
             dishNameTextView.text = dish.name
             dishPriceTextView.text = "Цена: \n${dish.price}р."
             dishWeightTextView.text = "Вес:\n${dish.weight}гр."
@@ -97,6 +97,7 @@ class MenuMini : Fragment() {
                 .load(dish.url)
                 .into(dishImageView)
         } else {
+            Log.w("MenuMiniFragment", "Не удалось загрузить данные о блюде")
             dishNameTextView.text = "Блюдо не найдено"
             Log.w("MenuMiniFragment", "Не удалось загрузить данные о блюде")
         }

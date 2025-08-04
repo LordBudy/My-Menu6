@@ -41,19 +41,19 @@ class MenuViewModel(
             val filteredDishes = if (filterType != null) {
                 allDishes.filter { dish ->
                     when (filterType) {
-                        "meat" -> dish.description?.contains(
+                        "meat" -> dish.description.contains(
                             "мясо",
                             ignoreCase = true
                         ) == true //  или  dish.ingredients.contains("мясо")
-                        "rice" -> dish.name?.contains(
+                        "rice" -> dish.name.contains(
                             "рис",
                             ignoreCase = true
                         ) == true //  или  dish.ingredients.contains("рис")
-                        "fish" -> dish.name?.contains(
+                        "fish" -> dish.name.contains(
                             "рыба",
                             ignoreCase = true
                         ) == true //  или dish.ingredients.contains("рыба")
-                        "salad" -> dish.name?.contains(
+                        "salad" -> dish.name.contains(
                             "салат",
                             ignoreCase = true
                         ) == true //  или dish.ingredients.contains("салат")

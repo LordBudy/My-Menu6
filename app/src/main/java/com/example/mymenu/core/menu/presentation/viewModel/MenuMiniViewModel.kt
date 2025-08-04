@@ -18,23 +18,28 @@ class MenuMiniViewModel(
 
     private val _dish = MutableLiveData<DishItem?>()
     val dish: LiveData<DishItem?> = _dish
+    private var currentCategoryId: Int = -1
 
     fun getDish(dishId: Int, categoryId: Int) {
+        currentCategoryId = categoryId
         // viewModelScope - корутин скоуп, связанный с жизненным циклом ViewModel
         viewModelScope.launch {
             // Вызываем UseCase для получения списка блюд по ID категории
-            try {
-                _dish.value = getDishMiniUseCase.execute(dishId, categoryId)
+            try {val dishItem = getDishMiniUseCase.execute(dishId, categoryId)
+                //_dish.value = getDishMiniUseCase.execute(dishId, categoryId)
+                Log.d("MenuMiniViewModel", "Получено блюдо: $dishItem")
+                _dish.value = dishItem
             } catch (e: Exception) {
                 Log.e("MenuMiniViewModel", "Ошибка при загрузке блюда", e)
             }
         }
     }
-    fun addDishToBasket(dish: DishItem) {
+
+    fun addDishToBasket(dish: Int) {
         viewModelScope.launch {
             try {
-                addDishToBasketUseCase.execute(dish.id)
-                Log.d("MenuMiniViewModel", "Блюдо успешно добавлено: ${dish.name}")
+                addDishToBasketUseCase.execute(dish)
+                Log.d("MenuMiniViewModel", "Блюдо успешно добавлено: ${dish}")
             } catch (e: CancellationException) {
                 Log.w("MenuMiniViewModel", "Добавление блюда отменено", e)
                 throw e // важно пробросить, чтобы отмена корректно обработалась

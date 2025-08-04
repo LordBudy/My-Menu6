@@ -20,10 +20,7 @@ import kotlin.getValue
 
 @Suppress("UNCHECKED_CAST")
 class Menu : Fragment() {
-    // Используем by viewModel() для создания ViewModel с помощью Koin
-    //передаем categoryId в Koin иначе он не сможет найти значение параметра
-    private val viewModel: MenuViewModel by viewModel{ parametersOf(categoryId) }
-
+    private val viewModel: MenuViewModel by viewModel { parametersOf(categoryId) }
     private lateinit var recyclerView: RecyclerView
     private lateinit var menuAdapter: MenuAdapter
     private var categoryId: Int = -1
@@ -34,78 +31,55 @@ class Menu : Fragment() {
     private lateinit var btnSalads: Button
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_menu, container, false)
+        categoryId = arguments?.getInt("categoryId") ?: -1
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (categoryId == -1) {
+            Toast.makeText(requireContext(), "Не удалось получить ID категории", Toast.LENGTH_SHORT).show()
+            requireActivity().supportFragmentManager.popBackStack()
+            return
+        }
+
+        setupViews(view)
+        setupRecyclerView()
+        observeViewModel()
+        setupButtonListeners()
+
+        viewModel.loadDishs()
+    }
+
+    private fun setupViews(view: View) {
         btnAllMenu = view.findViewById(R.id.btnAllMenu)
         btnWithMeat = view.findViewById(R.id.btnWithMeat)
         btnWithRice = view.findViewById(R.id.btnWithRice)
         btnWithFish = view.findViewById(R.id.btnWithFish)
         btnSalads = view.findViewById(R.id.btnSalads)
         recyclerView = view.findViewById(R.id.recyclerViewMenu)
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-        return view
     }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        categoryId = arguments?.getInt("categoryId") ?: -1
-    }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-        if (categoryId == -1) {
-            Toast.makeText(requireContext(), "Не удалось получить ID категории", Toast.LENGTH_SHORT)
-                .show()
-            requireActivity().supportFragmentManager.popBackStack()
-            return
-        }
-
+    private fun setupRecyclerView() {
         menuAdapter = MenuAdapter(emptyList()) { dishItem ->
             val dishId = dishItem.id
             val categoryId = dishItem.categoryId
 
-            if (dishId != null && categoryId != null) {
-                (activity as? MainActivity)?.showMenuMiniFragment(dishId = dishId, categoryId = categoryId)
+            if (dishId != null&& categoryId != null) {
+                (activity as? MainActivity)?.showMenuMiniFragment(dishId, categoryId)
             } else {
-                // Обработка случая, когда dishId или categoryId равны null
-                Toast.makeText(
-                    requireContext(),
-                    "Ошибка: ID блюда или категории не найдены",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(requireContext(), "Ошибка: ID блюда не найден", Toast.LENGTH_SHORT).show()
             }
         }
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         recyclerView.adapter = menuAdapter
+    }
 
-        viewModel.dishs.observe(viewLifecycleOwner, Observer { dishList ->
-            if (dishList != null) {
-                menuAdapter.updateData(dishList)
-            } else {
-                Toast.makeText(requireContext(), "Не удалось загрузить блюда", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        })
-        //  Загружаем блюда при создании фрагмента
-        viewModel.loadDishs()
-        //  Устанавливаем слушатели на кнопки
-        btnAllMenu.setOnClickListener {
-            viewModel.fastLoadDishs(categoryId, null) //  Показать все блюда
-        }
-        btnWithMeat.setOnClickListener {
-            viewModel.fastLoadDishs(categoryId, "meat") //  Показать блюда с мясом
-        }
-        btnWithRice.setOnClickListener {
-            viewModel.fastLoadDishs(categoryId, "rice") //  Показать блюда с рисом
-        }
-        btnWithFish.setOnClickListener {
-            viewModel.fastLoadDishs(categoryId, "fish") //  Показать блюда с рыбой
-        }
-        btnSalads.setOnClickListener {
-            viewModel.fastLoadDishs(categoryId, "salad") //  Показать салаты
-        }
-
+    private fun observeViewModel() {
         viewModel.dishs.observe(viewLifecycleOwner, Observer { dishList ->
             if (dishList != null) {
                 menuAdapter.updateData(dishList)
@@ -113,5 +87,23 @@ class Menu : Fragment() {
                 Toast.makeText(requireContext(), "Не удалось загрузить блюда", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun setupButtonListeners() {
+        btnAllMenu.setOnClickListener {
+            viewModel.fastLoadDishs(categoryId, null)
+        }
+        btnWithMeat.setOnClickListener {
+            viewModel.fastLoadDishs(categoryId, "meat")
+        }
+        btnWithRice.setOnClickListener {
+            viewModel.fastLoadDishs(categoryId, "rice")
+        }
+        btnWithFish.setOnClickListener {
+            viewModel.fastLoadDishs(categoryId, "fish")
+        }
+        btnSalads.setOnClickListener {
+            viewModel.fastLoadDishs(categoryId, "salad")
+        }
     }
 }

@@ -16,22 +16,15 @@ class BasketRepositoryImpl(
 
     override suspend fun addDishToBasket(dish: Int): DishItem {
         Log.d("BasketRepo", "addDishToBasket вызывается с dishId: $dish")
-        // 1. Проверяем, есть ли уже это блюдо в корзине
         val dishEntity = basketDao.getDishById(dish)
         Log.d("BasketRepo", "existingDishEntity: $dishEntity")
         return if (dishEntity != null) {
-            Log.d("BasketRepo", "Блюдо существует, увеличивается количество")
-            // 2. Увеличиваем кол-во
             dishEntity.count += 1
             basketDao.updateDish(dishEntity)
-            Log.d("BasketRepo", "Dish updated: $dishEntity")
-            dishEntity.toDomainDishItem() // Return updated item
+            dishEntity.toDomainDishItem()
         } else {
-            Log.d("BasketRepo", "Блюдо не существует, создаем новое")
-            // 3. Добавляем новое блюдо в корзину с указанием количества 1
-            val dishItem = dishDataSource.getDish(dish, 1)
+            val dishItem = dishDataSource.getDishById(dish)
                 ?: throw Exception("id блюда не найден")
-            Log.d("BasketRepo", "новое блюдо: $dishItem")
             val newDishEntity = DishEntity(
                 id = dishItem.id,
                 url = dishItem.url,

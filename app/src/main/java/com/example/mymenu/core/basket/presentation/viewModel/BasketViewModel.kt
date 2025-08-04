@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mymenu.core.basket.domain.AddDishToBasketUseCase
 import com.example.mymenu.core.basket.domain.DeleteDishBasketUseCase
 import com.example.mymenu.core.basket.domain.GetAllBasketUseCase
 import com.example.mymenu.core.basket.domain.MinusDishUseCase
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class BasketViewModel(
-    private val addDishToBasketUseCase: AddDishToBasketUseCase,
     private val getAllBasketUseCase: GetAllBasketUseCase,
     private val deleteDishBasketUseCase: DeleteDishBasketUseCase,
     private val minusDishUseCase: MinusDishUseCase,
@@ -82,16 +80,6 @@ class BasketViewModel(
                 loadBasketItems()
             } catch (e: Exception) {
                 Log.e("BasketViewModel", "Ошибка при удалении количества", e)
-            }
-        }
-    }
-    fun addDishToBasket(dishId: Int) {
-        viewModelScope.launch {
-            try {
-                addDishToBasketUseCase.execute(dishId)
-                loadBasketItems()
-            } catch (e: Exception) {
-                Log.e("BasketViewModel", "Ошибка добавления блюда: ${e.message}", e)
             }
         }
     }

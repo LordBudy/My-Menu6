@@ -30,9 +30,9 @@ val basketdi = module {
     factory {
         GetAllBasketUseCase(basketRepository = get())
     }
-    factory {
-        AddDishToBasketUseCase(basketRepository = get())
-    }
+//    factory {
+//        AddDishToBasketUseCase(basketRepository = get())
+//    }
     factory {
         DeleteDishBasketUseCase(basketRepository = get())
     }
@@ -50,7 +50,7 @@ val basketdi = module {
     }
     viewModel {
         BasketViewModel(
-            addDishToBasketUseCase = get(),
+           // addDishToBasketUseCase = get(),
             getAllBasketUseCase = get(),
             deleteDishBasketUseCase = get(),
             minusDishUseCase = get(),

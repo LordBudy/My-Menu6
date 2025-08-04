@@ -30,9 +30,9 @@ class MenuAdapter(
         // TextView для отображения названия блюда
         val dishNameTextView: TextView = itemView.findViewById(R.id.name_dish)
         // TextView для отображения цены блюда
-        val PriceTextView: TextView = itemView.findViewById(R.id.Price)
+        val priceTextView: TextView = itemView.findViewById(R.id.Price)
         // TextView для отображения веса блюда
-        val WeightTextView: TextView = itemView.findViewById(R.id.Weight)
+        val weightTextView: TextView = itemView.findViewById(R.id.Weight)
     }
     // Этот метод вызывается, когда нужно создать новый ViewHolder для элемента списка
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishViewHolder {
@@ -45,8 +45,8 @@ class MenuAdapter(
     override fun onBindViewHolder(holder: DishViewHolder, position: Int) {
         val dish = dishs[position]// Получаем блюдо по позиции
         holder.dishNameTextView.text = dish.name //название блюда
-        holder.PriceTextView.text = dish.price.toString()//цена блюда
-        holder.WeightTextView.text = dish.weight.toString()// вес блюда
+        holder.priceTextView.text = dish.price.toString()//цена блюда
+        holder.weightTextView.text = dish.weight.toString()// вес блюда
         Picasso.get()
             // Загружаем изображение по URL
             .load(dish.url)
