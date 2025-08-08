@@ -1,20 +1,34 @@
 package com.example.mymenu.core.menu.presentation.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mymenu.core.menu.domain.GetDishsMenuUseCase
+import com.example.mymenu.core.menu.domain.GetSearchDishsUseCase
 import com.example.mymenu.core.models.DishItem
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class MenuViewModel(
+    private val getSearchDishsUseCase: GetSearchDishsUseCase,
     private val getDishsMenuUseCase: GetDishsMenuUseCase,
     private val categoryId: Int
 ) : ViewModel() {
     private val _dishs = MutableLiveData<List<DishItem>>()
     val dishs: LiveData<List<DishItem>> = _dishs
 
+    private val _searchQuery = MutableLiveData<String>()
+    val searchQuery: LiveData<String> = _searchQuery
+
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
+        searchLoadDishs(query)
+    }
+    init {
+        Log.d("MenuViewModel", "Создан MenuViewModel с categoryId: $categoryId")
+    }
     init {
         loadDishs()
     }
@@ -29,7 +43,20 @@ class MenuViewModel(
                 //  Присваиваем полученный список блюд переменной _dishs
                 _dishs.value = dishList
             } catch (e: Exception) {
-                println("Ошибка загрузки: ${e.message}")
+                Log.e("MenuViewModel", "Ошибка загрузки: ${e.message}")
+                _dishs.value = emptyList()
+            }
+        }
+    }
+    fun searchLoadDishs(query: String) {
+        viewModelScope.launch {
+            try {
+                //  Вызываем UseCase для получения списка блюд по запросу
+                getSearchDishsUseCase.execute(query).collectLatest { dishs ->
+                    _dishs.value = dishs
+                }
+            } catch (e: Exception) {
+                println("Ошибка загрузки блюд: ${e.message}")
                 _dishs.value = emptyList()
             }
         }

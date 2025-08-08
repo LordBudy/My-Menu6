@@ -14,16 +14,16 @@ import com.example.mymenu.core.activity.MainActivity
 import com.example.mymenu.core.menu.presentation.adapter.MenuAdapter
 import com.example.mymenu.core.menu.presentation.viewModel.MenuViewModel
 import com.example.mymenu.R
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
-import kotlin.getValue
 
 @Suppress("UNCHECKED_CAST")
 class Menu : Fragment() {
-    private val viewModel: MenuViewModel by viewModel { parametersOf(categoryId) }
+    private var categoryId: Int = -1
+    private lateinit var viewModel: MenuViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var menuAdapter: MenuAdapter
-    private var categoryId: Int = -1
+
     private lateinit var btnAllMenu: Button
     private lateinit var btnWithMeat: Button
     private lateinit var btnWithRice: Button
@@ -35,6 +35,12 @@ class Menu : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_menu, container, false)
         categoryId = arguments?.getInt("categoryId") ?: -1
+        if (categoryId == -1) {
+            Toast.makeText(requireContext(), "Не удалось получить ID категории", Toast.LENGTH_SHORT).show()
+            requireActivity().supportFragmentManager.popBackStack()
+        } else {
+            viewModel = requireActivity().getViewModel { parametersOf(categoryId) }
+        }
         return view
     }
 
@@ -52,7 +58,22 @@ class Menu : Fragment() {
         observeViewModel()
         setupButtonListeners()
 
-        viewModel.loadDishs()
+        // Получаем запрос из аргументов
+        val searchQuery = arguments?.getString("search_query")
+        if (!searchQuery.isNullOrEmpty()) {
+            viewModel.searchLoadDishs(searchQuery)  // Загружаем блюда по запросу
+        } else {
+            viewModel.loadDishs()  // Загружаем все блюда, если запрос пустой
+        }
+    }
+    private fun observeViewModel() {
+        viewModel.dishs.observe(viewLifecycleOwner, Observer { dishs ->
+            if (dishs != null && dishs.isNotEmpty()) {
+                menuAdapter.updateData(dishs)
+            } else {
+                Toast.makeText(requireContext(), "Блюд не найдено", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun setupViews(view: View) {
@@ -79,15 +100,15 @@ class Menu : Fragment() {
         recyclerView.adapter = menuAdapter
     }
 
-    private fun observeViewModel() {
-        viewModel.dishs.observe(viewLifecycleOwner, Observer { dishList ->
-            if (dishList != null) {
-                menuAdapter.updateData(dishList)
-            } else {
-                Toast.makeText(requireContext(), "Не удалось загрузить блюда", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
+//    private fun observeViewModel() {
+//        viewModel.dishs.observe(viewLifecycleOwner, Observer { dishs ->
+//            if (dishs != null) {
+//                menuAdapter.updateData(dishs)
+//            } else {
+//                Toast.makeText(requireContext(), "Не удалось загрузить блюда", Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//    }
 
     private fun setupButtonListeners() {
         btnAllMenu.setOnClickListener {

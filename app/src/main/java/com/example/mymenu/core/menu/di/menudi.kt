@@ -11,12 +11,11 @@ import com.example.mymenu.core.menu.domain.DishRepository
 import com.example.mymenu.core.menu.domain.GetCategoryUseCase
 import com.example.mymenu.core.menu.domain.GetDishMiniUseCase
 import com.example.mymenu.core.menu.domain.GetDishsMenuUseCase
-import com.example.mymenu.core.menu.domain.GetSearchDishesUseCase
+import com.example.mymenu.core.menu.domain.GetSearchDishsUseCase
 import com.example.mymenu.core.menu.domain.MenuMiniRepository
 import com.example.mymenu.core.menu.presentation.viewModel.CategoryViewModel
 import com.example.mymenu.core.menu.presentation.viewModel.MenuMiniViewModel
 import com.example.mymenu.core.menu.presentation.viewModel.MenuViewModel
-import com.example.mymenu.core.menu.presentation.viewModel.SearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -31,12 +30,18 @@ val menudi = module {
     factory {
         GetDishsMenuUseCase(dishRepository = get())
     }
+    factory {
+        GetSearchDishsUseCase(dishRepository = get())
+    }
+
     viewModel { parameters ->
         val categoryId: Int = parameters.get() //Получаем categoryId из параметров
 
         MenuViewModel(  //Создаем MenuViewModel с categoryId
             getDishsMenuUseCase = get(),
-            categoryId = categoryId    // Передаем categoryId
+            categoryId = categoryId,// Передаем categoryId
+            getSearchDishsUseCase = get(),
+
         )
     }
     //----------------------------------------------------------------------------------------------
@@ -57,15 +62,10 @@ val menudi = module {
     }
     //----------------------------------------------------------------------------------------------
     //MenuMini di
-//    single {
-//        AppDataBase.getDatabase(androidContext()).basketDao()
-//    }
+
     single<MenuMiniRepository> {
         MenuMiniRepositoryImpl(dishDataSource = get())
     }
-//    single<BasketRepository> {
-//        BasketRepositoryImpl(dishDataSource = get(), basketDao = get())
-//    }
     factory {
         GetDishMiniUseCase(repositoryMini = get())
     }
@@ -78,13 +78,4 @@ val menudi = module {
             addDishToBasketUseCase = get()
         )
     }
-    //----------------------------------------------------------------------------------------------
-//Search di
-    factory {
-        GetSearchDishesUseCase(dishRepository = get())
-    }
-    viewModel {
-        SearchViewModel(get())
-    }
-
 }

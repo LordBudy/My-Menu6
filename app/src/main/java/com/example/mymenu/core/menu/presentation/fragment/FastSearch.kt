@@ -1,104 +1,109 @@
 package com.example.mymenu.core.menu.presentation.fragment
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.EditText
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.mymenu.R
-import com.example.mymenu.core.activity.MainActivity
-import com.example.mymenu.core.menu.presentation.adapter.FastSearchAdapter
-import com.example.mymenu.core.menu.presentation.viewModel.SearchViewModel
+import com.example.mymenu.core.menu.presentation.viewModel.MenuViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 @Suppress("DEPRECATION")
 class FastSearch : Fragment() {
     private lateinit var searchView: SearchView
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var fastadapter: FastSearchAdapter
-    private lateinit var searc_btn: Button
+    private lateinit var btn_search: Button
+    private var query: String? = null
     private var categoryId: Int = -1
-
+private lateinit var searchEditText: EditText
     // Используем by viewModel() для создания ViewModel с помощью Koin
     //передаем categoryId в Koin иначе он не сможет найти значение параметра
-    private val viewModel: SearchViewModel by viewModel()
+    val viewModel: MenuViewModel by viewModel { parametersOf(categoryId) }
 
 
+    @SuppressLint("MissingInflatedId", "ServiceCast")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("FastSearch", "onCreateView")
         val view = inflater.inflate(R.layout.fragment_fast_search, container, false)
         searchView = view.findViewById(R.id.searchView)
-        recyclerView = view.findViewById(R.id.recyclerView)
-        searc_btn = view.findViewById(R.id.searc_btn)
+        btn_search = view.findViewById(R.id.btn_search)
+
+        // Получаем EditText внутри SearchView
+        searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text)
+
+        // Сделаем весь SearchView кликабельным и фокусируем поле ввода при клике
+        searchView.setOnClickListener {
+            searchEditText.requestFocus()
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(searchEditText, InputMethodManager.SHOW_IMPLICIT)
+        }
         return view
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            query = it.getString("search_query")
+            categoryId = it.getInt("category_id", -1)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fastadapter = FastSearchAdapter(emptyList()) { dishItem ->
-            val dishId = dishItem.id
-            val categoryId = dishItem.categoryId
-            Log.d("BasketFragment12", "клик по блюду прошел ,созданы переменные ")
-            if (dishId != null && categoryId != null) {
-                Log.d("BasketFragment12", "клик по блюду прошел ,проверку null прошел ")
-                (activity as? MainActivity)?.showMenuMiniFragment(
-                    dishId = dishId,
-                    categoryId = categoryId
-                )
-            } else {
-                // если dishId или categoryId равны null то
-                Toast.makeText(
-                    requireContext(),
-                    "Ошибка: ID блюда или категории не найдены",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-        recyclerView.adapter = fastadapter
+        Log.d("FastSearch", "onViewCreated")
 
+// Раскрываем SearchView, чтобы поле ввода было видно сразу
+        searchView.isIconified = false
 
         // Отслеживаем изменения в LiveData и обновляем адаптер
-        viewModel.dishs.observe(viewLifecycleOwner) { dishes ->
-            Log.d("FastSearch", "Получено ${dishes.size} блюд от ViewModel")
-            fastadapter.updateData(dishes) // Обновляем адаптер с новыми данными
+        viewModel.dishs.observe(viewLifecycleOwner) { dishs ->
+            Log.d("FastSearch", "Получено ${dishs.size} блюд от ViewModel")
+            // Обновляем адаптер с новыми данными
         }
 // Устанавливаем обработчик нажатия на кнопку поиска
-        searc_btn.setOnClickListener {
+        btn_search.setOnClickListener {
             val query = searchView.query.toString() // Получаем текст из SearchView
             Log.d("FastSearch1", "получили текст ${query}")
-            viewModel.loadDishs(query) // Вызываем метод loadDishs ViewModel
-            Log.d("FastSearch2", "вызвали метод loadDishs и передали ${query} ")
+            // Запускаем поиск
+            viewModel.setSearchQuery(query)
+            // Переход на фрагмент Menu
+            val bundle = Bundle().apply {
+                putString("search_query", query)
+                putInt("category_id", categoryId)
+            }
+            val menuFragment = Menu().apply {
+                arguments = bundle
+            }
+            // Удаляем текущий фрагмент FastSearch из стека
+            requireActivity().supportFragmentManager.popBackStack()
+            // Переход на фрагмент Menu
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.Container_frag, menuFragment)
+                .addToBackStack(null)
+                .commit()
         }
 
+        // Установка слушателя для SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.loadDishs(query ?: "")
+                viewModel.searchLoadDishs(query ?: "")
                 return true
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.loadDishs(newText ?: "")
+                viewModel.searchLoadDishs(newText ?: "")
                 return true
             }
         })
-    }
-
-    companion object {
-        fun newInstance(categoryId: Int): FastSearch {
-            val fragment = FastSearch()
-            val args = Bundle()
-            args.putInt("category_id", categoryId)
-            fragment.arguments = args
-            return fragment
-        }
     }
 }

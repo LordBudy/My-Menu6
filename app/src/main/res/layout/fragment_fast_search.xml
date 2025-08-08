@@ -4,61 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#80B3A9A9"
+    android:layout_gravity="center"
     android:clickable="true"
+    android:focusable="true"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
-    tools:context=".core.menu.presentation.fragment.FastSearch"
-    tools:ignore="ExtraText">
-    <!-- #80 определяет уровень прозрачности (значение от 00 до FF) -->
-    <!-- Добавленный атрибут clickable позволяет поглощать нажатия сквозь прозрачный фон -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            tools:listitem="@layout/item_dish_menu" />
-    </LinearLayout>
+    tools:context=".core.menu.presentation.fragment.FastSearch">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="130dp"
-        android:background="#F3EFEF"
-        android:gravity="bottom"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="UseCompoundDrawables,UselessParent">
-
+        android:layout_gravity="bottom|center"
+        android:background="@color/grey"
+        android:gravity="center"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
 
         <SearchView
             android:id="@+id/searchView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:textStyle="bold" >
+            android:textStyle="bold">
 
         </SearchView>
 
         <Button
-            android:id="@+id/searc_btn"
-            android:layout_width="match_parent"
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Поиск" />
-
+            android:text="@string/Найти"
+            android:textColor="#212121"
+            app:cornerRadius="20dp" />
 
     </LinearLayout>
 </FrameLayout>

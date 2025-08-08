@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         bottomNavigationView = findViewById(R.id.bNav)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.Container_frag) as NavHostFragment
@@ -140,6 +141,11 @@ class MainActivity : AppCompatActivity() {
     }
     private fun openSearchFragment(){
         Log.d("MainActivity", "переход к фрагменту fastSearch ")
-        findNavController(R.id.Container_frag).navigate(R.id.action_menu_to_fastSearch)
+        try {
+            navController.navigate(R.id.action_menu_to_fastSearch)
+            Log.d("MainActivity", "Навигация к fastSearch выполнена")
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Ошибка навигации: ${e.message}", e)
+        }
     }
 }
