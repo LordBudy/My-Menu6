@@ -90,6 +90,9 @@
                  android:name="dishItem"
                  app:argType="com.example.mymenu.core.models.DishItem"  />
         </action>
+        <action
+            android:id="@+id/action_fastSearch_to_menu"
+            app:destination="@id/menu" />
     </fragment>
     <fragment
         android:id="@+id/account"

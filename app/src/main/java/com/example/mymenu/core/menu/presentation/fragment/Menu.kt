@@ -100,16 +100,6 @@ class Menu : Fragment() {
         recyclerView.adapter = menuAdapter
     }
 
-//    private fun observeViewModel() {
-//        viewModel.dishs.observe(viewLifecycleOwner, Observer { dishs ->
-//            if (dishs != null) {
-//                menuAdapter.updateData(dishs)
-//            } else {
-//                Toast.makeText(requireContext(), "Не удалось загрузить блюда", Toast.LENGTH_SHORT).show()
-//            }
-//        })
-//    }
-
     private fun setupButtonListeners() {
         btnAllMenu.setOnClickListener {
             viewModel.fastLoadDishs(categoryId, null)

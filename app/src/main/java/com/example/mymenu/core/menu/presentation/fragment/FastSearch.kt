@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.mymenu.R
 import com.example.mymenu.core.menu.presentation.viewModel.MenuViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -82,18 +83,8 @@ private lateinit var searchEditText: EditText
                 putString("search_query", query)
                 putInt("category_id", categoryId)
             }
-            val menuFragment = Menu().apply {
-                arguments = bundle
-            }
-            // Удаляем текущий фрагмент FastSearch из стека
-            requireActivity().supportFragmentManager.popBackStack()
-            // Переход на фрагмент Menu
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.Container_frag, menuFragment)
-                .addToBackStack(null)
-                .commit()
+            findNavController().navigate(R.id.action_fastSearch_to_menu, bundle)
         }
-
         // Установка слушателя для SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {

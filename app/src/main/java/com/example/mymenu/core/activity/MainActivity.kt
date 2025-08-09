@@ -22,6 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
 
     private val MENU_MINI_TAG = "menuMiniFragment"
+    private val MENU_TAG = "menuFragment"
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
@@ -113,7 +114,6 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction().remove(it).commit()
         }
     }
-
     //Search
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.search_inc, menu)
