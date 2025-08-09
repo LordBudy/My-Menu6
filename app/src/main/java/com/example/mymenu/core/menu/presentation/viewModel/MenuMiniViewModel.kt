@@ -20,6 +20,10 @@ class MenuMiniViewModel(
     val dish: LiveData<DishItem?> = _dish
     private var currentCategoryId: Int = -1
 
+    //для события добавления блюда
+    private val _addDishEvent = MutableLiveData<Unit>()
+    val addDishEvent: LiveData<Unit> = _addDishEvent
+
     fun getDish(dishId: Int, categoryId: Int) {
         currentCategoryId = categoryId
         // viewModelScope - корутин скоуп, связанный с жизненным циклом ViewModel
@@ -40,9 +44,10 @@ class MenuMiniViewModel(
             try {
                 addDishToBasketUseCase.execute(dish)
                 Log.d("MenuMiniViewModel", "Блюдо успешно добавлено: ${dish}")
+                _addDishEvent.postValue(Unit)
             } catch (e: CancellationException) {
                 Log.w("MenuMiniViewModel", "Добавление блюда отменено", e)
-                throw e // важно пробросить, чтобы отмена корректно обработалась
+                throw e // важно, чтобы отмена корректно обработалась
             } catch (e: Exception) {
                 Log.e("MenuMiniViewModel", "Ошибка добавления блюда", e)
             }

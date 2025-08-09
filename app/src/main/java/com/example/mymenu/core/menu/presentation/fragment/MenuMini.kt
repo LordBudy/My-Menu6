@@ -59,6 +59,10 @@ class MenuMini : Fragment() {
         closeButton.setOnClickListener {
             parentFragmentManager.beginTransaction().remove(this@MenuMini).commit()
         }
+        //событие добавления блюда
+        menuMiniViewModel.addDishEvent.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), "Блюдо в корзине", Toast.LENGTH_SHORT).show()
+        }
         val aadButton: Button = view.findViewById(R.id.add_Bascket)//кнопка добавить в корзину
         aadButton.setOnClickListener {
             val dish = menuMiniViewModel.dish.value
