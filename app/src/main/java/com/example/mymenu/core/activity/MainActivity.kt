@@ -16,13 +16,14 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.mymenu.core.menu.presentation.fragment.MenuMini
 import com.example.mymenu.R
+import com.example.mymenu.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
-
+    // Создаем переменную для биндинга
+    private lateinit var binding: ActivityMainBinding
     private val MENU_MINI_TAG = "menuMiniFragment"
-    private val MENU_TAG = "menuFragment"
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
@@ -30,14 +31,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        // Инициализация биндинга
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-
-        bottomNavigationView = findViewById(R.id.bNav)
         val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.Container_frag) as NavHostFragment
+            supportFragmentManager
+                .findFragmentById(R.id.Container_frag) as NavHostFragment
+
         navController = navHostFragment.navController
-        bottomNavigationView.setupWithNavController(navController)
+
+        binding.bNav.setupWithNavController(navController)
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -48,12 +52,12 @@ class MainActivity : AppCompatActivity() {
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        val backButton: ImageButton = findViewById(R.id.backButton)
-        backButton.setOnClickListener {
+
+        binding.backButton.setOnClickListener {
             onBackPressed()
         }
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            backButton.visibility =
+            binding.backButton.visibility =
                 if (appBarConfiguration.topLevelDestinations.contains(destination.id)) {
                     View.GONE
                 } else {
@@ -63,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             searchMenuItem?.isVisible = showSearch
             hideMenuMiniFragment()
         }
-        bottomNavigationView.setOnItemSelectedListener { item ->
+        binding.bNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home,
                 R.id.fastSearch,
