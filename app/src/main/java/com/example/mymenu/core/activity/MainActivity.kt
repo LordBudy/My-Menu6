@@ -5,10 +5,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -17,14 +15,12 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.mymenu.core.menu.presentation.fragment.MenuMini
 import com.example.mymenu.R
 import com.example.mymenu.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
     // Создаем переменную для биндинга
     private lateinit var binding: ActivityMainBinding
     private val MENU_MINI_TAG = "menuMiniFragment"
-    private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private var searchMenuItem: MenuItem? = null
@@ -82,13 +78,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun showSearchResults(query: String, categoryId: Int) {
-        val bundle = Bundle().apply {
-            putString("search_query", query)
-            putInt("category_id", categoryId)
-        }
-        navController.navigate(R.id.fastSearch, bundle)
-    }
+//    fun showSearchResults(query: String, categoryId: Int) {
+//        val bundle = Bundle().apply {
+//            putString("search_query", query)
+//            putInt("category_id", categoryId)
+//        }
+//        navController.navigate(R.id.fastSearch, bundle)
+//    }
 
     fun showMenuMiniFragment(dishId: Int, categoryId: Int) {
         val menuMiniFragment = MenuMini().apply {
