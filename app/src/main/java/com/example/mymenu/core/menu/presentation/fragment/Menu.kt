@@ -34,23 +34,20 @@ class Menu : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_menu, container, false)
-        categoryId = arguments?.getInt("categoryId") ?: -1
-        if (categoryId == -1) {
-            Toast.makeText(requireContext(), "Не удалось получить ID категории", Toast.LENGTH_SHORT).show()
-            requireActivity().supportFragmentManager.popBackStack()
-        } else {
-            viewModel = requireActivity().getViewModel { parametersOf(categoryId) }
-        }
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        categoryId = arguments?.getInt("categoryId") ?: -1
+
         if (categoryId == -1) {
             Toast.makeText(requireContext(), "Не удалось получить ID категории", Toast.LENGTH_SHORT).show()
             requireActivity().supportFragmentManager.popBackStack()
-            return
+        } else {
+            viewModel = requireActivity().getViewModel { parametersOf(categoryId) }
+            viewModel.setCategoryId(categoryId)
         }
 
         setupViews(view)
@@ -71,7 +68,7 @@ class Menu : Fragment() {
             if (dishs != null && dishs.isNotEmpty()) {
                 menuAdapter.updateData(dishs)
             } else {
-                Toast.makeText(requireContext(), "Блюд не найдено", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Блюдо не найдено", Toast.LENGTH_SHORT).show()
             }
         })
     }

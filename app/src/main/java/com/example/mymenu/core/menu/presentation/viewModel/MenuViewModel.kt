@@ -14,24 +14,31 @@ import kotlinx.coroutines.launch
 class MenuViewModel(
     private val getSearchDishsUseCase: GetSearchDishsUseCase,
     private val getDishsMenuUseCase: GetDishsMenuUseCase,
-    private val categoryId: Int
+    private var categoryId: Int = -1
 ) : ViewModel() {
     private val _dishs = MutableLiveData<List<DishItem>>()
     val dishs: LiveData<List<DishItem>> = _dishs
 
     private val _searchQuery = MutableLiveData<String>()
-    val searchQuery: LiveData<String> = _searchQuery
+
+    init {
+        Log.d("MenuViewModel", "Создан MenuViewModel с categoryId: $categoryId")
+        loadDishs()
+    }
+
+    fun setCategoryId(newCategoryId: Int) {
+        if (categoryId != newCategoryId) {
+            categoryId = newCategoryId
+            loadDishs()
+        }
+    }
 
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
         searchLoadDishs(query)
     }
-    init {
-        Log.d("MenuViewModel", "Создан MenuViewModel с categoryId: $categoryId")
-    }
-    init {
-        loadDishs()
-    }
+
+
 
     fun loadDishs() {
         //  viewModelScope - корутин , связанный с жизненным циклом ViewModel
@@ -71,19 +78,19 @@ class MenuViewModel(
                         "meat" -> dish.description.contains(
                             "мясо",
                             ignoreCase = true
-                        ) == true //  или  dish.ingredients.contains("мясо")
+                        ) == true
                         "rice" -> dish.name.contains(
                             "рис",
                             ignoreCase = true
-                        ) == true //  или  dish.ingredients.contains("рис")
+                        ) == true
                         "fish" -> dish.name.contains(
                             "рыба",
                             ignoreCase = true
-                        ) == true //  или dish.ingredients.contains("рыба")
+                        ) == true
                         "salad" -> dish.name.contains(
                             "салат",
                             ignoreCase = true
-                        ) == true //  или dish.ingredients.contains("салат")
+                        ) == true
                         else -> false
                     }
                 }

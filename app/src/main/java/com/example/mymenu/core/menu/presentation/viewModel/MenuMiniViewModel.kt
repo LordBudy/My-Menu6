@@ -30,7 +30,6 @@ class MenuMiniViewModel(
         viewModelScope.launch {
             // Вызываем UseCase для получения списка блюд по ID категории
             try {val dishItem = getDishMiniUseCase.execute(dishId, categoryId)
-                //_dish.value = getDishMiniUseCase.execute(dishId, categoryId)
                 Log.d("MenuMiniViewModel", "Получено блюдо: $dishItem")
                 _dish.value = dishItem
             } catch (e: Exception) {

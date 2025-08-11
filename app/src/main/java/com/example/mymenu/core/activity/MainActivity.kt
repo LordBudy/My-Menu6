@@ -59,8 +59,9 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     View.VISIBLE
                 }
-            val showSearch = destination.id == R.id.menu
+            val showSearch = destination.id == R.id.menu || destination.id == R.id.home
             searchMenuItem?.isVisible = showSearch
+            invalidateOptionsMenu()
             hideMenuMiniFragment()
         }
         binding.bNav.setOnItemSelectedListener { item ->
@@ -72,7 +73,6 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(item.itemId)
                     true
                 }
-
                 else -> false
             }
         }
@@ -118,9 +118,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.search_inc, menu)
         searchMenuItem = menu?.findItem(R.id.search_inc)
-        // Скрываем значок поиска, если текущий экран не тот, где он должен быть виден
+
+        // Управляем видимостью элемента быстрого поиска в категориях и меню
         val currentDestination = navController.currentDestination?.id
-        searchMenuItem?.isVisible = (currentDestination == R.id.menu)
+        val showSearch = currentDestination == R.id.menu ||
+                currentDestination == R.id.home
+        searchMenuItem?.isVisible = showSearch
+
         return true
     }
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
@@ -139,13 +143,28 @@ class MainActivity : AppCompatActivity() {
                 super.onOptionsItemSelected(item)
         }
     }
-    private fun openSearchFragment(){
+    //навигация быстрого поиска
+    private fun openSearchFragment() {
         Log.d("MainActivity", "переход к фрагменту fastSearch ")
         try {
-            navController.navigate(R.id.action_menu_to_fastSearch)
+            // Определяем текущий фрагмент и выполняем навигацию
+            val currentDestination = navController.currentDestination?.id
+            when (currentDestination) {
+                R.id.menu -> {
+                    navController.navigate(R.id.action_menu_to_fastSearch)
+                }
+                R.id.home -> {
+                    navController.navigate(R.id.action_home_to_fastSearch)
+                }
+                else -> {
+
+                    Log.d("MainActivity", "Навигация не требуется из текущего фрагмента: $currentDestination")
+                }
+            }
             Log.d("MainActivity", "Навигация к fastSearch выполнена")
         } catch (e: Exception) {
             Log.e("MainActivity", "Ошибка навигации: ${e.message}", e)
         }
     }
+
 }

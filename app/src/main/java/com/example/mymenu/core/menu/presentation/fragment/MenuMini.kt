@@ -62,6 +62,8 @@ class MenuMini : Fragment() {
         //событие добавления блюда
         menuMiniViewModel.addDishEvent.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), "Блюдо в корзине", Toast.LENGTH_SHORT).show()
+            //после успешного добавления закрываем меню мини
+            parentFragmentManager.beginTransaction().remove(this).commit()
         }
         val aadButton: Button = view.findViewById(R.id.add_Bascket)//кнопка добавить в корзину
         aadButton.setOnClickListener {
@@ -72,7 +74,6 @@ class MenuMini : Fragment() {
             } else {
                 Log.w("MenuMiniFragment", "Блюдо отсутствует при попытке добавить в корзину")
             }
-//            parentFragmentManager.beginTransaction().remove(this).commit()
         }
 // Наблюдаем за LiveData dish из menuMiniViewModel
         menuMiniViewModel.dish.observe(viewLifecycleOwner, Observer { dish ->
@@ -85,7 +86,6 @@ class MenuMini : Fragment() {
             menuMiniViewModel.getDish(dishId, categoryId)
         } else {
             Log.e("MenuMiniFragment", "Неверный dishId или categoryId передан фрагменту MenuMini")
-            Toast.makeText(requireContext(), "Ошибка: Неверные ID блюда или категории.", Toast.LENGTH_SHORT).show()
             parentFragmentManager.beginTransaction().remove(this).commit()
         }
     }
@@ -103,7 +103,6 @@ class MenuMini : Fragment() {
         } else {
             Log.w("MenuMiniFragment", "Не удалось загрузить данные о блюде")
             dishNameTextView.text = "Блюдо не найдено"
-            Log.w("MenuMiniFragment", "Не удалось загрузить данные о блюде")
         }
     }
 }

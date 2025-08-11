@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_home_to_basket"
             app:destination="@id/basket" />
+        <action
+            android:id="@+id/action_home_to_fastSearch2"
+            app:destination="@id/fastSearch" />
     </fragment>
     <fragment
         android:id="@+id/basket"
