@@ -15,12 +15,13 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.mymenu.core.menu.presentation.fragment.MenuMini
 import com.example.mymenu.R
 import com.example.mymenu.databinding.ActivityMainBinding
+import androidx.activity.OnBackPressedCallback
 
-@Suppress("DEPRECATION")
+
 class MainActivity : AppCompatActivity() {
     // Создаем переменную для биндинга
     private lateinit var binding: ActivityMainBinding
-    private val MENU_MINI_TAG = "menuMiniFragment"
+    private val menuMiniTag = "menuMiniFragment"
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private var searchMenuItem: MenuItem? = null
@@ -50,8 +51,16 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         binding.backButton.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
+        // Обработка нажатий кнопки "Назад"
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (!navController.popBackStack()) {
+                    finish()
+                }
+            }
+        })
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.backButton.visibility =
                 if (appBarConfiguration.topLevelDestinations.contains(destination.id)) {
@@ -86,7 +95,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         supportFragmentManager.beginTransaction()
-            .replace(R.id.Container_frag, menuMiniFragment, MENU_MINI_TAG)
+            .replace(R.id.Container_frag, menuMiniFragment, menuMiniTag)
             .commit()
     }
 
@@ -94,14 +103,8 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        if (!navController.popBackStack()) {
-            super.onBackPressed()
-        }
-    }
     fun hideMenuMiniFragment() {
-        val fragment = supportFragmentManager.findFragmentByTag(MENU_MINI_TAG)
+        val fragment = supportFragmentManager.findFragmentByTag(menuMiniTag)
         fragment?.let {
             supportFragmentManager.beginTransaction().remove(it).commit()
         }
