@@ -78,14 +78,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    fun showSearchResults(query: String, categoryId: Int) {
-//        val bundle = Bundle().apply {
-//            putString("search_query", query)
-//            putInt("category_id", categoryId)
-//        }
-//        navController.navigate(R.id.fastSearch, bundle)
-//    }
-
     fun showMenuMiniFragment(dishId: Int, categoryId: Int) {
         val menuMiniFragment = MenuMini().apply {
             arguments = Bundle().apply {
@@ -166,5 +158,4 @@ class MainActivity : AppCompatActivity() {
             Log.e("MainActivity", "Ошибка навигации: ${e.message}", e)
         }
     }
-
 }

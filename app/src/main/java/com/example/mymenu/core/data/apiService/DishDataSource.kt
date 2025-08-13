@@ -1,13 +1,13 @@
-package com.example.mymenu.core.data.ApiService
+package com.example.mymenu.core.data.apiService
 
 import android.util.Log
-import com.example.mymenu.core.data.ModelsEntitys.DishEntity
+import com.example.mymenu.core.data.modelsEntitys.BasketDishEntity
 import kotlinx.coroutines.flow.flow
 
 class DishDataSource {
     // Имитация локального источника данных
     // Метод для получения списка блюд по ID категории.
-    fun getDishesByCategoryId(categoryId: Int): List<DishEntity> {
+    fun getDishesByCategoryId(categoryId: Int): List<BasketDishEntity> {
         // Используем оператор when для выбора списка блюд в зависимости от ID категории.
         return when (categoryId) {
             1 -> getDishesForCategory1() // Получаем блюда для категории 1
@@ -18,7 +18,7 @@ class DishDataSource {
         }
     }
     // Добавьте функцию для получения одного блюда по ID
-    fun getDish(dishId: Int, categoryId: Int): DishEntity? {
+    fun getDish(dishId: Int, categoryId: Int): BasketDishEntity? {
         val dishes = getDishesByCategoryId(categoryId)
         Log.d("DishDataSource", "Полученные блюда для категории $categoryId: ${dishes.map { it.name }}")
         return dishes.find { it.id == dishId } // Ищем блюдо с нужным ID
@@ -41,7 +41,7 @@ class DishDataSource {
         }
     }
     //ищет блюдо по id, перебирая все категории
-    fun getDishById(dishId: Int): DishEntity? {
+    fun getDishById(dishId: Int): BasketDishEntity? {
         for (categoryId in 1..4) {
             val dish = getDishesByCategoryId(categoryId).find { it.id == dishId }
             if (dish != null) return dish
@@ -50,11 +50,11 @@ class DishDataSource {
     }
 
     // Блюда для категории 1
-    fun getDishesForCategory1(): List<DishEntity> {
+    fun getDishesForCategory1(): List<BasketDishEntity> {
         // Возвращаем список блюд, созданный с помощью функции listOf()
         return listOf(
             // Создаем объект DishEntity с заданными параметрами (ID, URL изображения, название, цена, описание, вес, categoryId)
-            DishEntity(
+            BasketDishEntity(
                 1,
                 "http://img.freepik.com/premium-photo/plate-with-tasty-pilaf-white_392895-19996.jpg?w=740",
                 "Рис с овощами",
@@ -68,7 +68,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 2,
                 "https://static.tildacdn.com/stor3838-6438-4537-b834-623038383830/17163536.jpg",
                 "Салат по восточному",
@@ -82,7 +82,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 3,
                 "http://img.freepik.com/premium-photo/grilled-salmon-fillet-with-risotto_738298-3633.jpg?w=740",
                 "Рыба с овощами и рисом",
@@ -93,7 +93,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 4,
                 "https://www.balconesulmetauro.it/wp/wp-content/uploads/2019/07/tortellini-2.png",
                 "Тортелини",
@@ -105,7 +105,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 5,
                 "https://static.tildacdn.com/tild6438-6366-4632-a237-626132623132/1-salat-s-kuracim-ma.png",
                 "Зеленый салат",
@@ -116,7 +116,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 6,
                 "http://img.freepik.com/premium-photo/ham-roll-with-cheese-white-plate-mortadella-ricotta-rolls-isolated-white-background_229797-827.jpg?w=900",
                 "Рулеты из ветчины",
@@ -128,7 +128,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 7,
                 "http://img.freepik.com/premium-photo/spinach-fettuccine-with-mushroom_1339-24457.jpg?w=826",
                 "Фетучини с грибами",
@@ -140,7 +140,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 8,
                 "http://img.freepik.com/premium-photo/baked-pork-meat-with-vegetables_738298-2579.jpg?w=996",
                 "Паэлья из утки",
@@ -151,7 +151,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 9,
                 "http://img.freepik.com/premium-photo/ratatouille-traditional-provencal-vegetable-dish-french-food-vegetarian-food-healthy-eating_97840-5811.jpg?w=740",
                 "Рататуй",
@@ -163,7 +163,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 10,
                 "http://img.freepik.com/free-photo/delicious-food-white-plate_144627-34711.jpg?t=st=1709222938~exp=1709226538~hmac=0c398f5a22dd87524b512c959a03792e059e9f0db74f17624bee36ce324a3e75&w=826",
                 "Шницель",
@@ -175,7 +175,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 11,
                 "http://img.freepik.com/premium-photo/russian-pork-dumplings-pelmeni_738298-4053.jpg?w=826",
                 "Пельмени",
@@ -188,7 +188,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 12,
                 "http://img.freepik.com/free-photo/delicious-pancakes-with-strawberry-jam_2829-15767.jpg?t=st=1709223250~exp=1709226850~hmac=241c2a3eb2651d89377f9bba91ce8a80b9ac3fae56f827b76bbc3ca84e0d6e0e&w=826",
                 "Олади",
@@ -199,7 +199,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 13,
                 "https://food.pibig.info/uploads/posts/2023-08/1693284195_food-pibig-info-p-yeda-tsezar-vkontakte-63.jpg",
                 "Салат цезарь",
@@ -210,7 +210,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 14,
                 "https://avatars.mds.yandex.net/i?id=be9b6e48854aa59ad9323bcf6b547f67e1746337-12168040-images-thumbs&n=13",
                 "Салат королевский с говядиной",
@@ -222,7 +222,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 15,
                 "http://media.leverans.ru/product_images_inactive/moscow/sam-am-beri/samamberi-ru-006.jpg",
                 "Мясо ассорти в соусе",
@@ -233,7 +233,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 16,
                 "https://i.pinimg.com/originals/a6/d2/15/a6d215f534a432c20f8c201e50e31082.jpg",
                 "Лапша Лагман удон",
@@ -246,7 +246,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 17,
                 "http://lime-sushi.com/wa-data/public/shop/products/43/00/43/images/54/54.970.png",
                 "Фунчоза с креветками и овощами",
@@ -258,7 +258,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 18,
                 "http://cdn-img.perekrestok.ru/i/400x400-fit/xdelivery/files/48/e2/b46bfb25b1edde303b63b92ef3ee.jpg",
                 "Суп рамэн со свининой",
@@ -270,7 +270,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 19,
                 "http://img.freepik.com/premium-photo/plate-with-tasty-pilaf-white_392895-19996.jpg?w=740",
                 "Рис с овощами",
@@ -284,7 +284,7 @@ class DishDataSource {
                 1,
                 1
             ),
-            DishEntity(
+            BasketDishEntity(
                 20,
                 "http://img.freepik.com/premium-photo/plate-with-tasty-pilaf-white_392895-19996.jpg?w=740",
                 "Рис с овощами",
@@ -301,9 +301,9 @@ class DishDataSource {
         )
     }
     // Блюда для категории 2
-    private fun getDishesForCategory2(): List<DishEntity> {
+    private fun getDishesForCategory2(): List<BasketDishEntity> {
         return listOf(
-            DishEntity(21,
+            BasketDishEntity(21,
                 "https://fsd.multiurok.ru/html/2019/05/17/s_5cdf19e3e26ec/1159510_1.png",
                 "Блюдо 21",
                 100.0,
@@ -314,9 +314,9 @@ class DishDataSource {
         )
     }
     // Блюда для категории 3
-    private fun getDishesForCategory3(): List<DishEntity> {
+    private fun getDishesForCategory3(): List<BasketDishEntity> {
         return listOf(
-            DishEntity(22,
+            BasketDishEntity(22,
                 "https://imageproxy.wolt.com/menu/menu-images/5feb24cfc8bb28184a917850/0161ab4a-5015-11eb-a669-ee3d970aa644_kare_burosu_ramen.jpeg",
                 "Блюдо 22",
                 150.0,
@@ -329,9 +329,9 @@ class DishDataSource {
     }
 
     // Блюда для категории 4
-    private fun getDishesForCategory4(): List<DishEntity> {
+    private fun getDishesForCategory4(): List<BasketDishEntity> {
         return listOf(
-            DishEntity(23,
+            BasketDishEntity(23,
                 "https://sushi-na-dom.com/image/cache/catalog/sushi-na-dom/menu/sup/%D1%81%D0%BE%D0%BB%D1%8F%D0%BD%D0%BA%D0%B0%20%D0%BC%D1%8F%D1%81%D0%BD%D0%B0%D1%8F%20169%D1%80%D1%83%D0%B1.-800x800.jpg",
                 "Блюдо 23",
                 200.0,

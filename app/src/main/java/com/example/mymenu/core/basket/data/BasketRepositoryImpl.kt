@@ -2,9 +2,9 @@ package com.example.mymenu.core.basket.data
 
 import android.util.Log
 import com.example.mymenu.core.basket.domain.BasketRepository
-import com.example.mymenu.core.data.ApiService.DishDataSource
-import com.example.mymenu.core.data.DAO.BasketDao
-import com.example.mymenu.core.data.ModelsEntitys.DishEntity
+import com.example.mymenu.core.data.apiService.DishDataSource
+import com.example.mymenu.core.data.dao.BasketDao
+import com.example.mymenu.core.data.modelsEntitys.BasketDishEntity
 import com.example.mymenu.core.models.DishItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,7 +25,7 @@ class BasketRepositoryImpl(
         } else {
             val dishItem = dishDataSource.getDishById(dish)
                 ?: throw Exception("id блюда не найден")
-            val newDishEntity = DishEntity(
+            val newBasketDishEntity = BasketDishEntity(
                 id = dishItem.id,
                 url = dishItem.url,
                 name = dishItem.name,
@@ -35,9 +35,9 @@ class BasketRepositoryImpl(
                 categoryId = dishItem.categoryId,
                 count = 1
             )
-            basketDao.insertDish(newDishEntity)
-            Log.d("BasketRepo", "новый объект DishEntity: $newDishEntity")
-            newDishEntity.toDomainDishItem()
+            basketDao.insertDish(newBasketDishEntity)
+            Log.d("BasketRepo", "новый объект DishEntity: $newBasketDishEntity")
+            newBasketDishEntity.toDomainDishItem()
         }
 
     }
@@ -90,7 +90,7 @@ class BasketRepositoryImpl(
 
 
     // преобразование DishEntity в DishItem
-    private fun DishEntity.toDomainDishItem(): DishItem =
+    private fun BasketDishEntity.toDomainDishItem(): DishItem =
         DishItem(
             id = id,
             url = url,
@@ -103,8 +103,8 @@ class BasketRepositoryImpl(
         )
 
     // преобразование DishItem в DishEntity
-    private fun DishItem.toDishEntity(): DishEntity =
-        DishEntity(
+    private fun DishItem.toDishEntity(): BasketDishEntity =
+        BasketDishEntity(
             id = id,
             url = url,
             name = name,

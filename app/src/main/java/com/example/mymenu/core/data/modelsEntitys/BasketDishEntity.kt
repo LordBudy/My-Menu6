@@ -1,11 +1,11 @@
-package com.example.mymenu.core.data.ModelsEntitys
+package com.example.mymenu.core.data.modelsEntitys
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "dish") // название таблици
-data class DishEntity(
+data class BasketDishEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: Int,

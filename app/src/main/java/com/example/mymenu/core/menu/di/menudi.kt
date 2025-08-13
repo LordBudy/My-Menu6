@@ -1,8 +1,8 @@
 package com.example.mymenu.core.menu.di
 
 import com.example.mymenu.core.basket.domain.AddDishToBasketUseCase
-import com.example.mymenu.core.data.ApiService.CatDataSource
-import com.example.mymenu.core.data.ApiService.DishDataSource
+import com.example.mymenu.core.data.apiService.CatDataSource
+import com.example.mymenu.core.data.apiService.DishDataSource
 import com.example.mymenu.core.menu.data.CategoryRepositoryImpl
 import com.example.mymenu.core.menu.data.DishRepositoryImpl
 import com.example.mymenu.core.menu.data.MenuMiniRepositoryImpl

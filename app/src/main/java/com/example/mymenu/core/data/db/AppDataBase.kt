@@ -1,19 +1,29 @@
-package com.example.mymenu.core.data.DB
+package com.example.mymenu.core.data.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.mymenu.core.data.DAO.BasketDao
-import com.example.mymenu.core.data.ModelsEntitys.DishEntity
-@Database(entities = [DishEntity::class], version = 1, exportSchema = false)
+import com.example.mymenu.core.data.dao.BasketDao
+import com.example.mymenu.core.data.dao.DishCachDao
+import com.example.mymenu.core.data.modelsEntitys.BasketDishEntity
+import com.example.mymenu.core.data.modelsEntitys.DishCachEntity
+
+@Database(
+    entities = [BasketDishEntity::class, DishCachEntity::class],
+    version = 1,
+    exportSchema = false
+)
 abstract class AppDataBase : RoomDatabase() {
     abstract fun basketDao(): BasketDao
-   companion object {
+    abstract fun dishCachDao(): DishCachDao
+
+    companion object {
         // @Volatile - гарантирует, что INSTANCE всегда будет виден всем потокам
         @Volatile
         // Приватная переменная для хранения единственного экземпляра базы данных (Singleton)
         private var INSTANCE: AppDataBase? = null
+
         // Метод для получения экземпляра базы данных (Singleton)
         fun getDatabase(context: Context): AppDataBase {
             // Если INSTANCE не null, возвращаем его.
@@ -27,7 +37,7 @@ abstract class AppDataBase : RoomDatabase() {
                     AppDataBase::class.java,
                     // Название файла базы данных
                     "app_database"
-                ).fallbackToDestructiveMigration().build()// Строим базу данных
+                ).fallbackToDestructiveMigration(false).build()// Строим базу данных
                 // Сохраняем созданный экземпляр базы данных в INSTANCE
                 INSTANCE = instance
                 // Возвращаем созданный экземпляр базы данных.

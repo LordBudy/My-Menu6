@@ -1,7 +1,6 @@
 package com.example.mymenu.core.basket.di
 
 import com.example.mymenu.core.basket.data.BasketRepositoryImpl
-import com.example.mymenu.core.basket.domain.AddDishToBasketUseCase
 import com.example.mymenu.core.basket.domain.BasketRepository
 import com.example.mymenu.core.basket.domain.DeleteDishBasketUseCase
 import com.example.mymenu.core.basket.domain.GetAllBasketUseCase
@@ -10,8 +9,8 @@ import com.example.mymenu.core.basket.domain.MinusDishUseCase
 import com.example.mymenu.core.basket.domain.PlusDishUseCase
 import com.example.mymenu.core.basket.domain.UpdateBasketUseCase
 import com.example.mymenu.core.basket.presentation.viewModel.BasketViewModel
-import com.example.mymenu.core.data.ApiService.DishDataSource
-import com.example.mymenu.core.data.DB.AppDataBase
+import com.example.mymenu.core.data.apiService.DishDataSource
+import com.example.mymenu.core.data.db.AppDataBase
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

@@ -1,14 +1,13 @@
 package com.example.mymenu.core.menu.data
 
 import android.util.Log
-import com.example.mymenu.core.data.ApiService.DishDataSource
-import com.example.mymenu.core.data.ModelsEntitys.DishEntity
+import com.example.mymenu.core.data.apiService.DishDataSource
+import com.example.mymenu.core.data.modelsEntitys.BasketDishEntity
 import com.example.mymenu.core.models.DishItem
 import com.example.mymenu.core.menu.domain.DishRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
 
 class DishRepositoryImpl(
     private val dishDataSource: DishDataSource
@@ -36,7 +35,7 @@ class DishRepositoryImpl(
     }
 }
 
-private fun DishEntity.toDomainDishItem(): DishItem =
+private fun BasketDishEntity.toDomainDishItem(): DishItem =
     DishItem(
         id = id,
         url = url,

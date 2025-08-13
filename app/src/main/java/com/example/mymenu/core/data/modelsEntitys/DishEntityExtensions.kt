@@ -1,4 +1,4 @@
-package com.example.mymenu.core.data.ModelsEntitys
+package com.example.mymenu.core.data.modelsEntitys
 
 import com.example.mymenu.core.models.DishItem
 

@@ -1,7 +1,7 @@
 package com.example.mymenu.core.menu.data
 
-import com.example.mymenu.core.data.ApiService.DishDataSource
-import com.example.mymenu.core.data.ModelsEntitys.DishEntity
+import com.example.mymenu.core.data.apiService.DishDataSource
+import com.example.mymenu.core.data.modelsEntitys.BasketDishEntity
 import com.example.mymenu.core.menu.domain.MenuMiniRepository
 import com.example.mymenu.core.models.DishItem
 
@@ -15,7 +15,7 @@ class MenuMiniRepositoryImpl(private val dishDataSource: DishDataSource) : MenuM
 
 }
 
-private fun DishEntity.toDomainDishItem(): DishItem =
+private fun BasketDishEntity.toDomainDishItem(): DishItem =
     DishItem(
         id = id,
         url = url,

@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mymenu.core.data.DAO.BasketDao
+import com.example.mymenu.core.data.dao.BasketDao
 import com.example.mymenu.core.models.DishItem
 import com.example.mymenu.core.basket.presentation.adapter.BasketAdapter
 import com.example.mymenu.core.basket.presentation.viewModel.BasketViewModel
