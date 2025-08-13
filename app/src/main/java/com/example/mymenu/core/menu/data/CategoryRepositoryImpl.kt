@@ -2,7 +2,6 @@ package com.example.mymenu.core.menu.data
 
 import com.example.mymenu.core.menu.domain.CategoryRepository
 import com.example.mymenu.core.data.apiService.CatDataSource
-import com.example.mymenu.core.data.modelsEntitys.Category
 import com.example.mymenu.core.models.CategoryItem
 
 class CategoryRepositoryImpl(private val catDataSource: CatDataSource) : CategoryRepository {
@@ -13,11 +12,3 @@ class CategoryRepositoryImpl(private val catDataSource: CatDataSource) : Categor
         return catDataSource.getLocalCategory()
         }
     }
-
-
-//    private fun Category.toDomainCategory(): CategoryItem =
-//        CategoryItem(
-//            id = id,
-//            url_cat = url_cat,
-//            name_cat = name_cat
-//        )

@@ -3,7 +3,7 @@ package com.example.mymenu.core.data.modelsEntitys
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-@Entity(tableName = "cachs") // название таблици
+@Entity(tableName = "cachs_dish") // название таблици
 data class DishCachEntity (
     @PrimaryKey
     @ColumnInfo(name = "id")

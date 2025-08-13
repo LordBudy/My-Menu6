@@ -13,15 +13,15 @@ interface DishCachDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDish(dish: DishCachEntity) // Метод для вставки одного блюда в кэш
 
-    @Query("SELECT * FROM cachs")
+    @Query("SELECT * FROM cachs_dish")
     fun getAllDishes(): Flow<List<DishCachEntity>> // Получить все блюда из кэша
 
-    @Query("SELECT * FROM cachs WHERE id = :dishId")
+    @Query("SELECT * FROM cachs_dish WHERE id = :dishId")
     suspend fun getDishById(dishId: Int): DishCachEntity? // Получить блюдо по ID
 
     @Update
     suspend fun updateDish(dish: DishCachEntity) // Метод для обновления блюда в кэше
 
-    @Query("DELETE FROM cachs WHERE id = :dishId")
-    suspend fun deleteDishById(dishId: Int) // Метод для удаления блюда из кэша
+    @Query("DELETE FROM cachs_dish")
+    suspend fun clearCache()// Метод для удаления кэша
 }

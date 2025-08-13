@@ -11,8 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymenu.core.activity.MainActivity
-import com.example.mymenu.core.menu.presentation.adapter.SearchAdapter
 import com.example.mymenu.R
+import com.example.mymenu.core.menu.presentation.adapter.MenuAdapter
 import com.example.mymenu.core.menu.presentation.viewModel.MenuViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -27,7 +27,7 @@ class FilterMenu : Fragment() {
     }
     private val viewModel: MenuViewModel by viewModel { parametersOf(categoryId) }
     private lateinit var recyclerView: RecyclerView
-    private lateinit var searchAdapter: SearchAdapter
+    private lateinit var menuAdapter: MenuAdapter
     private var searchQuery: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,16 +51,16 @@ class FilterMenu : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchAdapter = SearchAdapter(emptyList()) { dishItem ->
+        menuAdapter = MenuAdapter(emptyList()) { dishItem ->
             Log.d("FastMenu", "Dish clicked: ${dishItem.name}")
             (activity as? MainActivity)?.showMenuMiniFragment(dishItem.id, 1)
         }
 
-        recyclerView.adapter = searchAdapter
+        recyclerView.adapter = menuAdapter
 
         viewModel.dishs.observe(viewLifecycleOwner, Observer { dishList ->
             if (dishList != null) {
-                searchAdapter.updateData(dishList)
+                menuAdapter.updateData(dishList)
             } else {
                 Toast.makeText(requireContext(), "Не удалось загрузить блюда", Toast.LENGTH_SHORT)
                     .show()
