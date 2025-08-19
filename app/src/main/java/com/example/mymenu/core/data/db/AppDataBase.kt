@@ -7,18 +7,21 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.mymenu.core.data.dao.BasketDao
+import com.example.mymenu.core.data.dao.CategoryCachDao
 import com.example.mymenu.core.data.dao.DishCachDao
 import com.example.mymenu.core.data.modelsEntitys.BasketDishEntity
+import com.example.mymenu.core.data.modelsEntitys.CategoryCachEntity
 import com.example.mymenu.core.data.modelsEntitys.DishCachEntity
 
 @Database(
-    entities = [BasketDishEntity::class, DishCachEntity::class],
+    entities = [BasketDishEntity::class, DishCachEntity::class, CategoryCachEntity::class],
     version = 1,//при каждом изменении меняем версию
     exportSchema = false
 )
 abstract class AppDataBase : RoomDatabase() {
     abstract fun basketDao(): BasketDao
     abstract fun dishCachDao(): DishCachDao
+    abstract fun categoryCachDao(): CategoryCachDao
 
     companion object {
         @Volatile

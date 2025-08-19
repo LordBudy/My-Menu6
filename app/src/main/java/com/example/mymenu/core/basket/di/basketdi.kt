@@ -17,7 +17,7 @@ import org.koin.dsl.module
 
 val basketdi = module {
     single<DishDataSource> {
-        DishDataSource()
+        DishDataSource(get())
     }
     //чтобы Koin мог найти экземпляр BasketDao
     single {

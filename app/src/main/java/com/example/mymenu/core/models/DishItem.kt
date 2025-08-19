@@ -13,5 +13,7 @@ data class DishItem(
     val weight: Double,
     val description: String,
     val categoryId: Int? = null,
-    var count: Int
+    var count: Int,
+    // Путь к кешированному изображению
+    var imagePath: String? = null
 ) : Parcelable

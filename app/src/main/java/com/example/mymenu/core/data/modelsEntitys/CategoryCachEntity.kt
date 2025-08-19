@@ -10,7 +10,7 @@ data class CategoryCachEntity(
     @ColumnInfo(name = "id")
     val id: Int,
     @ColumnInfo(name = "url")
-    val url_cat: String,
+    val url: String,
     @ColumnInfo(name = "name")
-    val name_cat: String
+    val name: String
 )

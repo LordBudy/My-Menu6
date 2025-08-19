@@ -1,5 +1,6 @@
 package com.example.mymenu.core.menu.presentation.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,65 +10,60 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mymenu.R
 import com.example.mymenu.core.models.CategoryItem
 import com.squareup.picasso.Picasso
+import java.io.File
 
-class CategoryAdapter(
-    private var categories: List<CategoryItem>,
-    private val onClick: (CategoryItem) -> Unit
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+class CategoryAdapter(private var categories: List<CategoryItem>,
+                      private val onClick: (CategoryItem) -> Unit
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     // updateData - функция для обновления данных в адаптере
-    // newCategories - новый список объектов CategoryItem
+    @SuppressLint("NotifyDataSetChanged")
     fun updateData(newCategories: List<CategoryItem>) {
-        // Обновляем список categories
         categories = newCategories
-        // Уведомляем адаптер об изменении данных, чтобы RecyclerView обновил отображение
         notifyDataSetChanged()
     }
 
-    // CategoryViewHolder - ViewHolder для отображения одного элемента категории
-    // itemView - View, представляющий собой один элемент списка (item_category.xml)
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // categoryImageButton - ImageButton для отображения изображения категории
         val categoryImageButton: ImageButton = itemView.findViewById(R.id.imageCategory)
-
-        // categoryTextView - TextView для отображения названия категории
         val categoryTextView: TextView = itemView.findViewById(R.id.textCategory)
     }
 
-    // onCreateViewHolder - вызывается для создания ViewHolder-а
-    // parent - ViewGroup, в котором будет создан ViewHolder
-    // viewType - тип View (в данном случае, один тип для всех элементов)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        // Создаем View для одного элемента списка из XML-файла item_category.xml
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false)
-        // Создаем и возвращаем CategoryViewHolder
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false)
         return CategoryViewHolder(view)
     }
-    // onBindViewHolder - вызывается для привязки данных к ViewHolder-у
-    // holder - CategoryViewHolder, который нужно заполнить данными
-    // position - позиция элемента в списке
+
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        // Получаем объект CategoryItem по позиции
         val category = categories[position]
 
-        // Заполнение данных в ViewHolder
         // Устанавливаем текст названия категории
-        holder.categoryTextView.text = category.name_cat
-        // Загружаем изображение категории с помощью библиотеки Picasso
-        Picasso.get()
-            .load(category.url_cat)// Загружаем URL изображения
-            .placeholder(R.drawable.placeholder_image) // Заглушка на время загрузки
-            .error(R.drawable.error_image) // Картинка в случае ошибки загрузки
-            .into(holder.categoryImageButton)// Отображаем изображение в ImageButton
+        holder.categoryTextView.text = category.name
+
+        // Проверяем наличие кешированного изображения
+        if (category.imagePath != null && File(category.imagePath).exists()) {
+            // Если кешированное изображение существует, загружаем его
+            Picasso.get()
+                .load(File(category.imagePath)) // Загружаем кешированное изображение
+                .placeholder(R.drawable.placeholder_image) // Заглушка на время загрузки
+                .error(R.drawable.error_image) // Картинка в случае ошибки загрузки
+                .into(holder.categoryImageButton)
+        } else {
+            // Если кешированного изображения нет, загружаем по URL
+            Picasso.get()
+                .load(category.url) // Загружаем URL изображения
+                .placeholder(R.drawable.placeholder_image) // Заглушка на время загрузки
+                .error(R.drawable.error_image) // Картинка в случае ошибки загрузки
+                .into(holder.categoryImageButton)
+        }
+
         // Устанавливаем обработчик нажатия на элемент списка
-        // При нажатии вызывается лямбда-функция onClick, передавая объект CategoryItem
         holder.itemView.setOnClickListener {
             onClick(category)
         }
     }
-    // getItemCount - возвращает количество элементов в списке
+
     override fun getItemCount(): Int {
-        return categories.size// Возвращаем размер списка категорий
+        return categories.size
     }
 }

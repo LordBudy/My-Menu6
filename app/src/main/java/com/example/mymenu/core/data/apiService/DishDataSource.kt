@@ -1,10 +1,11 @@
 package com.example.mymenu.core.data.apiService
 
+import android.content.Context
 import android.util.Log
 import com.example.mymenu.core.data.modelsEntitys.BasketDishEntity
 import kotlinx.coroutines.flow.flow
 
-class DishDataSource {
+class DishDataSource(private val context: Context) {
     // Имитация локального источника данных
     // Метод для получения списка блюд по ID категории.
     fun getDishesByCategoryId(categoryId: Int): List<BasketDishEntity> {

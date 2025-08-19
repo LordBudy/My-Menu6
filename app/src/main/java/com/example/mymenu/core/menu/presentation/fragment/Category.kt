@@ -13,12 +13,15 @@ import com.example.mymenu.R
 import com.example.mymenu.core.menu.presentation.viewModel.CategoryViewModel
 import com.example.mymenu.core.menu.presentation.adapter.CategoryAdapter
 import com.example.mymenu.core.models.CategoryItem
+import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
+import java.security.Policy.Parameters
 
 @Suppress("UNCHECKED_CAST")
 class Category : Fragment() {
     // Используем by viewModel() для создания ViewModel с помощью Koin
-    private val viewModel: CategoryViewModel by viewModel()
+    val viewModel: CategoryViewModel by viewModel()
     // recyclerView - RecyclerView для отображения списка категорий
     private lateinit var recyclerView: RecyclerView
     // categoryAdapter - Adapter для RecyclerView
