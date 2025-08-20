@@ -1,9 +1,9 @@
 package com.example.mymenu.core.menu.presentation.viewModel
 
-import android.content.Context
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mymenu.core.data.dao.CategoryCachDao
 import com.example.mymenu.core.menu.domain.GetCategoryUseCase
@@ -22,8 +22,8 @@ class CategoryViewModel(
     // getCategoryUseCase - для получения списка категорий
     private val getCategoryUseCase: GetCategoryUseCase,
     private val categoryCachDao: CategoryCachDao,
-    private val context: Context // Добавляем контекст для доступа к кешу
-) : ViewModel() {
+    application: Application // Добавляем для доступа к кешу
+) : AndroidViewModel(application) {
 
     private val _categories = MutableLiveData<List<CategoryItem>?>()
     val categories: LiveData<List<CategoryItem>?> = _categories
@@ -54,7 +54,8 @@ class CategoryViewModel(
 
     private suspend fun getCachedImage(url: String): String? {
         val fileName = url.substring(url.lastIndexOf('/') + 1)
-        val cacheFile = File(context.cacheDir, fileName)
+        val cacheFile = File(getApplication<Application>()
+            .cacheDir, fileName)
 
         return if (cacheFile.exists()) {
             // Если файл существует, возвращаем путь к файлу

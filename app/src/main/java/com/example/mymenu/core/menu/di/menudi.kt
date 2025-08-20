@@ -1,5 +1,6 @@
 package com.example.mymenu.core.menu.di
 
+import android.app.Application
 import androidx.room.Room
 import com.example.mymenu.core.basket.domain.AddDishToBasketUseCase
 import com.example.mymenu.core.data.apiService.CatDataSource
@@ -20,7 +21,6 @@ import com.example.mymenu.core.menu.presentation.viewModel.MenuMiniViewModel
 import com.example.mymenu.core.menu.presentation.viewModel.MenuViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.parameter.ParametersHolder
 import org.koin.dsl.module
 
 
@@ -71,9 +71,11 @@ val menudi = module {
     }
     viewModel {
         CategoryViewModel(
+            // Приводим к Application
+            application = androidContext().applicationContext as Application,
             getCategoryUseCase = get(),
-            categoryCachDao = get(),
-            context = androidContext()
+            categoryCachDao = get()
+
         )
     }
     //----------------------------------------------------------------------------------------------

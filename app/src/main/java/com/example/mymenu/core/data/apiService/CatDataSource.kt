@@ -24,7 +24,7 @@ class CatDataSource(private val context: Context) {
             ),
             CategoryItem(
                 3,
-                "https://get.pxhere.com/photo/dish-meal-food-fish-cuisine-asian-food-sushi-salmon-japanese-food-japanese-cuisine-1235309.jpg",
+                "https://avatars.mds.yandex.net/i?id=3aa46be126dd2f69da65035a6f39f92c_l-4507718-images-thumbs&n=13",
                 "Азиатская кухня"
             ),
             CategoryItem(
